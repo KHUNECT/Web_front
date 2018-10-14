@@ -1,52 +1,68 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
   <title>KHU:NECT</title>
   <link rel="stylesheet" type="text/css" href="main.css">
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
+  <script type="text/javascript">
+    function onEnterLogin() {
+      var KeyCode = windows.event.keyCode;
+      if (keyCode == 13) {
+        loginForm.submit();
+      }
+    }
+  </script>
+  <style>
+    div 
+    {
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+  </style>
 </head>
+
 <body>
   <div id="top-layer_fixed">
     <table cellspacing="0" cellpadding="0" style="width:100%; height:100%;">
-    <tr>
-      <td style="vertical-align:middle; padding-left: 200px; padding-right: 220px;">
-        <img src="logo.png" height=45%>
-      </td>
-      <td>
-<div class="menubar">
-<ul>
- <li><a id="current">내 수업</a>
- </li>
- <li><a id="current">함께해요</a>
-   <ul>
-     <li><a href="/study">스터디</a></li>
-     <li><a href="/hobby">취미</a></li>
-    </ul>
- </li>
- <li><a id="current">홍보</a>
-   <ul>
-     <li><a href="/alba">알바</a></li>
-     <li><a href="/club">동아리</a></li>
-     <li><a href="/contest">공모전</a></li>
-   </ul>
- </li>
- <li><a id="current">거래</a>
-   <ul>
-     <li><a href="/market">거래</a></li>
-     <li><a href="/gonggu">공구</a></li>
-   </ul>
- </li>
-</ul>
-</div>
-    </td>
-    </tr>
+      <tr>
+        <td style="vertical-align:middle; padding-left: 200px; padding-right: 220px;">
+          <img src="logo.png" height=45%>
+        </td>
+        <td>
+          <div class="menubar">
+            <ul>
+              <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a></li>
+              <li><a id="current" style="font-size:16px;font-weight: bold;">함께해요</a>
+                <ul>
+                  <li><a href="/study">스터디</a></li>
+                  <li><a href="/hobby">취미</a></li>
+                </ul>
+              </li>
+              <li><a id="current" style="font-size:16px;font-weight: bold;">홍보</a>
+                <ul>
+                  <li><a href="/alba">알바</a></li>
+                  <li><a href="/club">동아리</a></li>
+                  <li><a href="/contest">공모전</a></li>
+                </ul>
+              </li>
+              <li><a id="current" style="font-size:16px;font-weight: bold;">거래</a>
+                <ul>
+                  <li><a href="/market">거래</a></li>
+                  <li><a href="/gonggu">공구</a></li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </td>
+      </tr>
     </table>
   </div>
 
   <div id="main_banner">
 
   </div>
-<!--
+  <!--
   <div id="menu_bar">
     <div id="inner_menu_bar">
       <table>
@@ -80,53 +96,111 @@
   <div id="bulletin_board">
     <div id="section_1" style="float:left">
       <div id="profile">
-        <p style="text-align: center; margin-bottom:0px;">
+        <div style="text-align: center; margin-bottom:0px;">
           <img src="logo.png" height=20px style="margin-top:65px;">
-        </p>
-        <input type="text" name="ID" placeholder="ID" style="color:rgb(71,71,71); margin-left:11px;">
-        <input type="text" name="PW" placeholder="PW" style="color:rgb(71,71,71); margin-left:11px;">
-        <div style="text-align:center;">
-          <a href="#" style="font-size:small;">회원가입<br>
-          <a href="#" style="font-size:x-small;">ID찾기</a>
-          <a style="font-size:x-small; margin:0 auto;">&nbsp/&nbsp</a>
-          <a href="#" style="font-size:x-small;">PW찾기</a>
         </div>
-
+        <div style="margin-left:11px;margin-right:11px;">
+          <form action="/login" name="loginForm" method="post">
+            <input type="text" name="ID" placeholder="ID" style="width:100%;color:rgb(71,71,71);">
+            <input type="password" name="PW" placeholder="PW" style="width:100%;color:rgb(71,71,71); margin-bottom: 4px;"
+              onkeydown="javascript:onEnterLogin()"><br>
+            <input type="submit" value="로그인" style="margin-left:32%;">
+          </form>
+        </div>
+        <div style="text-align:center;">
+          <a href="/signup" style="font-size:x-small;">회원가입</a>
+          <a style="font-size:x-small; margin:0 auto;">&nbsp/&nbsp</a>
+          <a href="/findID" style="font-size:x-small;">ID찾기</a>
+          <a style="font-size:x-small; margin:0 auto;">&nbsp/&nbsp</a>
+          <a href="/findPW" style="font-size:x-small;">PW찾기</a>
+        </div>
       </div>
+
       <div id="my_menu">
-      s
+        s
       </div>
     </div>
     <div id="section_2" style="float:left">
+      <div id="board_2" style="float:left; margin-left:60px">
+        <table id="board_table">
+          <tr id="board_table_maintr">
+            <td id="board_table_td"><a style="color: rgb(164, 15, 22);">최신 게시물</a></td>
+          </tr>
+          <tr id="board_table_tr">
+            <td id="board_table_td">
+              <a href="#" style="font-weight: bold;">[게시판1]</a>
+              <a>게시물1</a>
+            </td>
+          </tr>
+          <tr id="board_table_tr">
+            <td id="board_table_td">
+              <a href="#" style="font-weight: bold;">[게시판2]</a>
+              <a>게시물2</a>
+            </td>
+          </tr>
+          <tr id="board_table_tr">
+            <td id="board_table_td">
+              <a href="#" style="font-weight: bold;">[게시판3]</a>
+              <a>게시물3</a>
+            </td>
+          </tr>
+          <tr id="board_table_tr">
+            <td id="board_table_td">
+              <a href="#" style="font-weight: bold;">[게시판4]</a>
+              <a>게시물4</a>
+            </td>
+          </tr>
+          <tr id="board_table_tr">
+            <td id="board_table_td">
+              <a href="#" style="font-weight: bold;">[게시판5]</a>
+              <a>게시물5</a>
+            </td>
+          </tr>
+        </table>
+      </div>
+
       <div id="board_2" style="float:left; margin-left:80px">
         <table id="board_table">
           <tr id="board_table_maintr">
-            <td id="board_table_td" >무슨무슨게시판</td>
+            <td id="board_table_td"><a style="color: rgb(164, 15, 22);">내 수업</a></td>
           </tr>
           <tr id="board_table_tr">
-            <td id="board_table_td">a</td>
+            <td id="board_table_td">
+              <a href="#" style="font-weight: bold;">[과목1]</a>
+              <a>게시물1</a>
+            </td>
           </tr>
           <tr id="board_table_tr">
-            <td id="board_table_td">a</td>
+            <td id="board_table_td">
+              <a href="#" style="font-weight: bold;">[과목2]</a>
+              <a>게시물2</a>
+            </td>
           </tr>
           <tr id="board_table_tr">
-            <td id="board_table_td">a</td>
+            <td id="board_table_td">
+              <a href="#" style="font-weight: bold;">[과목3]</a>
+              <a>게시물3</a>
+            </td>
           </tr>
           <tr id="board_table_tr">
-            <td id="board_table_td">a</td>
+            <td id="board_table_td">
+              <a href="#" style="font-weight: bold;">[과목4]</a>
+              <a>게시물4</a>
+            </td>
           </tr>
           <tr id="board_table_tr">
-            <td id="board_table_td">a</td>
+            <td id="board_table_td">
+              <a href="#" style="font-weight: bold;">[과목5]</a>
+              <a>게시물5</a>
+            </td>
           </tr>
         </table>
       </div>
-      <div id="board_2" style="float:left; margin-left:40px">
-      s
-      </div>
+
       <div id="board_3" style="float:left">
         <table id="board_table">
           <tr id="board_table_maintr">
-            <td id="board_table_td" >무슨무슨게시판</td>
+            <td id="board_table_td"><a style="color: rgb(164, 15, 22);">장터 게시판</a></td>
           </tr>
           <tr id="board_table_tr">
             <td id="board_table_td">a</td>
@@ -146,14 +220,15 @@
         </table>
       </div>
       <div id="board_3" style="float:left">
-      s
+        s
       </div>
       <div id="board_3" style="float:left">
-      s
-      </div>
-    </div>
+        s
       </div>
     </div>
   </div>
+  </div>
+  </div>
 </body>
+
 </html>
