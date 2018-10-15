@@ -4,14 +4,17 @@ const fs=require('fs');
 const app=express();
 const bodyParser=require('body-parser');
 const session=require('express-session');
+const path=require('path');
 
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname)));
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(session({
     secret:'ambc@!vsmkv#!&*!#EDNAnsv#!$()_*#@',
     resave:false,
     saveUninitialized:true
 }));
+
+const test_path=['../html/','../ejs/'];
 
 const users =[
     {
@@ -36,7 +39,7 @@ app.get('/',(request,response)=>{
 });
 app.get('/main',(request,response)=>{
     const session=request.session;
-    fs.readFile('main.html','utf-8',(error,data)=>{
+    fs.readFile(test_path[0]+'main.html','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'});
         //response.render(data);
         response.end(data);
@@ -120,3 +123,4 @@ app.get('/gonggu',(request,response)=>{
 app.listen(3000);
 
 console.log("Server is running\n");
+console.log(path.join(__dirname,'..','html'))
