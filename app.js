@@ -14,7 +14,7 @@ app.use(session({
     saveUninitialized:true
 }));
 
-const test_path=['../html/','../ejs/'];
+const test_path=['html/','ejs/'];
 
 const users =[
     {
