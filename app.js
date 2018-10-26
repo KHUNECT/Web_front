@@ -1,13 +1,22 @@
-const express=require('express');
-const ejs=require('ejs');
-const fs=require('fs');
-const app=express();
-const bodyParser=require('body-parser');
-const session=require('express-session');
-const path=require('path');
+const express=require('express')
+const ejs=require('ejs')
+const fs=require('fs')
+const app=express()
+const bodyParser=require('body-parser')
+const session=require('express-session')
+const path=require('path')
 
-app.use(express.static(path.join(__dirname)));
-app.use(bodyParser.urlencoded({extended:false}));
+require('dotenv').config()
+
+app.use(express.static(path.join(__dirname)))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*')
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH')
+    res.header('Access-Control-Allow-Headers', 'content-type, x-access-token')
+    next()
+  })
 app.use(session({
     secret:'ambc@!vsmkv#!&*!#EDNAnsv#!$()_*#@',
     resave:false,
@@ -113,14 +122,21 @@ app.get('/market',(request,response)=>{
     });
 });
 
+app.use('/api', require('./api'))
+
+const swaggerUi = require('swagger-ui-express')
+const YAML = require('yamljs')
+const swaggerDocument = YAML.load('./swagger/swagger.yaml')
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
 app.get('/gonggu',(request,response)=>{
     fs.readFile('gonggu.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'});
         response.render(data);
-    });
-});
+    })
+})
 
-app.listen(3000);
-
-console.log("Server is running\n");
-console.log(path.join(__dirname,'..','html'))
+app.listen(process.env.PORT, ()=>{
+    console.log(`listening on port: ${process.env.PORT}`)
+})
