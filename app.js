@@ -1,21 +1,21 @@
-const express=require('express');
-const ejs=require('ejs');
-const fs=require('fs');
-const app=express();
-const bodyParser=require('body-parser');
-const session=require('express-session');
-const path=require('path');
+const express=require('express')
+const ejs=require('ejs')
+const fs=require('fs')
+const app=express()
+const bodyParser=require('body-parser')
+const session=require('express-session')
+const path=require('path')
 const bcrypt=require('bcrypt-nodejs')
 
-app.use(express.static(path.join(__dirname)));
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(express.static(path.join(__dirname)))
+app.use(bodyParser.urlencoded({extended:false}))
 app.use(session({
     secret:'ambc@!vsmkv#!&*!#EDNAnsv#!$()_*#@',
     resave:false,
     saveUninitialized:true
-}));
+}))
 
-const test_path=['html/','ejs/'];
+const test_path=['html/','ejs/']
 
 const users =[
     {
@@ -69,50 +69,50 @@ const stuClasses=[
 ]
 
 const findUser=(ID,PW)=>{
-    return users.find(value=>(value.ID===ID && bcrypt.compareSync(PW,value.PW)));
+    return users.find(value=>(value.ID===ID && bcrypt.compareSync(PW,value.PW)))
 }
 
 const findUserIndex=(ID,PW)=>{
-    return users.findIndex(value=>(value.ID ===ID && bcrypt.compareSync(PW,value.PW)));
+    return users.findIndex(value=>(value.ID ===ID && bcrypt.compareSync(PW,value.PW)))
 }
 app.get('/',(request,response)=>{
-    response.redirect('/main');
-});
+    response.redirect('/main')
+})
 app.get('/main',(request,response)=>{
-    const session=request.session;
+    const session=request.session
     fs.readFile(test_path[1]+'main.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'});
+        response.writeHead(200,{'Content-Type':'text/html'})
         response.end(ejs.render(data,{
             stuClasses:stuClasses
         }))
-    });
-});
+    })
+})
 
 app.post('/login',(request,response)=>{
-    const body=request.body;
+    const body=request.body
     if(findUser(body.ID,body.PW)){
-        request.session.ID=findUserIndex(body.ID,body.PW);
-        console.log(`${body.ID}가 접속했습니다.\n`);
+        request.session.ID=findUserIndex(body.ID,body.PW)
+        console.log(`${body.ID}가 접속했습니다.\n`)
         currID=body.ID
-        response.redirect('/main');
-    }
+        response.redirect('/main')
+
     else
     {
-        response.send('유효하지 않습니다.\n');
+        response.send('유효하지 않습니다.\n')
     }
-});
+})
 
 app.get('/logout',(request,response)=>{
-    delete request.session.ID;
-    response.redirect('/main');
+    delete request.session.ID
+    response.redirect('/main')
 });
 
 app.get('/signup',(request,response)=>{
     fs.readFile(test_path[0]+'signup.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'});
-        response.render(data);
-    });
-});
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.render(data)
+    })
+})
 
 app.post('/signup',(request,response)=>{
     const body=request.body
@@ -133,61 +133,61 @@ app.post('/signup',(request,response)=>{
 
 app.get('/myclass/:id',(request,response)=>{
     fs.readFile(test_path[0]+'signup.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'});
-        response.render(data);
-    });
-});
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.render(data)
+    })
+})
 
 app.get('/study',(request,response)=>{
     fs.readFile(test_path[0]+'study.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'});
-        response.render(data);
-    });
-});
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.render(data)
+    })
+})
 
 app.get('/hobby',(request,response)=>{
     fs.readFile(test_path[0]+'hobby.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'});
-        response.render(data);
-    });
-});
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.render(data)
+    })
+})
 
 app.get('/alba',(request,response)=>{
     fs.readFile(test_path[0]+'alba.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'});
-        response.render(data);
-    });
-});
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.render(data)
+    })
+})
 
 app.get('/club',(request,response)=>{
     fs.readFile(test_path[0]+'club.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'});
-        response.render(data);
-    });
-});
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.render(data)
+    })
+})
 
 app.get('/contest',(request,response)=>{
     fs.readFile(test_path[0]+'contest.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'});
-        response.render(data);
-    });
-});
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.render(data)
+    })
+})
 
 app.get('/market',(request,response)=>{
     fs.readFile(test_path[0]+'market.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'});
-        response.render(data);
-    });
-});
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.render(data)
+    })
+})
 
 app.get('/gonggu',(request,response)=>{
     fs.readFile(test_path[0]+'gonggu.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'});
-        response.render(data);
-    });
-});
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.render(data)
+    })
+})
 
-app.listen(3000);
+app.listen(3000)
 
-console.log("Server is running\n");
-console.log(path.join(__dirname,'..','html'))
+console.log("Server is running\n")
+console.log(path.join(__dirname,'..','html')
