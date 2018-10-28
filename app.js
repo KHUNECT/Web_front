@@ -5,10 +5,22 @@ const app=express()
 const bodyParser=require('body-parser')
 const session=require('express-session')
 const path=require('path')
+const mongoose=require('mongoose')
 
 require('dotenv').config()
 
-app.use(express.static(path.join(__dirname)))
+mongoose.Promise = global.Promise
+mongoose.connect(process.env.MONGO_DB)
+
+var db = mongoose.connection
+db.once('open', function () {
+    console.log('MongoDB connected!')
+})
+db.on('error', function (err) {
+    console.log('MongoDB ERROR:', err)
+})
+
+app.use(express.static(path.join(__dirname, '/static')))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(function (req, res, next) {
@@ -23,7 +35,7 @@ app.use(session({
     saveUninitialized:true
 }));
 
-const test_path=['../html/','../ejs/'];
+const test_path=['html/','ejs/'];
 
 const users =[
     {
@@ -136,6 +148,8 @@ app.get('/gonggu',(request,response)=>{
         response.render(data);
     })
 })
+
+
 
 app.listen(process.env.PORT, ()=>{
     console.log(`listening on port: ${process.env.PORT}`)
