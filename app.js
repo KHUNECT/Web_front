@@ -190,4 +190,3 @@ app.get('/gonggu',(request,response)=>{
 app.listen(3000)
 
 console.log("Server is running\n")
-console.log(path.join(__dirname,'..','html')
