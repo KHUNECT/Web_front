@@ -1,0 +1,80 @@
+swagger: "2.0"
+info:
+  description: "Node Skeleton"
+  version: "1.0.0"
+  title: "Node Skeleton"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "sobu0715@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "11.111.111.111:1111"
+basePath: "/api"
+tags:
+- name: "User"
+  description: "유저 관련 API"
+- name: "Board"
+  description: "게시판 관련 API"
+- name: "Test"
+  description: "테스트 관련 API"
+schemes:
+- "https"
+- "http"
+paths:
+  /test:
+    get:
+      tags:
+        - Test
+      summary : 서버 테스트
+      description : 서버 테스트
+      responses:
+        '200':
+          description: 서버 ON
+          schema:
+            type: object
+            properties:
+              test:
+                type: boolean
+                description: 서버 ON 여부
+  /user/create:
+    post:
+      tags:
+        - User
+      summary : 회원 가입
+      description : 회원 가입
+      parameters:
+        - in: formData
+          name: userId
+          description: 유저 아이디
+          type: String
+          required : true
+        - in: formData
+          name: password
+          description: 유저 비밀번호
+          type: String
+          required : true
+        - in: formData
+          name: nickname
+          description: 유저 닉네임
+          type: String
+          required : true
+        - in: formData
+          name: email
+          description: 유저 이메일
+          type: String
+          required : true
+        - in: formData
+          name: image
+          description: 유저 프로필 사진
+          type: File
+          required : true          
+      responses:
+        '200':
+          description: 회원 가입이 완료 됨
+          schema:
+            type: object
+            properties:
+              user:
+                type: object
+                description: 
