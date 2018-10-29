@@ -45,43 +45,181 @@ app.use(session({
 
 const test_path=['html/','ejs/']
 
-let currID=0
+const newPost=[
+    {
+        boardId:'study',
+        boardName:'스터디',
+        title:'노강호'
+    },
+    {
+        boardId:'alba',
+        boardName:'알바',
+        title:'노현욱'
+    },
+    {
+        boardId:'contest',
+        boardName:'공모전',
+        title:'박민재'
+    },
+    {
+        boardId:'club',
+        boardName:'동아리',
+        title:'서주원'
+    },
+    {
+        boardId:'gonggu',
+        boardName:'공구',
+        title:'조민지'
+    }
+]
 
 const Lecture=[
     {
-        lectureId:"CSE203-01",
-        title:"컴퓨터구조",
-        professor:"정연모"
+        lectureId:'CSE203-01',
+        title:'컴퓨터구조',
+        professor:'정연모'
     },
     {
-        lectureId:"CSE223-00",
-        title:"오픈소스SW개발",
-        professor:"진성욱"
+        lectureId:'CSE223-00',
+        title:'오픈소스SW개발',
+        professor:'진성욱'
     },
     {
-        lectureId:"CSE302-00",
-        title:"컴퓨터네트워크",
-        professor:"유인태"
+        lectureId:'CSE302-00',
+        title:'컴퓨터네트워크',
+        professor:'유인태'
     },
     {
-        classID:"CSE304-00",
-        title:"알고리즘분석",
-        professor:"한치근"
+        lectureId:'CSE304-00',
+        title:'알고리즘분석',
+        professor:'한치근'
     },
     {
-        lectureId:"GED1408-G03",
-        title:"공학과경영",
-        professor:"김명섭"
+        lectureId:'GED1408-G03',
+        title:'공학과경영',
+        professor:'김명섭'
     },
     {
-        lectureId:"GED1504-G01",
-        title:"공학과윤리",
-        professor:"박수정"
+        lectureId:'GED1504-G01',
+        title:'공학과윤리',
+        professor:'박수정'
     },
     {
-        lectureId:"GEE1344-G02",
-        title:"내손안의소프트웨어",
-        professor:"이승형"
+        lectureId:'GEE1344-G02',
+        title:'내손안의소프트웨어',
+        professor:'이승형'
+    }
+]
+
+const newLecturePost=[
+    {
+        title:'노강호',
+        lecture: {
+            lectureId:'CSE203-01',
+            title:'컴퓨터구조',
+        }
+    },
+    {
+        title:'노현욱',
+        lecture: {
+            lectureId:'CSE223-00',
+            title:'오픈소스SW개발',
+        }
+    },
+    {
+        title:'박민재',
+        lecture: {
+            lectureId:'CSE302-00',
+            title:'컴퓨터네트워크',
+        }
+    },
+    {
+        title:'서주원',
+        lecture: {
+            lectureId:'CSE304-00',
+            title:'알고리즘분석',
+        }
+    },
+    {
+        title:'조민지',
+        lecture: {
+            lectureId:'GED1408-G03',
+            title:'공학과경영',
+        }
+    },
+]
+
+const newMarketPost=[
+    {
+        tag:'삽니다',
+        title:'노강호',
+    },
+    {
+        tag:'삽니다',
+        title:'노현욱',
+    },
+    {
+        tag:'팝니다',
+        title:'박민재',
+    },
+    {
+        tag:'팝니다',
+        title:'서주원',
+    },
+    {
+        tag:'삽니다',
+        title:'조민지',
+    },
+]
+
+const newAlbaPost=[
+    {
+        tag:'상하차',
+        title:'노강호'
+    },
+    {
+        tag:'고깃집',
+        title:'노현욱'
+    },
+    {
+        tag:'도서관 근로',
+        title:'박민재'
+    },
+    {
+        tag:'술집',
+        title:'서주원'
+    },
+    {
+        tag:'과외',
+        title:'조민지'
+    },
+]
+
+const hotPost=[
+    {
+        boardId:'alba',
+        boardName:'알바',
+        title:'노강호'
+    },
+    {
+        boardId:'gonggu',
+        boardName:'공구',
+        title:'노현욱'
+    },
+    {
+        boardId:'contest',
+        boardName:'공모전',
+        title:'박민재'
+    },
+    {
+        boardId:'study',
+        boardName:'스터디',
+        title:'서주원'
+    },
+    {
+        boardId:'club',
+        boardName:'동아리',
+        title:'조민지'
     }
 ]
 
@@ -110,7 +248,12 @@ app.get('/main',(request,response)=>{
     fs.readFile(test_path[1]+'main.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
         response.end(ejs.render(data,{
-            Lecture:Lecture
+            Lecture:Lecture,
+            newPost:newPost,
+            newLecturePost:newLecturePost,
+            newMarketPost:newMarketPost,
+            newAlbaPost:newAlbaPost,
+            hotPost:hotPost
         }))
     })
 })
