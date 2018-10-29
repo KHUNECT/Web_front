@@ -11,6 +11,8 @@ require('dotenv').config()
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
 
+const Users=require('./models/user.js')
+
 app.use(express.static(path.join(__dirname)))
 app.use(bodyParser.urlencoded({extended:false}))
 
@@ -43,83 +45,82 @@ app.use(session({
 
 const test_path=['html/','ejs/']
 
-const users =[
-    {
-        ID:'Jo',
-        PW:bcrypt.hashSync('20175298',bcrypt.genSaltSync(10))
-    },
-    {
-        ID:'Seo',
-        PW:bcrypt.hashSync('123',bcrypt.genSaltSync(10))
-    }
-]
-
 let currID=0
 
-const stuClasses=[
+const Lecture=[
     {
-        classID:"CSE203-01",
-        className:"컴퓨터구조",
+        lectureId:"CSE203-01",
+        title:"컴퓨터구조",
         professor:"정연모"
     },
     {
-        classID:"CSE223-00",
-        className:"오픈소스SW개발",
+        lectureId:"CSE223-00",
+        title:"오픈소스SW개발",
         professor:"진성욱"
     },
     {
-        classID:"CSE302-00",
-        className:"컴퓨터네트워크",
+        lectureId:"CSE302-00",
+        title:"컴퓨터네트워크",
         professor:"유인태"
     },
     {
         classID:"CSE304-00",
-        className:"알고리즘분석",
+        title:"알고리즘분석",
         professor:"한치근"
     },
     {
-        classID:"GED1408-G03",
-        className:"공학과경영",
+        lectureId:"GED1408-G03",
+        title:"공학과경영",
         professor:"김명섭"
     },
     {
-        classID:"GED1504-G01",
-        className:"공학과윤리",
+        lectureId:"GED1504-G01",
+        title:"공학과윤리",
         professor:"박수정"
     },
     {
-        classID:"GEE1344-G02",
-        className:"내손안의소프트웨어",
+        lectureId:"GEE1344-G02",
+        title:"내손안의소프트웨어",
         professor:"이승형"
     }
 ]
 
-const findUser=(ID,PW)=>{
-    return users.find(value=>(value.ID===ID && bcrypt.compareSync(PW,value.PW)))
+const findUser=(userId,password)=>{
+    return Users.find(value=>(value.userId===userId && bcrypt.compareSync(password,value.password)))
 }
 
-const findUserIndex=(ID,PW)=>{
-    return users.findIndex(value=>(value.ID ===ID && bcrypt.compareSync(PW,value.PW)))
+const findUserIndex=(userId,password)=>{
+    return Users.findIndex(value=>(value.userId ===userId && bcrypt.compareSync(password,value.password)))
 }
+
+const findUserID=(userId)=>{
+    return Users.find(value=>(value.userId===userId))
+}
+
+const findUserNick=(nickname)=>{
+    return Users.find(value=>(value.nickname===nickname))
+}
+
 app.get('/',(request,response)=>{
     response.redirect('/main')
 })
+
 app.get('/main',(request,response)=>{
-    const session=request.session
+    const session=request.session.ID
     fs.readFile(test_path[1]+'main.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
         response.end(ejs.render(data,{
-            stuClasses:stuClasses
+            Lecture:Lecture
         }))
     })
 })
 
 app.post('/login',(request,response)=>{
-    const body=request.body
-    if(findUser(body.ID,body.PW)) {
-        request.session.ID = findUserIndex(body.ID, body.PW)
+    const body=request.body.userId
+    if(findUser(body.userId,body.password)) {
+        request.session.ID = findUserIndex(body.userId, body.password)
         console.log(`${body.ID}가 접속했습니다.\n`)
-        currID = body.ID
+        currID = findUserIndex(userId,password)
         response.redirect('/main')
     }
     else
@@ -142,19 +143,28 @@ app.get('/signup',(request,response)=>{
 
 app.post('/signup',(request,response)=>{
     const body=request.body
-    if(!findUser(body.ID,body.PW)){
-        const salt=bcrypt.genSaltSync(10)
-        const hash=bcrypt.hashSync(body.PW,salt)
-        users.push({
-            ID:body.ID,
-            PW:hash
-        })
-        response.end(alert('회원가입이 성공적으로 완료되었습니다.\n다시 로그인해 주세요.'))
+    if(!findUserID(body.userId)){
+        if(!findUserNick(body.nickname)){
+            const salt=bcrypt.genSaltSync(10)
+            const hash=bcrypt.hashSync(body.password,salt)
+            Users.push({
+                userId:body.userId,
+                password:hash,
+                nickname:body.nickname,
+                email:body.email,
+                //profileImage:body.profileImage
+            })
+            response.end(alert('회원가입이 성공적으로 완료되었습니다.\n다시 로그인해 주세요.'))
+            response.redirect('/main')
+        }
+        else {
+            response.end(alert('이미 존재하는 닉네임입니다.'))
+        }
+
     }
     else{
         response.end(alert('이미 존재하는 계정입니다.'))
     }
-    response.redirect('/main')
 })
 
 app.get('/myclass/:id',(request,response)=>{

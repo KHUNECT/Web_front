@@ -18,10 +18,10 @@ const LecturePostSchema = new Schema({
         }]
     }],
     createdDate: {type: Date, default: Date.now},
-    lectrue: {
-        lectureId = {type: String, required: true, unique: true},
-        title = {type: String, required: true},
-        professor = String
+    lecture: {
+        lectureId : {type: String, required: true, unique: true},
+        title : {type: String, required: true},
+        professor : String
     }
 },{collection: "lecturePosts"}
 )
