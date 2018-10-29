@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <title>KHU:NECT</title>
-  <link rel="stylesheet" type="text/css" href="../css/main.css">
+  <link rel="stylesheet" type="text/css" href="../static/main.css">
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
   <script type="text/javascript">
     function onEnterLogin() {
@@ -34,9 +34,9 @@
             <ul>
               <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a>
                 <ul>
-                <% for(let i=0;i<stuClasses.length;i++){%>
-                  <li><a href="/myclass/<%=stuClasses[i].classID%>"><%=stuClasses[i].className%></a></li>
-                <%}%>
+                  <% for(let i=0;i<Lecture.length;i++){%>
+                  <li><a href="/myclass/<%=Lecture[i].Lecture%>"><%=Lecture[i].title%></a></li>
+                  <%}%>
                 </ul>
               </li>
               <li><a id="current" style="font-size:16px;font-weight: bold;">함께해요</a>
@@ -123,83 +123,39 @@
       </div>
 
       <div id="my_menu">
-        s
+        전체 메뉴를 위한 공간인지 아님 광고 공간인지는 모르겠지만, 광고만 주신다면 광고를 넣어드리겠습니다.
       </div>
     </div>
     <div id="section_2" style="float:left">
       <div id="board_2" style="float:left; margin-left:60px">
         <table id="board_table">
           <tr id="board_table_maintr">
-            <td id="board_table_td"><a style="color: rgb(164, 15, 22);">최신 게시물</a></td>
+            <td id="board_table_td"><a style="color: rgb(164, 15, 22);">뜨거운 게시물</a></td>
           </tr>
+          <% for (let i=0;i<hotPost.length;i++) {%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a href="#" style="font-weight: bold;">[게시판1]</a>
-              <a>게시물1</a>
+              <a href="/<%=hotPost[i].boardId%>" style="font-weight: bold;">[<%=hotPost[i].boardName%>]</a>
+              <a href="#"><%=hotPost[i].title%></a>
             </td>
           </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">
-              <a href="#" style="font-weight: bold;">[게시판2]</a>
-              <a>게시물2</a>
-            </td>
-          </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">
-              <a href="#" style="font-weight: bold;">[게시판3]</a>
-              <a>게시물3</a>
-            </td>
-          </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">
-              <a href="#" style="font-weight: bold;">[게시판4]</a>
-              <a>게시물4</a>
-            </td>
-          </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">
-              <a href="#" style="font-weight: bold;">[게시판5]</a>
-              <a>게시물5</a>
-            </td>
-          </tr>
+          <%}%>
         </table>
       </div>
 
       <div id="board_2" style="float:left; margin-left:80px">
         <table id="board_table">
           <tr id="board_table_maintr">
-            <td id="board_table_td"><a style="color: rgb(164, 15, 22);">내 수업</a></td>
+            <td id="board_table_td"><a style="color: rgb(164, 15, 22);">내 수업 최신 게시물</a></td>
           </tr>
+          <%for(let i=0;i<newLecturePost.length;i++){%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a href="#" style="font-weight: bold;">[과목1]</a>
-              <a>게시물1</a>
+              <a href="/<%=newLecturePost[i].lecture.lectureId%>" style="font-weight: bold;">[<%=newLecturePost[i].lecture.title%>]</a>
+              <a href="#"><%=newLecturePost[i].title%></a>
             </td>
           </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">
-              <a href="#" style="font-weight: bold;">[과목2]</a>
-              <a>게시물2</a>
-            </td>
-          </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">
-              <a href="#" style="font-weight: bold;">[과목3]</a>
-              <a>게시물3</a>
-            </td>
-          </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">
-              <a href="#" style="font-weight: bold;">[과목4]</a>
-              <a>게시물4</a>
-            </td>
-          </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">
-              <a href="#" style="font-weight: bold;">[과목5]</a>
-              <a>게시물5</a>
-            </td>
-          </tr>
+          <%}%>
         </table>
       </div>
 
@@ -208,28 +164,45 @@
           <tr id="board_table_maintr">
             <td id="board_table_td"><a style="color: rgb(164, 15, 22);">장터 게시판</a></td>
           </tr>
+          <%for(let i=0;i<newMarketPost.length;i++){%>
           <tr id="board_table_tr">
-            <td id="board_table_td">a</td>
+            <td id="board_table_td">
+              <a style="font-weight: bold;">[<%=newMarketPost[i].tag%>]</a>
+              <a href="#"><%=newMarketPost[i].title%></a>
+            </td>
           </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">a</td>
-          </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">a</td>
-          </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">a</td>
-          </tr>
-          <tr id="board_table_tr">
-            <td id="board_table_td">a</td>
-          </tr>
+          <%}%>
         </table>
       </div>
       <div id="board_3" style="float:left">
-        s
+        <table id="board_table">
+          <tr id="board_table_maintr">
+            <td id="board_table_td"><a style="color: rgb(164, 15, 22);">아르바이트</a></td>
+          </tr>
+          <%for(let i=0;i<newAlbaPost.length;i++){%>
+          <tr id="board_table_tr">
+            <td id="board_table_td">
+              <a style="font-weight: bold;">[<%=newAlbaPost[i].tag%>]</a>
+              <a href="#"><%=newAlbaPost[i].title%></a>
+            </td>
+          </tr>
+          <%}%>
+        </table>
       </div>
       <div id="board_3" style="float:left">
-        s
+        <table id="board_table">
+          <tr id="board_table_maintr">
+            <td id="board_table_td"><a style="color: rgb(164, 15, 22);">최신 게시물</a></td>
+          </tr>
+          <% for (let i=0;i<newPost.length;i++) {%>
+          <tr id="board_table_tr">
+            <td id="board_table_td">
+              <a href="/<%=newPost[i].boardId%>" style="font-weight: bold;">[<%=newPost[i].boardName%>]</a>
+              <a href="#"><%=newPost[i].title%></a>
+            </td>
+          </tr>
+          <%}%>
+        </table>
       </div>
     </div>
   </div>
