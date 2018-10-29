@@ -6,13 +6,13 @@ const bodyParser=require('body-parser')
 const session=require('express-session')
 const path=require('path')
 const bcrypt=require('bcrypt-nodejs')
+const mongoose=require('mongoose')
+require('dotenv').config()
+const swaggerUi = require('swagger-ui-express')
+const YAML = require('yamljs')
 
 app.use(express.static(path.join(__dirname)))
 app.use(bodyParser.urlencoded({extended:false}))
-
-const mongoose=require('mongoose')
-
-require('dotenv').config()
 
 mongoose.Promise = global.Promise
 mongoose.connect(process.env.MONGO_DB)
@@ -116,12 +116,12 @@ app.get('/main',(request,response)=>{
 
 app.post('/login',(request,response)=>{
     const body=request.body
-    if(findUser(body.ID,body.PW)){
-        request.session.ID=findUserIndex(body.ID,body.PW)
+    if(findUser(body.ID,body.PW)) {
+        request.session.ID = findUserIndex(body.ID, body.PW)
         console.log(`${body.ID}가 접속했습니다.\n`)
-        currID=body.ID
+        currID = body.ID
         response.redirect('/main')
-
+    }
     else
     {
         response.send('유효하지 않습니다.\n')
@@ -158,7 +158,7 @@ app.post('/signup',(request,response)=>{
 })
 
 app.get('/myclass/:id',(request,response)=>{
-    fs.readFile(test_path[0]+'signup.ejs','utf-8',(error,data)=>{
+    fs.readFile(test_path[0]+'myclass.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
         response.render(data)
     })
@@ -208,8 +208,6 @@ app.get('/market',(request,response)=>{
 
 app.use('/api', require('./api'))
 
-const swaggerUi = require('swagger-ui-express')
-const YAML = require('yamljs')
 const swaggerDocument = YAML.load('./swagger/swagger.yaml')
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
