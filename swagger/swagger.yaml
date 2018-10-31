@@ -65,6 +65,11 @@ paths:
           type: String
           required : true
         - in: formData
+          name: major
+          description: 유저 전공
+          type: String
+          required : true
+        - in: formData
           name: image
           description: 유저 프로필 사진
           type: File
