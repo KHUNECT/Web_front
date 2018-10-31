@@ -16,134 +16,90 @@ exports.UserCreate = (req, res) => {
     const password = req.body.password
     const nickname = req.body.nickname
     const email = req.body.email
-    const image = req.body.image
+    const major = req.body.major
 
     // 0. 데이터 체크
     const DataCheck = () => {
         return new Promise((resolve,reject) => {
-            if(!userId || !password || !nickname || !email) {
+            if(!userId || !password || !nickname || !email || !major) {
                 return reject({
                     code: 'request_body_error',
                     message: 'request body is not defined'
                 })
             } else resolve()
         })
+        
     }
 
     // 1. 사용자 정보 조회
     const UserCheck = () =>{
-        return new Promise((resolve, reject) =>{
-            let temp
-            User.findOne({userId: userId}).exec((err, data)=>{
-                if (err)
-                    throw err
-                temp = data
-            })
-
-            console.log(temp)
-
-            if (temp) {
-                return reject({
-                    code: 'userId_already_exists',
-                    message: 'userId_already_exists'
-                })
-            }
-            else resolve()
-        })
+        return User.find().or({userId: userId}, {nickname: nickname}, {email: email}).findOne()
     }
 
     // 2. image 확인
-    const ImageProcess = () => {
-        return new Promise((resolve, reject) => {
-            if (req.file == undefined){
-                resolve(false, {})
-            }
-            
-            let file_location = 'images/'
-            let origin_name = Date.now()+"_"+path.basename(req.file.originalname)
-            let resized_name = "resized_"+origin_name
-    
-            let params = {
-                Bucket: 'khunect-bucket',
-                Body: req.file.buffer,
-                Key: file_location + origin_name
-            }
-    
-            let tempS3 = new AWS.S3()
-            tempS3.upload(params, (err, data)=>{
-                if (err){
-                    throw err
-                }
-                if (data){
-                    console.log("이미지가 업로드 되었습니다 : ",data.Location)
-                }
+    const ImageProcess = (User) => {
+        if (User != null){
+            return Promise.reject({
+                code: 'User_Already_Exists',
+                message: 'User Already Exists'
             })
-    
-            
-            
-            sharp(req.file.buffer)
+        }
+        if (req.file == null){
+            return Promise.resolve(null, null)
+        }
+
+        let file_location = 'images/'
+        let origin_name = Date.now() + "_" + path.basename(req.file.originalname)
+
+        let params = {
+            Bucket: 'khunect-bucket',
+            Key: file_location + origin_name,
+            ACL: 'public-read'
+        }
+
+        let tempS3 = new AWS.S3()
+
+        sharp(req.file.buffer)
             .toFormat('jpeg')
             .resize(200,200)
-            .toBuffer((err, buf, info) => {
+            .toBuffer()
+            .then((err, buf, info) => {
                 if (err)
                     throw err
                 
-                params.Key = file_location + resized_name
                 params.Body = buf
-    
+                
                 tempS3.upload(params, (err, data)=>{
                     if (err){
                         throw err
                     }
                     if (data){
-                        console.log("이미지가 업로드 되었습니다 : ",data.Location)
+                        console.log("이미지가 업로드 되었습니다 : ", data.Location)                     
                     }
                 })
             })
             
-            resolve(true, {
-                original: {
-                    fileName: origin_name,
-                    s3Location: file_location + origin_name
-                },
-                resized:{
-                    fileName: resized_name,
-                    s3Location: file_location + resized_name
-                }
-            })
-        })
-    }
-
-    // 2. 회원 가입
-    const SignIn = (hasImage, imageData) => {
-        if (hasImage){
-            return User.createIndexes({userId: userId, password: password, nickname: nickname, email: email})
-        } else {
-            return User.createIndexes({
-                userId: userId, 
-                password: password, 
-                nickname: nickname, 
-                email: email,
-                profileImage: imageData
-            })
+            return Promise.resolve("https://khunect-bucket.s3.ap-northeast-2.amazonaws.com/images/"+origin_name)
         }
-    }
-    
-    // 3. 정보 반환
-    const ResponseInfo = () => {
-        res.status(200).json({
+
+    // 3. 회원 가입
+    const SignIn = (resized_loc) => {
+        User.create({
             userId: userId,
             password: password,
             nickname: nickname,
-            email: email
-        })
+            email: email,
+            major: major,
+            resizedImage: resized_loc || 'https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
+        }, (err, data)=>{ if(err) throw err})
+
+        return res.status(200).json({userId: userId, nickname: nickname})
     }
 
     DataCheck()
     .then(UserCheck)
     .then(ImageProcess)
     .then(SignIn)
-    .then(ResponseInfo)
     .catch((err) => {
         console.log(err)
         return res.status(500).json(err.message || err)

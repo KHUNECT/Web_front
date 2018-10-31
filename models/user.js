@@ -6,16 +6,8 @@ const UserSchema = new Schema({
     password : {type: String, required: true, trim: true},
     nickname : {type: String, required: true, unique: true},
     email : {type: String, required: true, unique: true},
-    profileImage: {
-        original: {
-            fileName: String,
-            s3Location: String
-        },
-        resized:{
-            fileName: String,
-            s3Location: String
-        }
-    },
+    major : {type: String, required: true},
+    resizedImage: {type: String, required: true},
     lectures : [String],
     posts:[String],
     createdDate: {type: Date, default: Date.now}
