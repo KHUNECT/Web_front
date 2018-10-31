@@ -278,9 +278,9 @@ app.get('/logout',(request,response)=>{
 });
 
 app.get('/signup',(request,response)=>{
-    fs.readFile(test_path[0]+'signup.ejs','utf-8',(error,data)=>{
+    fs.readFile(test_path[1]+'signup.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.render(data)
+        response.end(ejs.render(data,{}))
     })
 })
 
