@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const LectureSchema = new Schema({
     lectureId : {type: String, required: true, unique: true},
     title : {type: String, required: true},
-    professor = String
+    professor : String
 },{collection: "lectures"}
 )
 
