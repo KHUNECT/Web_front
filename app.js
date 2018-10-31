@@ -211,16 +211,19 @@ const hotPost=[
         boardName:'공모전',
         title:'박민재'
     },
+    /*
     {
         boardId:'study',
         boardName:'스터디',
         title:'서주원'
     },
+
     {
         boardId:'club',
         boardName:'동아리',
         title:'조민지'
     }
+    */
 ]
 
 const findUser=(userId,password)=>{
@@ -278,9 +281,9 @@ app.get('/logout',(request,response)=>{
 });
 
 app.get('/signup',(request,response)=>{
-    fs.readFile(test_path[0]+'signup.ejs','utf-8',(error,data)=>{
+    fs.readFile(test_path[1]+'signup.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.render(data)
+        response.end(ejs.render(data,{}))
     })
 })
 
@@ -297,65 +300,68 @@ app.post('/signup',(request,response)=>{
                 email:body.email,
                 //profileImage:body.profileImage
             })
-            response.end(alert('회원가입이 성공적으로 완료되었습니다.\n다시 로그인해 주세요.'))
             response.redirect('/main')
         }
         else {
-            response.end(alert('이미 존재하는 닉네임입니다.'))
         }
-
     }
     else{
-        response.end(alert('이미 존재하는 계정입니다.'))
     }
 })
 
 app.get('/myclass/:id',(request,response)=>{
     fs.readFile(test_path[0]+'myclass.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.render(data)
+        response.send(data)
     })
 })
 
 app.get('/study',(request,response)=>{
     fs.readFile(test_path[0]+'study.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.render(data)
+        response.send(data)
     })
 })
 
 app.get('/hobby',(request,response)=>{
     fs.readFile(test_path[0]+'hobby.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.render(data)
+        response.send(data)
     })
 })
 
 app.get('/alba',(request,response)=>{
     fs.readFile(test_path[0]+'alba.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.render(data)
+        response.send(data)
     })
 })
 
 app.get('/club',(request,response)=>{
     fs.readFile(test_path[0]+'club.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.render(data)
+        response.send(data)
     })
 })
 
 app.get('/contest',(request,response)=>{
     fs.readFile(test_path[0]+'contest.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.render(data)
+        response.send(a)
     })
 })
 
 app.get('/market',(request,response)=>{
     fs.readFile(test_path[0]+'market.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.render(data)
+        response.send(data)
+    })
+})
+
+app.get('/gonggu',(request,response)=>{
+    fs.readFile(test_path[0]+'gonggu.ejs','utf-8',(error,data)=>{
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.send(data)
     })
 })
 
@@ -365,12 +371,6 @@ const swaggerDocument = YAML.load('./swagger/swagger.yaml')
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
-app.get('/gonggu',(request,response)=>{
-    fs.readFile(test_path[0]+'gonggu.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.render(data)
-    })
-})
 
 app.listen(process.env.PORT, ()=>{
     console.log(`listening on port: ${process.env.PORT}`)

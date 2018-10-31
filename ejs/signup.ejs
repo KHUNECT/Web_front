@@ -22,32 +22,11 @@
         <table cellspacing="0" cellpadding="0" style="height:100%; margin: 0 auto;">
             <tr>
                 <td style="vertical-align:middle; padding-left: 200px; padding-right: 220px;">
-                    <img src="../static/logo.png" height=45%>
+                    <a href="/main"><img src="../static/logo.png" height=45% /></a>
                 </td>
                 <td>
                     <div class="menubar">
-                        <ul>
-                            <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a></li>
-                            <li><a id="current" style="font-size:16px;font-weight: bold;">함께해요</a>
-                                <ul>
-                                    <li><a href="/study">스터디</a></li>
-                                    <li><a href="/hobby">취미</a></li>
-                                </ul>
-                            </li>
-                            <li><a id="current" style="font-size:16px;font-weight: bold;">홍보</a>
-                                <ul>
-                                    <li><a href="/alba">알바</a></li>
-                                    <li><a href="/club">동아리</a></li>
-                                    <li><a href="/contest">공모전</a></li>
-                                </ul>
-                            </li>
-                            <li><a id="current" style="font-size:16px;font-weight: bold;">거래</a>
-                                <ul>
-                                    <li><a href="/market">거래</a></li>
-                                    <li><a href="/gonggu">공구</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+
                     </div>
                 </td>
             </tr>
@@ -62,7 +41,8 @@
             <div id="sign_up_image">
                 <img src="../static/sign_up_logo.png" alt="logo" style="width:45%; padding-left:20px;">
             </div>
-            <div class="form-group">
+            <form actioon="/signup" name="signupForm" method="post">
+             <div class="form-group">
                 <div>
                     <label for="signupName">이름</label>
                     <br>
@@ -70,15 +50,15 @@
                 </div>
                 <label for="signupID">아이디</label>
                 <br>
-                <input type="text" id="signupID" required placeholder="아이디" name="id">
+                <input type="text" id="signupID" required placeholder="아이디" name="userId">
             </div>
-            <divs>
+            <div>
                 <label for="signupPassword">비밀번호</label>
                 <br>
                 <input type="password" id="signupPassword" required placeholder="비밀번호" name="password">
                 <div style="color:gray;">
                 </div>
-            </divs>
+            </div>
             <div style="margin-bottom: 12px;">
                 <label for="repeatPassword">비밀번호 확인</label>
                 <br>
@@ -97,8 +77,9 @@
                 <input type="text" id="major" required placeholder="전공" name="major">
             </div>
             <div>
-                <button type="submit" style="border-radius: 0px;">회원가입</button>
+                <input type="submit" value="회원가입" style="border-radius: 0px;">
             </div>
+            </form>
 
         </div>
     </div>
