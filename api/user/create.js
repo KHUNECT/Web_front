@@ -63,20 +63,19 @@ exports.UserCreate = (req, res) => {
             .toFormat('jpeg')
             .resize(200,200)
             .toBuffer()
-            .then((err, buf, info) => {
-                if (err)
-                    throw err
+            .then(data => {
+                params.Body = data
                 
-                params.Body = buf
-                
-                tempS3.upload(params, (err, data)=>{
+                tempS3.putObject(params, (err, info)=>{
                     if (err){
                         throw err
                     }
-                    if (data){
-                        console.log("이미지가 업로드 되었습니다 : ", data.Location)                     
+                    if (info){
+                        console.log("이미지가 업로드 되었습니다 : ", info.Location)
                     }
                 })
+            }).catch(err => {
+                return Promise.reject(err)
             })
             
             return Promise.resolve("https://khunect-bucket.s3.ap-northeast-2.amazonaws.com/images/"+origin_name)

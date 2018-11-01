@@ -18,7 +18,7 @@ const PostSchema = new Schema({
         }]
     }],
     createdDate: {type: Date, default: Date.now},
-    boardId: {type: Number, required: true}
+    boardId: {type: String, required: true},
 },{collection: "posts"}
 )
 
