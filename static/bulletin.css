@@ -100,7 +100,7 @@ a {
 #board_2 {
   width: 360px;
   height: 300px;
-  background-color: #eaeaea;
+  background-color: #f6f6f6;
 }
 
 #board_2:after {
@@ -146,19 +146,19 @@ a {
   border: 1px solid black;
   border-collapse: collapse;
 
-  background-color: #eaeaea;
+  background-color: #f6f6f6;
 }
 
 #post_table {
     margin: 0 auto;
   
     width: 100%;
-    height: 180px;
-  
+    height: 230px;
+    /*
     border: 1px solid black;
     border-collapse: collapse;
-  
-    background-color: #eaeaea;
+    */
+    background-color: #f6f6f6;
   }
     
 
