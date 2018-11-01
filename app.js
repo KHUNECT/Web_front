@@ -11,8 +11,6 @@ require('dotenv').config()
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
 
-const Users=require('./models/user.js')
-
 app.use(express.static(path.join(__dirname)))
 app.use(bodyParser.urlencoded({extended:false}))
 
@@ -226,24 +224,14 @@ const hotPost=[
     */
 ]
 
-const findUser=(userId,password)=>{
-    const checkId=Users.find({userId:userId})
-    const checkPW=Users.validPassword(password)
-    return (checkId&&checkPW)
-}
+const Users=require('./models/user')
 
-/*
-const findUserIndex=(userId,password)=>{
-    return Users.findIndex(value=>(value.userId ===userId && bcrypt.compareSync(password,value.password)))
-}
-*/
-const findUserID=(userId)=>{
-    return Users.find(value=>(value.userId===userId))
-}
+//const Users=new users()
 
-const findUserNick=(nickname)=>{
-    return Users.find(value=>(value.nickname===nickname))
-}
+const findUser=((userId,password)=>{
+    const newPassword=bcrypt.hashSync(password,bcrypt.genSaltSync(10))
+    return Users.findOne({userId: userId, password:newPassword})
+})
 
 app.get('/',(request,response)=>{
     response.redirect('/main')
@@ -267,10 +255,11 @@ app.get('/main',(request,response)=>{
 app.post('/login',(request,response)=>{
     const body=request.body
     if(findUser(body.userId,body.password)) {
-        request.session.ID = findUserIndex(body.userId, body.password)
-        console.log(`${body.ID}가 접속했습니다.\n`)
-        //currID = findUserIndex(body.userId,body.password)
-        response.redirect('/main')
+        request.session.userId = body.userId
+        console.log(`${body.userId}가 접속했습니다.\n`)
+        request.session.save(function(){
+            response.redirect('/main')
+        })
     }
     else
     {
