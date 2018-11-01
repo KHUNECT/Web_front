@@ -17,6 +17,7 @@ exports.UserDetail = (req, res) => {
             userId: result.userId,
             image: result.image,
             nickname: result.nickname,
+            major: result.major,
             email: result.email
         })
     })
