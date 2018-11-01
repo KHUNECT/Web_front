@@ -227,13 +227,16 @@ const hotPost=[
 ]
 
 const findUser=(userId,password)=>{
-    return Users.find(value=>(value.userId===userId && bcrypt.compareSync(password,value.password)))
+    const checkId=Users.find({userId:userId})
+    const checkPW=Users.validPassword(password)
+    return (checkId&&checkPW)
 }
 
+/*
 const findUserIndex=(userId,password)=>{
     return Users.findIndex(value=>(value.userId ===userId && bcrypt.compareSync(password,value.password)))
 }
-
+*/
 const findUserID=(userId)=>{
     return Users.find(value=>(value.userId===userId))
 }
@@ -262,11 +265,11 @@ app.get('/main',(request,response)=>{
 })
 
 app.post('/login',(request,response)=>{
-    const body=request.body.userId
+    const body=request.body
     if(findUser(body.userId,body.password)) {
         request.session.ID = findUserIndex(body.userId, body.password)
         console.log(`${body.ID}가 접속했습니다.\n`)
-        currID = findUserIndex(userId,password)
+        //currID = findUserIndex(body.userId,body.password)
         response.redirect('/main')
     }
     else
@@ -287,26 +290,12 @@ app.get('/signup',(request,response)=>{
     })
 })
 
+const create=require('./api/user/create.js')
+let code=200
+
 app.post('/signup',(request,response)=>{
-    const body=request.body
-    if(!findUserID(body.userId)){
-        if(!findUserNick(body.nickname)){
-            const salt=bcrypt.genSaltSync(10)
-            const hash=bcrypt.hashSync(body.password,salt)
-            Users.push({
-                userId:body.userId,
-                password:hash,
-                nickname:body.nickname,
-                email:body.email,
-                //profileImage:body.profileImage
-            })
-            response.redirect('/main')
-        }
-        else {
-        }
-    }
-    else{
-    }
+    //console.log('post 받음')
+    create.UserCreate(request,response,code)
 })
 
 app.get('/myclass/:id',(request,response)=>{
@@ -347,7 +336,7 @@ app.get('/club',(request,response)=>{
 app.get('/contest',(request,response)=>{
     fs.readFile(test_path[0]+'contest.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(a)
+        response.send(data)
     })
 })
 

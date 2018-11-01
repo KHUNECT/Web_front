@@ -4,6 +4,7 @@ const User = require('../../models/user')
 const sharp = require('sharp')
 const path = require('path')
 const AWS = require('aws-sdk')
+const bcrypt=require('bcrypt-nodejs')
 
 AWS.config.update({
     accessKeyId: process.env.AWSAccessKeyId,
@@ -11,13 +12,13 @@ AWS.config.update({
     region: process.env.region
 })
 
-exports.UserCreate = (req, res) => {
+exports.UserCreate = (req, res, returnCode, data) => {
     const userId = req.body.userId
     const password = req.body.password
     const nickname = req.body.nickname
     const email = req.body.email
     const major = req.body.major
-
+    console.log('요청 받음')
     // 0. 데이터 체크
     const DataCheck = () => {
         return new Promise((resolve,reject) => {
@@ -26,6 +27,7 @@ exports.UserCreate = (req, res) => {
                     code: 'request_body_error',
                     message: 'request body is not defined'
                 })
+
             } else resolve()
         })
         
@@ -83,25 +85,33 @@ exports.UserCreate = (req, res) => {
         }
 
     // 3. 회원 가입
-    const SignIn = (resized_loc) => {
+    const SignUp = (resized_loc) => {
+        const salt=bcrypt.genSaltSync(10)
+        const hash=bcrypt.hashSync(password,salt)
         User.create({
             userId: userId,
-            password: password,
+            password: hash,
             nickname: nickname,
             email: email,
             major: major,
             resizedImage: resized_loc || 'https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
         }, (err, data)=>{ if(err) throw err})
-
-        return res.status(200).json({userId: userId, nickname: nickname})
+        res.redirect('/main')
+        //res.status(200).json({userId: userId, nickname: nickname})
+        returnCode=200
+        return
     }
 
     DataCheck()
     .then(UserCheck)
     .then(ImageProcess)
-    .then(SignIn)
+    .then(SignUp)
     .catch((err) => {
         console.log(err)
-        return res.status(500).json(err.message || err)
+        res.redirect('/signup')
+        //res.status(500).json(err.message || err)
+        returnCode=500
+        return
     })
+
 }
