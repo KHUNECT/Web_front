@@ -12,7 +12,7 @@ AWS.config.update({
     region: process.env.region
 })
 
-exports.UserCreate = (req, res, returnCode, data) => {
+exports.UserCreate = (req, res,) => {
     const userId = req.body.userId
     const password = req.body.password
     const nickname = req.body.nickname
@@ -95,9 +95,8 @@ exports.UserCreate = (req, res, returnCode, data) => {
             major: major,
             resizedImage: resized_loc || 'https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
         }, (err, data)=>{ if(err) throw err})
-        res.redirect('/main')
+        res.redirect(200,'/main')
         //res.status(200).json({userId: userId, nickname: nickname})
-        returnCode=200
         return
     }
 
@@ -107,9 +106,8 @@ exports.UserCreate = (req, res, returnCode, data) => {
     .then(SignUp)
     .catch((err) => {
         console.log(err)
-        res.redirect('/signup')
+        res.redirect(500,'/signup')
         //res.status(500).json(err.message || err)
-        returnCode=500
         return
     })
 
