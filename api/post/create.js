@@ -38,6 +38,8 @@ exports.CreatePost = (req, res) => {
 
     // 3. 포스트 생성
     const Posting = (board) => {
+        let file = req.file
+
         if (board != null) {
             return reject({
                 message: 'Board Not Exists'
