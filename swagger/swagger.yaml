@@ -94,7 +94,7 @@ paths:
             type: string
             description: 실패 이유
   /user/detail:
-    post:
+    get:
       tags:
         - User
       summary : 회원 정보 반환
@@ -200,6 +200,11 @@ paths:
           name: boardId
           description: 게시판 ID
           type: string
+          required: true
+        - in: formData
+          name: image
+          description: 게시판 ID
+          type: file
           required: true
       responses:
         '200':
