@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname)))
 app.use(bodyParser.urlencoded({extended:false}))
 
 mongoose.Promise = global.Promise
-mongoose.connect(process.env.MONGO_DB)
+mongoose.connect(process.env.MONGO_DB, {useNewUrlParser: true})
 
 var db = mongoose.connection
 db.once('open', function () {
