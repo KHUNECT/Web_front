@@ -226,12 +226,7 @@ const hotPost=[
 
 const Users=require('./models/user')
 
-//const Users=new users()
-
-const findUser=((userId,password)=>{
-    const newPassword=bcrypt.hashSync(password,bcrypt.genSaltSync(10))
-    return Users.findOne({userId: userId, password:newPassword})
-})
+const users=new Users()
 
 app.get('/',(request,response)=>{
     response.redirect('/main')
@@ -254,17 +249,26 @@ app.get('/main',(request,response)=>{
 
 app.post('/login',(request,response)=>{
     const body=request.body
-    if(findUser(body.userId,body.password)) {
-        request.session.userId = body.userId
-        console.log(`${body.userId}가 접속했습니다.\n`)
-        request.session.save(function(){
+    Users.find({userId:body.userId})
+        .then((data) => {
+            //console.log(data)
+            //console.log(data[0].password)
+            if (bcrypt.compareSync(body.password,data[0].password)){
+                request.session.userId = body.userId
+                console.log(`${body.userId}가 접속했습니다.\n`)
+                request.session.save(function(){
+                    response.redirect('/main')
+                })
+            } else
+            {
+                response.send('유효하지 않습니다.\n')
+            }
+        })
+        .catch((err) => {
+            //response.end(err)
+            console.log('로그인 거절')
             response.redirect('/main')
         })
-    }
-    else
-    {
-        response.send('유효하지 않습니다.\n')
-    }
 })
 
 app.get('/logout',(request,response)=>{
