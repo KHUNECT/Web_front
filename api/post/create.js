@@ -73,33 +73,30 @@ exports.CreatePost = (req, res) => {
 
         let tempS3 = new AWS.S3()
 
-        sharp(req.file.buffer)
+        return sharp(req.file.buffer)
+            .rotate()
             .toFormat('jpeg')
-            .resize(200,200)
+            .resize(500,500)
             .toBuffer()
             .then(data => {
                 params.Body = data
-
-                tempS3.putObject(params, (err, info)=>{
-                    if (err){
-                        console.log("에러 발생")
-                    }
-                    if (info){
-                        console.log("이미지가 업로드 되었습니다 : ", info.Location)
-                    }
+                return tempS3.putObject(params).promise()
+            })
+            .then(data => {
+                return Post.create({
+                    writerId: writerId,
+                    title: title,
+                    context: context,
+                    boardId: boardId,
+                    images: ["https://khunect-bucket.s3.ap-northeast-2.amazonaws.com/images/" + origin_name]
                 })
-            }).catch(err => {
+            })
+            .then(data=>{
+                res.status(200).json({message: "success"})
+            })
+            .catch(err => {
                 throw err
             })
-
-        return Post.create({
-            writerId: writerId,
-            title: title,
-            context: context,
-            boardId: boardId,
-            images: ["https://khunect-bucket.s3.ap-northeast-2.amazonaws.com/images/"+origin_name]
-        })
-
     }
 
     QueryCheck()

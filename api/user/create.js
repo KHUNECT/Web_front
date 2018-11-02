@@ -60,6 +60,7 @@ exports.UserCreate = (req, res) => {
         let tempS3 = new AWS.S3()
 
         sharp(req.file.buffer)
+            .rotate()
             .toFormat('jpeg')
             .resize(200,200)
             .toBuffer()
