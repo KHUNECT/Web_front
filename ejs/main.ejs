@@ -27,7 +27,7 @@
     <table cellspacing="0" cellpadding="0" style="width:100%; height:100%;">
       <tr>
         <td style="vertical-align:middle; padding-left: 200px; padding-right: 220px;">
-          <img src="../static/logo.png" height=45%>
+          <a href="/main"><img src="../static/logo.png" height=45% /></a>
         </td>
         <td>
           <div class="menubar">
@@ -103,12 +103,12 @@
     <div id="section_1" style="float:left">
       <div id="profile">
         <div style="text-align: center; margin-bottom:0px;">
-          <img src="../static/logo.png" height=20px style="margin-top:65px;">
+          <img src="../static/logo.png" height=20px style="margin-top:65px;"/>
         </div>
         <div style="margin-left:11px;margin-right:11px;">
           <form action="/login" name="loginForm" method="post">
-            <input type="text" name="ID" placeholder="ID" style="width:100%;color:rgb(71,71,71);">
-            <input type="password" name="PW" placeholder="PW" style="width:100%;color:rgb(71,71,71); margin-bottom: 4px;"
+            <input type="text" name="userId" placeholder="아이디" style="width:100%;color:rgb(71,71,71);">
+            <input type="password" name="password" placeholder="비밀번호" style="width:100%;color:rgb(71,71,71); margin-bottom: 4px;"
               onkeydown="javascript:onEnterLogin()"><br>
             <input type="submit" value="로그인" style="margin-left:32%;">
           </form>
@@ -132,7 +132,8 @@
           <tr id="board_table_maintr">
             <td id="board_table_td"><a style="color: rgb(164, 15, 22);">뜨거운 게시물</a></td>
           </tr>
-          <% for (let i=0;i<hotPost.length;i++) {%>
+          <% let i=0 %>
+          <% for (i=0;i<hotPost.length && i<5;i++) {%>
           <tr id="board_table_tr">
             <td id="board_table_td">
               <a href="/<%=hotPost[i].boardId%>" style="font-weight: bold;">[<%=hotPost[i].boardName%>]</a>
@@ -140,6 +141,12 @@
             </td>
           </tr>
           <%}%>
+          <% if(i!=5) { %>
+          <% for (;i<5;i++) { %>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <% }%>
+          <% }%>
+
         </table>
       </div>
 
@@ -148,7 +155,7 @@
           <tr id="board_table_maintr">
             <td id="board_table_td"><a style="color: rgb(164, 15, 22);">내 수업 최신 게시물</a></td>
           </tr>
-          <%for(let i=0;i<newLecturePost.length;i++){%>
+          <%for(i=0;i<newLecturePost.length && i<5;i++){%>
           <tr id="board_table_tr">
             <td id="board_table_td">
               <a href="/<%=newLecturePost[i].lecture.lectureId%>" style="font-weight: bold;">[<%=newLecturePost[i].lecture.title%>]</a>
@@ -156,6 +163,11 @@
             </td>
           </tr>
           <%}%>
+          <% if(i!=5) { %>
+          <% for (;i<5;i++) { %>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <% }%>
+          <% }%>
         </table>
       </div>
 
@@ -164,7 +176,7 @@
           <tr id="board_table_maintr">
             <td id="board_table_td"><a style="color: rgb(164, 15, 22);">장터 게시판</a></td>
           </tr>
-          <%for(let i=0;i<newMarketPost.length;i++){%>
+          <%for(i=0;i<newMarketPost.length && i<5;i++){%>
           <tr id="board_table_tr">
             <td id="board_table_td">
               <a style="font-weight: bold;">[<%=newMarketPost[i].tag%>]</a>
@@ -172,6 +184,11 @@
             </td>
           </tr>
           <%}%>
+          <% if(i!=5) { %>
+          <% for (;i<5;i++) { %>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <% }%>
+          <% }%>
         </table>
       </div>
       <div id="board_3" style="float:left">
@@ -179,7 +196,7 @@
           <tr id="board_table_maintr">
             <td id="board_table_td"><a style="color: rgb(164, 15, 22);">아르바이트</a></td>
           </tr>
-          <%for(let i=0;i<newAlbaPost.length;i++){%>
+          <%for(i=0;i<newAlbaPost.length && i<5;i++){%>
           <tr id="board_table_tr">
             <td id="board_table_td">
               <a style="font-weight: bold;">[<%=newAlbaPost[i].tag%>]</a>
@@ -187,6 +204,11 @@
             </td>
           </tr>
           <%}%>
+          <% if(i!=5) { %>
+          <% for (;i<5;i++) { %>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <% }%>
+          <% }%>
         </table>
       </div>
       <div id="board_3" style="float:left">
@@ -194,7 +216,7 @@
           <tr id="board_table_maintr">
             <td id="board_table_td"><a style="color: rgb(164, 15, 22);">최신 게시물</a></td>
           </tr>
-          <% for (let i=0;i<newPost.length;i++) {%>
+          <% for (i=0;i<newPost.length && i<5;i++) {%>
           <tr id="board_table_tr">
             <td id="board_table_td">
               <a href="/<%=newPost[i].boardId%>" style="font-weight: bold;">[<%=newPost[i].boardName%>]</a>
@@ -202,6 +224,11 @@
             </td>
           </tr>
           <%}%>
+          <% if(i!=5) { %>
+          <% for (;i<5;i++) { %>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <% }%>
+          <% }%>
         </table>
       </div>
     </div>
