@@ -183,9 +183,8 @@ paths:
       tags:
         - Post
       summary : 게시글 삭제
-      description : 게시글 생성
+      description : 게시글 삭제
       consumes:
-        - multipart/form-data
       parameters:
         - in: body
           name: writerId
@@ -197,6 +196,43 @@ paths:
           description: 게시글 아이디
           type: string
           required: true
+      responses:
+        '200':
+          description: 게시글 삭제 성공
+          schema:
+            type: string
+            description: 게시글 삭제가 성공했다는 뜻이다.
+        '500':
+          description: 게시글 작성 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/modify:
+    post:
+      tags:
+        - Post
+      summary : 게시글 수정
+      description : 게시글 수정
+      consumes:
+      parameters:
+        - in: body
+          name: writerId
+          description: 작성자 아이디
+          type: string
+          required: true
+        - in: body
+          name: postId
+          description: 게시글 아이디
+          type: string
+          required: true
+        - in: body
+          name: title
+          description: 게시글 제목
+          type: string
+        - in: body
+          name: context
+          description: 게시글 아이디
+          type: string
       responses:
         '200':
           description: 게시글 삭제 성공
