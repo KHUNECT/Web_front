@@ -105,6 +105,7 @@
         <div style="text-align: center; margin-bottom:0px;">
           <img src="../static/logo.png" height=20px style="margin-top:65px;"/>
         </div>
+        <%if(!nickname){%>
         <div style="margin-left:11px;margin-right:11px;">
           <form action="/login" name="loginForm" method="post">
             <input type="text" name="userId" placeholder="아이디" style="width:100%;color:rgb(71,71,71);">
@@ -120,6 +121,17 @@
           <a style="font-size:x-small; margin:0 auto;">&nbsp/&nbsp</a>
           <a href="/findPW" style="font-size:x-small;">PW찾기</a>
         </div>
+        <%} else { %>
+        <div style="margin:0 auto; margin-left:30px;">
+          <img src="<%=resizedImage%>" width=120px >
+        </div>
+        <div style="text-align:center;">
+          <a href="#" style="font-weight:bold;"><%=nickname%></a><a>님 환영합니다!</a>
+          <form action="/logout" method="post">
+          <input type="submit" value="로그아웃">
+          </form>
+        </div>
+        <%}%>
       </div>
 
       <div id="my_menu">
