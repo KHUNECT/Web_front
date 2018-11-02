@@ -10,9 +10,12 @@ const mongoose=require('mongoose')
 require('dotenv').config()
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
+const morgan = require('morgan')
+const Users=require('./models/user.js')
+
+app.use(morgan('[:date[iso]] :method :status :url :response-time(ms) :user-agent'))
 
 app.use(express.static(path.join(__dirname)))
-app.use(bodyParser.urlencoded({extended:false}))
 
 mongoose.Promise = global.Promise
 mongoose.connect(process.env.MONGO_DB, {useNewUrlParser: true})
@@ -26,8 +29,8 @@ db.on('error', function (err) {
 })
 
 app.use(express.static(path.join(__dirname, '/static')))
-app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH')
