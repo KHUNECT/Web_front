@@ -151,46 +151,33 @@ a {
   clear: left;
 }
 
+#main_banner {
+  height: 160px;
+  width: 1200px;
+  margin: 0 auto;
+  margin-top: 70px;
+  background-color: rgb(164, 15, 22);
+}
+#main_banner:after {
+  display: block;
+  visibility: hidden;
+  content: "";
+  clear: both;
+}
+
 #signup_page {
   width: 1200px;
   margin: 0 auto;
   margin-top: 70px;
-}
-
-#image_form {
-  width: 800px;
-  height: 100%;
-  float: left;
-}
-
-#image_form:after {
-  display: block;
-  visibility: hidden;
-  content: "";
-  clear: both;
-}
+  text-align:center;
+} 
 
 #signup_form {
-  width: 320px;
+  display:inline-block;
+  width: 165px;
   height: 100%;
   position: relative;
-  float: right;
   margin: 0 auto;
-  padding-left: 80px;
-}
-#signup_form:after {
-  display: block;
-  visibility: hidden;
-  content: "";
-  clear: both;
-}
-
-#sign_up_image {
-
-}
-#sign_up_image:after {
-  display: block;
-  visibility: hidden;
-  content: "";
-  clear: both;
+  text-align:left;
+  vertical-align:top;
 }
