@@ -178,13 +178,57 @@ paths:
           schema:
             type: string
             description: 실패 이유
+/post/create:
+    post:
+      tags:
+        - Post
+      summary : 게시글 생성
+      description : 게시글 생성
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: writerId
+          description: 작성자 아이디
+          type: string
+          required: true
+        - in: formData
+          name: title
+          description: 게시글 제목
+          type: string
+          required: true
+        - in: formData
+          name: context
+          description: 게시글 내용
+          type: string
+          required: true
+        - in: formData
+          name: boardId
+          description: 게시판 ID
+          type: string
+          required: true
+        - in: formData
+          name: image
+          description: 이미지
+          type: file
+          required: true
+      responses:
+        '200':
+          description: 게시글 작성 성공
+          schema:
+            type: string
+            description: 게시글 작성이 성공했다는 뜻이다.
+        '500':
+          description: 게시글 작성 실패
+          schema:
+            type: string
+            description: 실패 이유
   /post/delete:
     post:
       tags:
         - Post
       summary : 게시글 삭제
       description : 게시글 삭제
-      consumes:
       parameters:
         - in: body
           name: writerId
@@ -213,7 +257,6 @@ paths:
         - Post
       summary : 게시글 수정
       description : 게시글 수정
-      consumes:
       parameters:
         - in: body
           name: writerId
@@ -244,46 +287,35 @@ paths:
           schema:
             type: string
             description: 실패 이유
-  /post/create:
-    post:
+  /post/list/all:
+    get:
       tags:
         - Post
-      summary : 게시글 생성
-      description : 게시글 생성
+      summary: 전체 게시글 출력
+      description: 전체 게시글 출력
       parameters:
-        - in: formData
-          name: writerId
-          description: 작성자 아이디
-          type: string
-          required: true
-        - in: formData
-          name: title
-          description: 게시글 제목
-          type: string
-          required: true
-        - in: formData
-          name: context
-          description: 게시글 내용
-          type: string
-          required: true
-        - in: formData
-          name: boardId
-          description: 게시판 ID
-          type: string
-          required: true
-        - in: formData
-          name: image
-          description: 게시판 ID
-          type: file
-          required: true
+        - in: query
+          name: item
+          description: 출력 하고자 하는 게시글 갯수
+          type: number
+        - in: query
+          name: page
+          description: 페이지 쪽수
       responses:
         '200':
-          description: 게시글 작성 성공
+          description: 게시글 반환 성공
           schema:
-            type: string
-            description: 게시글 작성이 성공했다는 뜻이다.
+            type: array
+            items:
+              type: object
+              description: 게시글 객체 반환
         '500':
-          description: 게시글 작성 실패
+          description: 게시글 반환 실패
           schema:
-            type: string
-            description: 실패 이유
+            type: object
+            properties:
+              message:
+                type: string
+                description: 실패 이유
+
+
