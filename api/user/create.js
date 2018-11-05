@@ -18,6 +18,7 @@ exports.UserCreate = (req, res,) => {
     const nickname = req.body.nickname
     const email = req.body.email
     const major = req.body.major
+    const name=req.body.name
     console.log('요청 받음')
     // 0. 데이터 체크
     const DataCheck = () => {
@@ -89,6 +90,7 @@ exports.UserCreate = (req, res,) => {
         const salt=bcrypt.genSaltSync(10)
         const hash=bcrypt.hashSync(password,salt)
         User.create({
+            name:name,
             userId: userId,
             password: hash,
             nickname: nickname,
