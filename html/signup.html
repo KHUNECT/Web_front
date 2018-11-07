@@ -7,6 +7,27 @@
 	<link rel="stylesheet" type="text/css" href="../static/signup.css">
 	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
 	<script type="text/javascript"></script>
+
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            $("#imgInp").on('change', function(){
+                readURL(this);
+            });
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+              reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -52,12 +73,14 @@
 		<div id="main_banner">
 			<img src="../static/sign_up_logo2.png" height=100px style="float:inherit; margin-top: 30px;">
 		</div>
-		<div id="signup_form" style="padding-right:15px;">
+		<form id="signupForm">
+		<div id="signup_form" style="padding-right:15px; padding-top: 30px;">
 			<div>
 				<label for="signupName">이름</label>
 				<br>
 				<input type="text" id="signupName" required placeholder="이름을 입력해주세요" name="name">
 			</div>
+			<br>
 			<label for="signupID">아이디</label>
 			<br>
 			<input type="text" id="signupID" required placeholder="아이디" name="id">
@@ -68,7 +91,7 @@
 				<div style="color:gray;">
 				</div>
 			</div>
-			<div style="margin-bottom: 12px;">
+			<div style="margin-bottom: 18px;">
 				<label for="repeatPassword">비밀번호 확인</label>
 				<br>
 				<input type="password" id="repeatPassword" required placeholder="비밀번호 확인" name="password2">
@@ -83,12 +106,16 @@
 				<br>
 			</div>
 		</div>
-		<div id="signup_form">
+		<div id="signup_form" style=" padding-top: 30px;">
 			<div>
 				<label for="signupName">프로필 사진</label>
 				<br>
-				<div style="width: 160px; height: 160px; background-color: grey; padding-bottom: 4px;">
-				</div>
+				<form id="form1" runat="server">
+					<input type='file' id="imgInp">
+					<div style="margin-top:3px; width: 160px; height: 160px; background-color: grey; margin-bottom: 4px;">
+						<img id="blah" src="#" alt="img" width=160px height=160px>
+					</div>
+				</form>
 				<div>
 					<label for="signupEmail">닉네임</label>
 					<br>
@@ -100,6 +127,10 @@
 				</div>
 			</div>
 		</div>
+		</form>
+		<br><br>
+		<input type="submit" value="회원가입">
+	</div>
 </body>
 
 </html>
