@@ -227,6 +227,7 @@ const hotPost=[
     */
 ]
 
+const users=new Users()
 //const Users=require('./models/user')
 
 app.get('/',(request,response)=>{
