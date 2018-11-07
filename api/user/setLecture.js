@@ -31,6 +31,9 @@ exports.SetLecture = (req, res) => {
                     message: "Can't find User"
                 })
             }
+            for (let i =0; i < user.lectures.length; i++){
+                user.lectures = []
+            }
             for (let i = 0; i < json_var.length; i++){
                 user.lectures.push(json_var[i]["subjnum"])
             }
@@ -42,7 +45,6 @@ exports.SetLecture = (req, res) => {
     // 3. Find And Create
     const FindAndCreate = () =>{
         return new Promise((resolve, reject) => {
-            console.log("hi")
             for (let i = 0; i < json_var.length; i++){
                 Board.findOne({boardId: json_var[i]["subjnum"]})
                     .then(data => {

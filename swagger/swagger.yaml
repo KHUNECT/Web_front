@@ -178,6 +178,40 @@ paths:
           schema:
             type: string
             description: 실패 이유
+  /user/setLecture:
+    post:
+      tags:
+        - User
+      summary : 수강 정보 입력
+      description : 수강 정보 입력
+      parameters:
+        - in: body
+          name: body
+          description: KLAS 아이디
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              klasId:
+                type: string
+                description: KLAS 아이디
+              klasPassword:
+                type: string
+                description: KLAS 패스워드
+      responses:
+        '200':
+          description: 회원 정보 수정 성공
+          schema:
+            type: string
+            description: 성공 여부
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
   /post/create:
     post:
       tags:
