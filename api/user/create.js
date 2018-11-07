@@ -38,6 +38,8 @@ exports.UserCreate = (req, res,) => {
         return User.find().or({userId: userId}, {nickname: nickname}, {email: email}).findOne()
     }
 
+    // 1-1.
+
     // 2. image 확인
     const ImageProcess = (User) => {
         if (User != null){
@@ -86,11 +88,9 @@ exports.UserCreate = (req, res,) => {
 
     // 3. 회원 가입
     const SignUp = (resized_loc) => {
-        const salt=bcrypt.genSaltSync(10)
-        const hash=bcrypt.hashSync(password,salt)
         User.create({
             userId: userId,
-            password: hash,
+            password: password,
             nickname: nickname,
             email: email,
             major: major,
