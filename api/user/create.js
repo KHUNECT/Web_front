@@ -87,8 +87,19 @@ exports.UserCreate = (req, res,) => {
 
     // 3. 회원 가입
     const SignUp = (resized_loc) => {
-        const salt=bcrypt.genSaltSync(10)
-        const hash=bcrypt.hashSync(password,salt)
+        bcrypt.genSalt(10,function(err,salt){
+            if(err){
+                return done(err)
+            }
+            bcrypt.hash(user.password,salt,function(){},function(err,hash){
+                if(err){
+                    return done(err)
+                }
+                user.password=hash
+                done()
+            })
+        })
+        console.log(`암호화 완료 : ${hash}`)
         User.create({
             name:name,
             userId: userId,
@@ -98,9 +109,7 @@ exports.UserCreate = (req, res,) => {
             major: major,
             resizedImage: resized_loc || 'https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
         }, (err, data)=>{ if(err) throw err})
-        res.redirect(200,'/main')
-        //res.status(200).json({userId: userId, nickname: nickname})
-        return
+        res.status(200).json({userId: userId, nickname: nickname})
     }
 
     DataCheck()
@@ -109,9 +118,7 @@ exports.UserCreate = (req, res,) => {
     .then(SignUp)
     .catch((err) => {
         console.log(err)
-        res.redirect(500,'/signup')
-        //res.status(500).json(err.message || err)
-        return
+        res.status(500).json(err.message || err)
     })
 
 }

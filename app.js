@@ -309,14 +309,6 @@ app.get('/signup',(request,response)=>{
     })
 })
 
-const create=require('./api/user/create.js')
-let code=200
-
-app.post('/signup',(request,response)=>{
-    console.log('-POST /signup-')
-    create.UserCreate(request,response,code)
-})
-
 app.get('/myclass/:id',(request,response)=>{
     fs.readFile(test_path[0]+'myclass.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
