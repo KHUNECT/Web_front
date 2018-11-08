@@ -16,20 +16,28 @@
     }
     $(document).ready(function(){
         $('#loginButton').click(function(){
-            let form=$('#loginForm')[0];
-            let formData=new FormData(form);
+            var data=new Object()
+            data.userId=$('#userId').val()
+            data.password=$('#password').val()
+            console.log(data.userId)
+            console.log(data.password)
+            console.log(`data:${JSON.stringify(data)}`)
+            const stringData=JSON.stringify(data)
             $.ajax({
                 type:'POST',
-                url:'/login',
-                data:formData,
-                enctype:'multipart/form-data',
+                url:'/api/user/login',
+                data:stringData,
+                dataType:'JSON',
+                contentType:'application/json; charset=utf-8',
+                traditional:true,
                 processData:false,
-                contentType:false,
                 success: function(result){
                     alert('로그인 성공!!')
+                    window.location.href='/main'
                 },
                 error: function(err){
                     alert('로그인 실패!!')
+                    window.location.href='/main'
                 }
             })
         })
@@ -129,8 +137,8 @@
         <%if(!nickname){%>
         <div style="margin-left:11px;margin-right:11px;">
           <form id="loginForm">
-            <input type="text" name="userId" placeholder="아이디" style="width:100%;color:rgb(71,71,71);">
-            <input type="password" name="password" placeholder="비밀번호" style="width:100%;color:rgb(71,71,71); margin-bottom: 4px;"
+            <input type="text" id="userId" name="userId" placeholder="아이디" style="width:100%;color:rgb(71,71,71);">
+            <input type="password" id="password" name="password" placeholder="비밀번호" style="width:100%;color:rgb(71,71,71); margin-bottom: 4px;"
               onkeydown="javascript:onEnterLogin()"><br>
             <input type="button" id="loginButton" value="로그인" style="margin-left:32%;">
           </form>
