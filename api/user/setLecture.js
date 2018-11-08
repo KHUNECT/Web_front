@@ -31,9 +31,7 @@ exports.SetLecture = (req, res) => {
                     message: "Can't find User"
                 })
             }
-            for (let i =0; i < user.lectures.length; i++){
-                user.lectures = []
-            }
+            user.lectures = []
             for (let i = 0; i < json_var.length; i++){
                 user.lectures.push(json_var[i]["subjnum"])
             }

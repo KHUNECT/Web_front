@@ -212,6 +212,46 @@ paths:
           schema:
             type: string
             description: 실패 이유
+  /user/getLecture:
+    post:
+      tags:
+        - User
+      summary : 수강 정보 반환
+      description : 수강 정보 입력
+      parameters:
+        - in: body
+          name: body
+          description: KLAS 아이디
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+      responses:
+        '200':
+          description: 회원 정보 수정 성공
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                boardId:
+                  type: string
+                  description: boardId
+                title:
+                  type: string
+                  description: 강좌명
+                professor:
+                  type: string
+                  description: 교수명
+
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
   /post/create:
     post:
       tags:
