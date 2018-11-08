@@ -228,37 +228,61 @@ const hotPost=[
 ]
 
 const users=new Users()
+//const Users=require('./models/user')
 
 app.get('/',(request,response)=>{
     response.redirect('/main')
 })
 
 app.get('/main',(request,response)=>{
-    const session=request.session.ID
-    fs.readFile(test_path[1]+'main.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(ejs.render(data,{
-            Lecture:Lecture,
-            newPost:newPost,
-            newLecturePost:newLecturePost,
-            newMarketPost:newMarketPost,
-            newAlbaPost:newAlbaPost,
-            hotPost:hotPost
+    console.log('-GET /main-')
+    const session=request.session
+    console.log(`current session id : ${session.sid}`)
+    let nickname='none'
+    let resizedImage='https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
+    Users.findOne({_id:session.sid})
+        .then((data)=>{
+            console.log(data)
+            nickname=data.nickname
+            resizedImage=data.resizedImage
+            console.log(`nickname in find() : ${data.nickname}`)
+        })
+        .then(fs.readFile(test_path[1]+'main.ejs','utf-8',(error,data)=>{
+            response.writeHead(200, {'Content-Type': 'text/html'})
+            response.end(ejs.render(data, {
+                nickname: session.sid+1?data.nickname:'',
+                resizedImage: resizedImage,
+                Lecture: Lecture,
+                newPost: newPost,
+                newLecturePost: newLecturePost,
+                newMarketPost: newMarketPost,
+                newAlbaPost: newAlbaPost,
+                hotPost: hotPost
+            }))
         }))
-    })
+        .catch((err)=>{
+            nickname='none'
+            resizedImage='https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
+            throw err
+        })
+    //console.log(`nickname in end of get() : ${nickname}` )
+    //console.log(resizedImage)
+
 })
 
 app.post('/login',(request,response)=>{
+    console.log('-POST /login-')
     const body=request.body
-    Users.find({userId:body.userId})
+    Users.findOne({userId:body.userId})
         .then((data) => {
             //console.log(data)
             //console.log(data[0].password)
-            if (bcrypt.compareSync(body.password,data[0].password)){
-                request.session.userId = body.userId
+            if (bcrypt.compareSync(body.password,data.password)){
+                request.session.sid = data._id
                 console.log(`${body.userId}가 접속했습니다.\n`)
+                console.log(`session id : ${request.session.sid}`)
                 request.session.save(function(){
-                    response.redirect('/main')
+                    response.redirect('/')
                 })
             } else
             {
@@ -269,11 +293,13 @@ app.post('/login',(request,response)=>{
             //response.end(err)
             console.log('로그인 거절')
             response.redirect('/main')
+            throw err
         })
 })
 
-app.get('/logout',(request,response)=>{
-    delete request.session.ID
+app.post('/logout',(request,response)=>{
+    console.log(`${request.session.userId}가 로그아웃했습니다.`)
+    delete request.session.userId
     response.redirect('/main')
 });
 
@@ -282,14 +308,6 @@ app.get('/signup',(request,response)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
         response.end(ejs.render(data,{}))
     })
-})
-
-const create=require('./api/user/create.js')
-let code=200
-
-app.post('/signup',(request,response)=>{
-    //console.log('post 받음')
-    create.UserCreate(request,response,code)
 })
 
 app.get('/myclass/:id',(request,response)=>{
