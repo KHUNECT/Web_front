@@ -329,56 +329,56 @@ app.get('/signup',(request,response)=>{
 app.get('/myclass/:id',(request,response)=>{
     fs.readFile('ejs/myclass.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/study',(request,response)=>{
     fs.readFile('ejs/study.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/hobby',(request,response)=>{
     fs.readFile('ejs/hobby.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/alba',(request,response)=>{
     fs.readFile('ejs/alba.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/club',(request,response)=>{
     fs.readFile('ejs/club.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/contest',(request,response)=>{
     fs.readFile('ejs/contest.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/market',(request,response)=>{
     fs.readFile('ejs/market.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/gonggu',(request,response)=>{
     fs.readFile('ejs/gonggu.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
