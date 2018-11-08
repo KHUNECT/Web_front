@@ -9,7 +9,7 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "http://13.125.196.191"
+host: "13.125.196.191"
 basePath: "/api"
 tags:
 - name: "User"
@@ -51,33 +51,33 @@ paths:
         - in: formData
           name: userId
           description: 유저 아이디
-          type: String
+          type: string
           required : true
         - in: formData
           name: password
           description: 유저 비밀번호
-          type: String
+          type: string
           required : true
         - in: formData
           name: nickname
           description: 유저 닉네임
-          type: String
+          type: string
           required : true
         - in: formData
           name: email
           description: 유저 이메일
-          type: String
+          type: string
           required : true
         - in: formData
           name: major
           description: 유저 전공
-          type: String
+          type: string
           required : true
         - in: formData
           name: image
           description: 유저 프로필 사진
-          type: File
-          required : true          
+          type: file
+          required : true
       responses:
         '200':
           description: 회원 가입이 완료 됨
@@ -105,7 +105,7 @@ paths:
         - in: query
           name: userId
           description: 유저 아이디
-          type: String
+          type: string
           required : true
       responses:
         '200':
@@ -145,27 +145,27 @@ paths:
         - in: formData
           name: userId
           description: 유저 아이디
-          type: String
+          type: string
           required : true
         - in: formData
           name: password
           description: 유저 비밀번호
-          type: String
+          type: string
           required : true
         - in: formData
           name: nickname
           description: 유저 닉네임
-          type: String
+          type: string
           required : true
         - in: formData
           name: email
           description: 유저 이메일
-          type: String
+          type: string
           required : true
         - in: formData
           name: image
           description: 유저 프로필 사진
-          type: File
+          type: file
           required : true
       responses:
         '200':
@@ -178,33 +178,37 @@ paths:
           schema:
             type: string
             description: 실패 이유
-  /post/delete:
+  /user/setLecture:
     post:
       tags:
-        - Post
-      summary : 게시글 삭제
-      description : 게시글 생성
-      consumes:
-        - multipart/form-data
+        - User
+      summary : 수강 정보 입력
+      description : 수강 정보 입력
       parameters:
         - in: body
-          name: writerId
-          description: 작성자 아이디
-          type: string
-          required: true
-        - in: body
-          name: postId
-          description: 게시글 아이디
-          type: string
-          required: true
+          name: body
+          description: KLAS 아이디
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              klasId:
+                type: string
+                description: KLAS 아이디
+              klasPassword:
+                type: string
+                description: KLAS 패스워드
       responses:
         '200':
-          description: 게시글 삭제 성공
+          description: 회원 정보 수정 성공
           schema:
             type: string
-            description: 게시글 삭제가 성공했다는 뜻이다.
+            description: 성공 여부
         '500':
-          description: 게시글 작성 실패
+          description: 요청 실패
           schema:
             type: string
             description: 실패 이유
@@ -214,6 +218,8 @@ paths:
         - Post
       summary : 게시글 생성
       description : 게시글 생성
+      consumes:
+        - multipart/form-data
       parameters:
         - in: formData
           name: writerId
@@ -237,7 +243,7 @@ paths:
           required: true
         - in: formData
           name: image
-          description: 게시판 ID
+          description: 이미지
           type: file
           required: true
       responses:
@@ -251,3 +257,104 @@ paths:
           schema:
             type: string
             description: 실패 이유
+  /post/delete:
+    post:
+      tags:
+        - Post
+      summary : 게시글 삭제
+      description : 게시글 삭제
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: writerId
+          description: 작성자 아이디
+          type: string
+          required: true
+        - in: formData
+          name: postId
+          description: 게시글 아이디
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 게시글 삭제 성공
+          schema:
+            type: string
+            description: 게시글 삭제가 성공했다는 뜻이다.
+        '500':
+          description: 게시글 작성 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/modify:
+    post:
+      tags:
+        - Post
+      summary : 게시글 수정
+      description : 게시글 수정
+      consumes:
+        - multipart/form-data
+      parameters:
+        - in: formData
+          name: writerId
+          description: 작성자 아이디
+          type: string
+          required: true
+        - in: formData
+          name: postId
+          description: 게시글 아이디
+          type: string
+          required: true
+        - in: formData
+          name: title
+          description: 게시글 제목
+          type: string
+        - in: formData
+          name: context
+          description: 게시글 아이디
+          type: string
+      responses:
+        '200':
+          description: 게시글 삭제 성공
+          schema:
+            type: string
+            description: 게시글 삭제가 성공했다는 뜻이다.
+        '500':
+          description: 게시글 작성 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/list/all:
+    get:
+      tags:
+        - Post
+      summary: 전체 게시글 출력
+      description: 전체 게시글 출력
+      parameters:
+        - in: query
+          name: item
+          description: 출력 하고자 하는 게시글 갯수
+          type: number
+        - in: query
+          name: page
+          description: 페이지 쪽수
+          type: number
+      responses:
+        '200':
+          description: 게시글 반환 성공
+          schema:
+            type: array
+            items:
+              type: object
+              description: 게시글 객체 반환
+        '500':
+          description: 게시글 반환 실패
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: 실패 이유
+
+
