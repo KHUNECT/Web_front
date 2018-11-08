@@ -64,26 +64,37 @@
     </div>
 
     <div id="bulletin_board">
-        <div id="section_1" style="float:left">
-            <table id="post_table">
+        <div id="section_1" style="float:left; padding-bottom: 14px;">
+            <div style="width:100%; height:50px; background-color:#f6f6f6;">
+                <table style="height:100%">
+                    <tr>
+                        <td style="text-indent:15px; ">
+                            <a href="#" style="font-weight:bold; vertical-align:middle;">무슨무슨 게시판</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <table id="post_table" style="margin-top:10px;">
                 <tr>
                     <td colspan="2" height="50" style="border-bottom: 1px solid #444444; font-weight: bold; border: none; background: transparent;">
-                        <input type="text" placeholder="제목" style="width:798px; height:50px;">
+                        <input type="text" placeholder="제목" style="width:790px; height:50px;">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" height="50" style="border-bottom: 1px solid #444444; font-weight: bold; border: none; background: transparent;">
-                        <textarea placeholder="제목" style="width:796px; height: 130px;"></textarea>
-                    </td>                    
-                </tr> 
+                        <textarea placeholder="제목" style="resize:none; width:788px; height: 130px;"></textarea>
+                    </td>
+                </tr>
                 <tr>
                     <td>
                         <input type="checkbox">익명
                     </td>
                     <td style="text-align:right;">
-                        <input type="submit" value="글쓰기">
+                        <input type="submit" value="글쓰기" style="margin-bottom:4px;margin-right:4px;">
                     </td>
-                </tr>   
+                </tr>
             </table>
 
             <table id="bulletin_table" style="margin-top:20px;">
@@ -109,7 +120,7 @@
                 </tr>
             </table>
 
-            <table id="bulletin_table"  style="margin-top:20px;">
+            <table id="bulletin_table" style="margin-top:20px;">
                 <tr>
                     <td rowspan="3" width="150" style="text-align:center;">
                         <img src="../static/profile.jpg" height=90px width=90px>
@@ -132,7 +143,7 @@
                 </tr>
             </table>
 
-            <table id="bulletin_table"  style="margin-top:20px;">
+            <table id="bulletin_table" style="margin-top:20px;">
                 <tr>
                     <td rowspan="3" width="150" style="text-align:center;">
                         <img src="../static/profile.jpg" height=90px width=90px>
@@ -233,11 +244,29 @@
                     </tr>
                 </table>
             </div>
-
         </div>
+
     </div>
-    </div>
-    </div>
+
+    <nav>
+        <ul class="pagination">
+            <li>
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <li><a href="#">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li>
+                <a href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </body>
 
 </html>
