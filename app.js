@@ -234,12 +234,11 @@ app.get('/',(request,response)=>{
 app.get('/main',(request,response)=>{
     console.log('-GET /main-')
     const session=request.session
-    console.log(`current session id : ${session.userId}`)
+    console.log(`current session id : ${session.sid}`)
     let nickname='none'
     let resizedImage='https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
     Users.findOne({_id:session.sid})
         .then((data)=>{
-            console.log(data)
             nickname=data.nickname
             resizedImage=data.resizedImage
             console.log(`nickname in find() : ${data.nickname}`)
@@ -266,6 +265,7 @@ app.get('/main',(request,response)=>{
     //console.log(resizedImage)
 
 })
+/*
 app.post('/login',(req,res)=>{
     const body=req.body
     Users.findOne({userId:body.userId})
@@ -286,6 +286,7 @@ app.post('/login',(req,res)=>{
             throw err
         })
 })
+*/
 /* 로그인-암호화 후
 app.post('/login',(request,response)=>{
     const body=request.body
