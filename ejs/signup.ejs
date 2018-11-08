@@ -8,6 +8,22 @@
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
+        $(function() {
+            $("#imgInp").on('change', function(){
+                readURL(this)
+            })
+        })
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
         $(document).ready(function(){
             $('#sendButton').click(function(){
                 let form=$('#signupForm')[0]
@@ -20,7 +36,8 @@
                 }
                 $.ajax({
                     type:'POST',
-                    url:'http://13.125.196.191/api/user/create',
+                    //url:'http://13.125.196.191/api/user/create',
+                    url:'api/user/create',
                     data:formData,
                     enctype:'multipart/form-data',
                     processData:false,
@@ -126,11 +143,12 @@
             <div>
                 <label for="signupName">프로필 사진</label>
                 <br>
-                <div style="width: 160px; height: 160px; background-color: grey; padding-bottom: 4px;">
-                </div>
-                <div style="text-align:center;">
-                    <input type="file" value="Image" name="image">
-                </div>
+                <form id="form1" runat="server">
+                    <input type='file' id="imgInp" name="image">
+                    <div style="margin-top:3px; width: 160px; height: 160px; background-color: grey; margin-bottom: 4px;">
+                        <img id="blah" src="#" alt="img" width=160px height=160px>
+                    </div>
+                </form>
                 <div>
                     <label for="signupEmail">닉네임</label>
                     <br>

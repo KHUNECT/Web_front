@@ -227,9 +227,6 @@ const hotPost=[
     */
 ]
 
-const users=new Users()
-//const Users=require('./models/user')
-
 app.get('/',(request,response)=>{
     response.redirect('/main')
 })
@@ -237,7 +234,7 @@ app.get('/',(request,response)=>{
 app.get('/main',(request,response)=>{
     console.log('-GET /main-')
     const session=request.session
-    console.log(`current session id : ${session.sid}`)
+    console.log(`current session id : ${session.userId}`)
     let nickname='none'
     let resizedImage='https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
     Users.findOne({_id:session.sid})
@@ -247,7 +244,7 @@ app.get('/main',(request,response)=>{
             resizedImage=data.resizedImage
             console.log(`nickname in find() : ${data.nickname}`)
         })
-        .then(fs.readFile(test_path[1]+'main.ejs','utf-8',(error,data)=>{
+        .then(fs.readFile('ejs/main.ejs','utf-8',(error,data)=>{
             response.writeHead(200, {'Content-Type': 'text/html'})
             response.end(ejs.render(data, {
                 nickname: session.sid+1?data.nickname:'',
@@ -269,9 +266,28 @@ app.get('/main',(request,response)=>{
     //console.log(resizedImage)
 
 })
-
+app.post('/login',(req,res)=>{
+    const body=req.body
+    Users.findOne({userId:body.userId})
+        .then((data)=>{
+            if(bcrypt.compareSync(body.password,data.password)) {
+                req.session.id = data._id
+                console.log('로그인 성공')
+                req.session.save(function(){
+                    res.redirect('/')
+                })
+            }
+            else{
+                console.log('로그인 실패1')
+            }
+        })
+        .catch((err)=>{
+            console.log('로그인 실패2')
+            throw err
+        })
+})
+/* 로그인-암호화 후
 app.post('/login',(request,response)=>{
-    console.log('-POST /login-')
     const body=request.body
     Users.findOne({userId:body.userId})
         .then((data) => {
@@ -296,7 +312,7 @@ app.post('/login',(request,response)=>{
             throw err
         })
 })
-
+*/
 app.post('/logout',(request,response)=>{
     console.log(`${request.session.userId}가 로그아웃했습니다.`)
     delete request.session.userId
@@ -304,65 +320,65 @@ app.post('/logout',(request,response)=>{
 });
 
 app.get('/signup',(request,response)=>{
-    fs.readFile(test_path[1]+'signup.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/signup.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
         response.end(ejs.render(data,{}))
     })
 })
 
 app.get('/myclass/:id',(request,response)=>{
-    fs.readFile(test_path[0]+'myclass.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/myclass.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/study',(request,response)=>{
-    fs.readFile(test_path[0]+'study.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/study.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/hobby',(request,response)=>{
-    fs.readFile(test_path[0]+'hobby.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/hobby.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/alba',(request,response)=>{
-    fs.readFile(test_path[0]+'alba.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/alba.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/club',(request,response)=>{
-    fs.readFile(test_path[0]+'club.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/club.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/contest',(request,response)=>{
-    fs.readFile(test_path[0]+'contest.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/contest.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/market',(request,response)=>{
-    fs.readFile(test_path[0]+'market.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/market.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/gonggu',(request,response)=>{
-    fs.readFile(test_path[0]+'gonggu.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/gonggu.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
