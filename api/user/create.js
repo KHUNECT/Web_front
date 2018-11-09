@@ -19,7 +19,7 @@ exports.UserCreate = (req, res,) => {
     const email = req.body.email
     const major = req.body.major
     const name=req.body.name
-    console.log('요청 받음')
+
     // 0. 데이터 체크
     const DataCheck = () => {
         return new Promise((resolve,reject) => {

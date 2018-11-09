@@ -310,6 +310,42 @@ paths:
           schema:
             type: string
             description: 실패 이유
+  /user/findPassword:
+    post:
+      tags:
+        - User
+      summary : 비밀번호 찾기
+      description : 아이디와 email을 입력해 비밀번호를 초기화 한다.
+      parameters:
+        - in: body
+          name: body
+          description: 회원 정보
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              email:
+                type: string
+                description: 유저 이메일
+      responses:
+        '200':
+          description: 회원 정보 수정 성공
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: 성공 여부
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
   /post/create:
     post:
       tags:
