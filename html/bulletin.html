@@ -4,6 +4,14 @@
 <head>
     <meta charset="utf-8" />
     <title>KHU:NECT</title>
+
+    <!-- 합쳐지고 최소화된 최신 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!-- 부가적인 테마 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+   
     <link rel="stylesheet" type="text/css" href="../static/bulletin.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
     <script type="text/javascript">
@@ -69,7 +77,7 @@
                 <table style="height:100%">
                     <tr>
                         <td style="text-indent:15px; ">
-                            <a href="#" style="font-weight:bold; vertical-align:middle;">무슨무슨 게시판</a>
+                            <a href="#" style="font-weight:bold; vertical-align:middle;"># 무슨무슨 게시판</a>
                         </td>
                     </tr>
                 </table>
@@ -83,7 +91,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2" height="50" style="border-bottom: 1px solid #444444; font-weight: bold; border: none; background: transparent;">
+                    <td colspan="2" height="50" style="border-bottom: 1px solid #444444; border: none; background: transparent;">
                         <textarea placeholder="제목" style="resize:none; width:788px; height: 130px;"></textarea>
                     </td>
                 </tr>
@@ -165,7 +173,25 @@
                     <td style="font-size:x-small;text-align:center;">2018/10/31<br>11:15</td>
                 </tr>
             </table>
-
+            <nav>
+                <ul class="pagination" >
+                    <li>
+                        <a href="#" aria-label="Previous" style="color:black;">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li><a href="#" style="color:black;">1</a></li>
+                    <li><a href="#" style="color:black;">2</a></li>
+                    <li><a href="#" style="color:black;">3</a></li>
+                    <li><a href="#" style="color:black;">4</a></li>
+                    <li><a href="#" style="color:black;">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next" style="color:black;">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
 
         <div id="section_2" style="float:left">
@@ -242,31 +268,21 @@
                             <a>게시물5</a>
                         </td>
                     </tr>
+
+
+                </div>
+            
+
                 </table>
+
+
             </div>
+
+
         </div>
 
-    </div>
 
-    <nav>
-        <ul class="pagination">
-            <li>
-                <a href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <li><a href="#">1</a></li>
-            <li><a href="#">2</a></li>
-            <li><a href="#">3</a></li>
-            <li><a href="#">4</a></li>
-            <li><a href="#">5</a></li>
-            <li>
-                <a href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-        </ul>
-    </nav>
+
 </body>
 
 </html>
