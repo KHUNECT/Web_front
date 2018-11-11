@@ -5,10 +5,7 @@ const PostSchema = new Schema({
     writerId: {type: String, required: true},
     title: {type: String, required: true},
     context: String,
-    images: [{
-        fileName:String,
-        location:String
-    }],
+    images: [String],
     comments: [{
         writerId: {type:String, required:true},
         context: {type:String, required:true},
@@ -22,4 +19,4 @@ const PostSchema = new Schema({
 },{collection: "posts"}
 )
 
-module.exports = mongoose.Model('Post', PostSchema)
+module.exports = mongoose.model('Post', PostSchema)

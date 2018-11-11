@@ -10,11 +10,12 @@ const mongoose=require('mongoose')
 require('dotenv').config()
 const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
-
+const morgan = require('morgan')
 const Users=require('./models/user.js')
 
+app.use(morgan('[:date[iso]] :method :status :url :response-time(ms) :user-agent'))
+
 app.use(express.static(path.join(__dirname)))
-app.use(bodyParser.urlencoded({extended:false}))
 
 mongoose.Promise = global.Promise
 mongoose.connect(process.env.MONGO_DB, {useNewUrlParser: true})
@@ -28,8 +29,8 @@ db.on('error', function (err) {
 })
 
 app.use(express.static(path.join(__dirname, '/static')))
-app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json())
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*')
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH')
@@ -66,11 +67,7 @@ const newPost=[
         boardName:'동아리',
         title:'서주원'
     },
-    {
-        boardId:'gonggu',
-        boardName:'공구',
-        title:'조민지'
-    }
+
 ]
 
 const Lecture=[
@@ -140,13 +137,7 @@ const newLecturePost=[
             title:'알고리즘분석',
         }
     },
-    {
-        title:'조민지',
-        lecture: {
-            lectureId:'GED1408-G03',
-            title:'공학과경영',
-        }
-    },
+
 ]
 
 const newMarketPost=[
@@ -166,10 +157,7 @@ const newMarketPost=[
         tag:'팝니다',
         title:'서주원',
     },
-    {
-        tag:'삽니다',
-        title:'조민지',
-    },
+
 ]
 
 const newAlbaPost=[
@@ -186,13 +174,10 @@ const newAlbaPost=[
         title:'박민재'
     },
     {
-        tag:'술집',
+        tag:'과외',
         title:'서주원'
     },
-    {
-        tag:'과외',
-        title:'조민지'
-    },
+
 ]
 
 const hotPost=[
@@ -211,146 +196,130 @@ const hotPost=[
         boardName:'공모전',
         title:'박민재'
     },
-    /*
     {
         boardId:'study',
         boardName:'스터디',
         title:'서주원'
     },
 
-    {
-        boardId:'club',
-        boardName:'동아리',
-        title:'조민지'
-    }
-    */
 ]
-
-const findUser=(userId,password)=>{
-    const checkId=Users.find({userId:userId})
-    const checkPW=Users.validPassword(password)
-    return (checkId&&checkPW)
-}
-
-/*
-const findUserIndex=(userId,password)=>{
-    return Users.findIndex(value=>(value.userId ===userId && bcrypt.compareSync(password,value.password)))
-}
-*/
-const findUserID=(userId)=>{
-    return Users.find(value=>(value.userId===userId))
-}
-
-const findUserNick=(nickname)=>{
-    return Users.find(value=>(value.nickname===nickname))
-}
 
 app.get('/',(request,response)=>{
     response.redirect('/main')
 })
 
 app.get('/main',(request,response)=>{
-    const session=request.session.ID
-    fs.readFile(test_path[1]+'main.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(ejs.render(data,{
-            Lecture:Lecture,
-            newPost:newPost,
-            newLecturePost:newLecturePost,
-            newMarketPost:newMarketPost,
-            newAlbaPost:newAlbaPost,
-            hotPost:hotPost
-        }))
-    })
+    console.log('-GET /main-')
+    const session=request.session
+    console.log(`current session id : ${session.sid}`)
+    Users.findOne({_id:session.sid})
+        .then((user)=>{
+            if(!user){
+                fs.readFile('ejs/main.ejs','utf-8',(error,data)=>{
+                    response.writeHead(200,{'Content-Type':'text/html'})
+                    response.end(ejs.render(data,{
+                        newPost:newPost,
+                        newLecturePost: newLecturePost,
+                        newMarketPost: newMarketPost,
+                        newAlbaPost: newAlbaPost,
+                        hotPost: hotPost,
+                    }))
+                })
+            }
+            else{
+                fs.readFile('ejs/main_after.ejs','utf-8',(error,data)=>{
+                    response.writeHead(200,{'Content-Type':'text/html'})
+                    if(error)
+                        throw error
+                    else {
+                        response.end(ejs.render(data, {
+                            nickname: user.nickname,
+                            resizedImage: user.resizedImage,
+                            Lecture: Lecture,
+                            newPost: newPost,
+                            newLecturePost: newLecturePost,
+                            newMarketPost: newMarketPost,
+                            newAlbaPost: newAlbaPost,
+                            hotPost: hotPost,
+                        }))
+                    }
+                })
+            }
+        })
+        .catch((err)=>{
+            throw err
+        })
+    //console.log(`nickname in end of get() : ${nickname}` )
+    //console.log(resizedImage)
+
 })
 
-app.post('/login',(request,response)=>{
-    const body=request.body
-    if(findUser(body.userId,body.password)) {
-        request.session.ID = findUserIndex(body.userId, body.password)
-        console.log(`${body.ID}가 접속했습니다.\n`)
-        //currID = findUserIndex(body.userId,body.password)
-        response.redirect('/main')
-    }
-    else
-    {
-        response.send('유효하지 않습니다.\n')
-    }
-})
-
-app.get('/logout',(request,response)=>{
-    delete request.session.ID
-    response.redirect('/main')
+app.post('/logout',(request,response)=>{
+    console.log(`${request.session.userId}가 로그아웃했습니다.`)
+    delete request.session.userId
+    response.status(200).json({result:'Logout Successful'})
 });
 
 app.get('/signup',(request,response)=>{
-    fs.readFile(test_path[1]+'signup.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/signup.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
         response.end(ejs.render(data,{}))
     })
 })
 
-const create=require('./api/user/create.js')
-let code=200
-
-app.post('/signup',(request,response)=>{
-    //console.log('post 받음')
-    create.UserCreate(request,response,code)
-})
-
 app.get('/myclass/:id',(request,response)=>{
-    fs.readFile(test_path[0]+'myclass.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/myclass.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/study',(request,response)=>{
-    fs.readFile(test_path[0]+'study.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/study.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/hobby',(request,response)=>{
-    fs.readFile(test_path[0]+'hobby.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/hobby.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/alba',(request,response)=>{
-    fs.readFile(test_path[0]+'alba.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/alba.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/club',(request,response)=>{
-    fs.readFile(test_path[0]+'club.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/club.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/contest',(request,response)=>{
-    fs.readFile(test_path[0]+'contest.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/contest.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/market',(request,response)=>{
-    fs.readFile(test_path[0]+'market.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/market.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/gonggu',(request,response)=>{
-    fs.readFile(test_path[0]+'gonggu.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/gonggu.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 

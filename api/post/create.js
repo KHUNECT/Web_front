@@ -3,6 +3,15 @@
 const Post = require('../../models/post')
 const Board = require('../../models/board')
 const User = require('../../models/user')
+const sharp = require('sharp')
+const path = require('path')
+const AWS = require('aws-sdk')
+
+AWS.config.update({
+    accessKeyId: process.env.AWSAccessKeyId,
+    secretAccessKey: process.env.AWSSecretKey,
+    region: process.env.region
+})
 
 exports.CreatePost = (req, res) => {
     const writerId = req.body.writerId
@@ -18,6 +27,7 @@ exports.CreatePost = (req, res) => {
                     message: 'query error'
                 })
             }
+            resolve()
         })
     }
 
@@ -38,30 +48,66 @@ exports.CreatePost = (req, res) => {
 
     // 3. 포스트 생성
     const Posting = (board) => {
-        let file = req.file
-
         if (board != null) {
             return reject({
                 message: 'Board Not Exists'
             })
         }
+        if (req.file == null){
+            return Post.create({
+                writerId: writerId,
+                title: title,
+                context: context,
+                boardId: boardId
+            })
+        }
 
-        Post.create({
-            writerId: writerId,
-            title: title,
-            context: context,
-            boardId: boardId
-        }, (err, data) => {
-            if (err) throw err
-            return res.status(200).json({message: 'Created'})
-        })
+        let file_location = 'images/'
+        let origin_name = Date.now() + "_" + path.basename(req.file.originalname)
+
+        let params = {
+            Bucket: 'khunect-bucket',
+            Key: file_location + origin_name,
+            ACL: 'public-read'
+        }
+
+        let tempS3 = new AWS.S3()
+
+        return sharp(req.file.buffer)
+            .rotate()
+            .toFormat('jpeg')
+            .resize(500,500)
+            .toBuffer()
+            .then(data => {
+                params.Body = data
+                return tempS3.putObject(params).promise()
+            })
+            .then(data => {
+                return Post.create({
+                    writerId: writerId,
+                    title: title,
+                    context: context,
+                    boardId: boardId,
+                    images: ["https://khunect-bucket.s3.ap-northeast-2.amazonaws.com/images/" + origin_name]
+                })
+            })
+            .then(data=>{
+                res.status(200).json({message: "success"})
+            })
+            .catch(err => {
+                throw err
+            })
     }
 
     QueryCheck()
         .then(WriterCheck)
         .then(BoardCheck)
         .then(Posting)
+        .then(data => {
+            res.status(200).json(data)
+        })
         .catch((err) => {
             return res.status(500).json(err)
         })
+
 }

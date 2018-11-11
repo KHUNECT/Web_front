@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8" />
+    <title>KHU:NECT</title>
+    <link rel="stylesheet" type="text/css" href="../static/bulletin.css">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
+    <script type="text/javascript">
+        function onEnterLogin() {
+            var KeyCode = windows.event.keyCode;
+            if (keyCode == 13) {
+                loginForm.submit();
+            }
+        }
+    </script>
+    <style>
+        div {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="top-layer_fixed">
+        <table cellspacing="0" cellpadding="0" style="width:100%; height:100%;">
+            <tr>
+                <td style="vertical-align:middle; padding-left: 200px; padding-right: 220px;">
+                    <img src="../static/logo.png" height=45%>
+                </td>
+                <td>
+                    <div class="menubar">
+                        <ul>
+                            <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a>
+                            </li>
+                            <li><a id="current" style="font-size:16px;font-weight: bold;">함께해요</a>
+                                <ul>
+                                    <li><a href="/study">스터디</a></li>
+                                    <li><a href="/hobby">취미</a></li>
+                                </ul>
+                            </li>
+                            <li><a id="current" style="font-size:16px;font-weight: bold;">홍보</a>
+                                <ul>
+                                    <li><a href="/alba">알바</a></li>
+                                    <li><a href="/club">동아리</a></li>
+                                    <li><a href="/contest">공모전</a></li>
+                                </ul>
+                            </li>
+                            <li><a id="current" style="font-size:16px;font-weight: bold;">거래</a>
+                                <ul>
+                                    <li><a href="/market">거래</a></li>
+                                    <li><a href="/gonggu">공구</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div id="main_banner">
+
+    </div>
+
+    <div id="bulletin_board">
+        <div id="section_1" style="float:left">
+            <table id="post_table">
+                <tr>
+                    <td colspan="2" height="50" style="border-bottom: 1px solid #444444; font-weight: bold; border: none; background: transparent;">
+                        <input type="text" placeholder="제목" style="width:798px; height:50px;">
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" height="50" style="border-bottom: 1px solid #444444; font-weight: bold; border: none; background: transparent;">
+                        <textarea placeholder="제목" style="width:796px; height: 130px;"></textarea>
+                    </td>                    
+                </tr> 
+                <tr>
+                    <td>
+                        <input type="checkbox">익명
+                    </td>
+                    <td style="text-align:right;">
+                        <input type="submit" value="글쓰기">
+                    </td>
+                </tr>   
+            </table>
+
+            <table id="bulletin_table" style="margin-top:20px;">
+                <tr>
+                    <td rowspan="3" width="150" style="text-align:center;">
+                        <img src="../static/profile.jpg" height=90px width=90px>
+                        <br>익명
+                    </td>
+                    <td style="border-bottom: 1px solid #444444; text-indent: 15px; font-weight: bold;">으앙망한것같아ㅎㅎㅎ</td>
+                    <td width="100" height="50" style="text-align:center;">
+                        <img src="../static/good.png" height=15px>&nbsp2
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="text-indent: 15px;">띠바 눈이너무아프당 눈깔이뽑힐것같아</td>
+
+                    <td height="50" style="text-align:center;">
+                        <img src="../static/comment.png" height=14px>&nbsp14
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size:x-small;text-align:center;">2018/10/31<br>11:15</td>
+                </tr>
+            </table>
+
+            <table id="bulletin_table"  style="margin-top:20px;">
+                <tr>
+                    <td rowspan="3" width="150" style="text-align:center;">
+                        <img src="../static/profile.jpg" height=90px width=90px>
+                        <br>익명
+                    </td>
+                    <td style="border-bottom: 1px solid #444444; text-indent: 15px; font-weight: bold;">으앙망한것같아ㅎㅎㅎ</td>
+                    <td width="100" height="50" style="text-align:center;">
+                        <img src="../static/good.png" height=15px>&nbsp2
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="text-indent: 15px;">띠바 눈이너무아프당 눈깔이뽑힐것같아</td>
+
+                    <td height="50" style="text-align:center;">
+                        <img src="../static/comment.png" height=14px>&nbsp14
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size:x-small;text-align:center;">2018/10/31<br>11:15</td>
+                </tr>
+            </table>
+
+            <table id="bulletin_table"  style="margin-top:20px;">
+                <tr>
+                    <td rowspan="3" width="150" style="text-align:center;">
+                        <img src="../static/profile.jpg" height=90px width=90px>
+                        <br>익명
+                    </td>
+                    <td style="border-bottom: 1px solid #444444; text-indent: 15px; font-weight: bold;">으앙망한것같아ㅎㅎㅎ</td>
+                    <td width="100" height="50" style="text-align:center;">
+                        <img src="../static/good.png" height=15px>&nbsp2
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan="2" style="text-indent: 15px;">띠바 눈이너무아프당 눈깔이뽑힐것같아</td>
+
+                    <td height="50" style="text-align:center;">
+                        <img src="../static/comment.png" height=14px>&nbsp14
+                    </td>
+                </tr>
+                <tr>
+                    <td style="font-size:x-small;text-align:center;">2018/10/31<br>11:15</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div id="section_2" style="float:left">
+            <div id="board_2" style="float:left;">
+                <table id="board_table">
+                    <tr id="board_table_maintr">
+                        <td id="board_table_td"><a style="color: rgb(164, 15, 22);">내 수업</a></td>
+                    </tr>
+                    <tr id="board_table_tr">
+                        <td id="board_table_td">
+                            <a href="#" style="font-weight: bold;">[과목1]</a>
+                            <a>게시물1</a>
+                        </td>
+                    </tr>
+                    <tr id="board_table_tr">
+                        <td id="board_table_td">
+                            <a href="#" style="font-weight: bold;">[과목2]</a>
+                            <a>게시물2</a>
+                        </td>
+                    </tr>
+                    <tr id="board_table_tr">
+                        <td id="board_table_td">
+                            <a href="#" style="font-weight: bold;">[과목3]</a>
+                            <a>게시물3</a>
+                        </td>
+                    </tr>
+                    <tr id="board_table_tr">
+                        <td id="board_table_td">
+                            <a href="#" style="font-weight: bold;">[과목4]</a>
+                            <a>게시물4</a>
+                        </td>
+                    </tr>
+                    <tr id="board_table_tr">
+                        <td id="board_table_td">
+                            <a href="#" style="font-weight: bold;">[과목5]</a>
+                            <a>게시물5</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div id="board_2" style="float:left; margin-top: 20px;">
+                <table id="board_table">
+                    <tr id="board_table_maintr">
+                        <td id="board_table_td"><a style="color: rgb(164, 15, 22);">내 수업</a></td>
+                    </tr>
+                    <tr id="board_table_tr">
+                        <td id="board_table_td">
+                            <a href="#" style="font-weight: bold;">[과목1]</a>
+                            <a>게시물1</a>
+                        </td>
+                    </tr>
+                    <tr id="board_table_tr">
+                        <td id="board_table_td">
+                            <a href="#" style="font-weight: bold;">[과목2]</a>
+                            <a>게시물2</a>
+                        </td>
+                    </tr>
+                    <tr id="board_table_tr">
+                        <td id="board_table_td">
+                            <a href="#" style="font-weight: bold;">[과목3]</a>
+                            <a>게시물3</a>
+                        </td>
+                    </tr>
+                    <tr id="board_table_tr">
+                        <td id="board_table_td">
+                            <a href="#" style="font-weight: bold;">[과목4]</a>
+                            <a>게시물4</a>
+                        </td>
+                    </tr>
+                    <tr id="board_table_tr">
+                        <td id="board_table_td">
+                            <a href="#" style="font-weight: bold;">[과목5]</a>
+                            <a>게시물5</a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    </div>
+    </div>
+</body>
+
+</html>
