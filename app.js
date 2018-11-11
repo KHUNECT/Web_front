@@ -44,8 +44,6 @@ app.use(session({
     saveUninitialized:true
 }))
 
-const test_path=['html/','ejs/']
-
 const newPost=[
     {
         boardId:'study',
@@ -256,14 +254,14 @@ app.get('/main',(request,response)=>{
 
 app.post('/logout',(request,response)=>{
     console.log(`${request.session.userId}가 로그아웃했습니다.`)
-    delete request.session.userId
+    delete request.session.sid
     response.status(200).json({result:'Logout Successful'})
 });
 
 app.get('/signup',(request,response)=>{
     fs.readFile('ejs/signup.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(ejs.render(data,{}))
+        response.end(ejs.render(data))
     })
 })
 
@@ -323,11 +321,124 @@ app.get('/gonggu',(request,response)=>{
     })
 })
 
+const posts=[
+    {
+      writerNickname:'juwon',
+      title:'게시판 테스트 제목',
+      recommend:5,
+      context:'게시판 테스트 내용',
+      comments:[
+          {
+
+          },
+          {
+
+          },
+      ],
+      createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+]
+
+app.get('/test',(request,response)=>{
+    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.end(ejs.render(data,{
+            posts:posts,
+            boardId:'test',
+            title:'테스트',
+            Lecture:Lecture,
+        }))
+    })
+})
+
+app.get('/find',(request,response)=> {
+    fs.readFile('ejs/find.ejs', 'utf-8', (error, data) => {
+        response.writeHead(200, {'Content-Type': 'text/html'})
+        response.end(ejs.render(data))
+    })
+})
+
+app.get('/info',(request,response)=> {
+    Users.findOne({_id:request.session.sid})
+        .then((user)=>{
+            fs.readFile('ejs/info.ejs', 'utf-8', (error, data) => {
+                response.writeHead(200, {'Content-Type': 'text/html'})
+                response.end(ejs.render(data,{
+                    user:user,
+                }))
+            })
+        })
+
+})
+
 app.use('/api', require('./api'))
 
 const swaggerDocument = YAML.load('./swagger/swagger.yaml')
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
+
+
 
 
 app.listen(process.env.PORT, ()=>{

@@ -19,9 +19,6 @@
             var data=new Object()
             data.userId=$('#userId').val()
             data.password=$('#password').val()
-            console.log(data.userId)
-            console.log(data.password)
-            console.log(`data:${JSON.stringify(data)}`)
             const stringData=JSON.stringify(data)
             $.ajax({
                 type:'POST',
@@ -63,7 +60,7 @@
             <ul>
               <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a>
                 <ul>
-                  <li>로그인을 해 주세요</li>
+                    <li><a>로그인을 해 주세요</a></li>
                 </ul>
               </li>
               <li><a id="current" style="font-size:16px;font-weight: bold;">함께해요</a>
@@ -143,9 +140,9 @@
         <div style="text-align:center;">
           <a href="/signup" style="font-size:x-small;">회원가입</a>
           <a style="font-size:x-small; margin:0 auto;">&nbsp/&nbsp</a>
-          <a href="/findID" style="font-size:x-small;">ID찾기</a>
+          <a href="/find" style="font-size:x-small;">ID찾기</a>
           <a style="font-size:x-small; margin:0 auto;">&nbsp/&nbsp</a>
-          <a href="/findPW" style="font-size:x-small;">PW찾기</a>
+          <a href="/find" style="font-size:x-small;">PW찾기</a>
         </div>
       </div>
 
