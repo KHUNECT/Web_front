@@ -67,11 +67,7 @@ const newPost=[
         boardName:'동아리',
         title:'서주원'
     },
-    {
-        boardId:'gonggu',
-        boardName:'공구',
-        title:'조민지'
-    }
+
 ]
 
 const Lecture=[
@@ -141,13 +137,7 @@ const newLecturePost=[
             title:'알고리즘분석',
         }
     },
-    {
-        title:'조민지',
-        lecture: {
-            lectureId:'GED1408-G03',
-            title:'공학과경영',
-        }
-    },
+
 ]
 
 const newMarketPost=[
@@ -167,10 +157,7 @@ const newMarketPost=[
         tag:'팝니다',
         title:'서주원',
     },
-    {
-        tag:'삽니다',
-        title:'조민지',
-    },
+
 ]
 
 const newAlbaPost=[
@@ -187,13 +174,10 @@ const newAlbaPost=[
         title:'박민재'
     },
     {
-        tag:'술집',
+        tag:'과외',
         title:'서주원'
     },
-    {
-        tag:'과외',
-        title:'조민지'
-    },
+
 ]
 
 const hotPost=[
@@ -212,19 +196,12 @@ const hotPost=[
         boardName:'공모전',
         title:'박민재'
     },
-    /*
     {
         boardId:'study',
         boardName:'스터디',
         title:'서주원'
     },
 
-    {
-        boardId:'club',
-        boardName:'동아리',
-        title:'조민지'
-    }
-    */
 ]
 
 app.get('/',(request,response)=>{
@@ -235,89 +212,52 @@ app.get('/main',(request,response)=>{
     console.log('-GET /main-')
     const session=request.session
     console.log(`current session id : ${session.sid}`)
-    let nickname='none'
-    let resizedImage='https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
     Users.findOne({_id:session.sid})
-        .then((data)=>{
-            nickname=data.nickname
-            resizedImage=data.resizedImage
-            console.log(`nickname in find() : ${data.nickname}`)
+        .then((user)=>{
+            if(!user){
+                fs.readFile('ejs/main.ejs','utf-8',(error,data)=>{
+                    response.writeHead(200,{'Content-Type':'text/html'})
+                    response.end(ejs.render(data,{
+                        newPost:newPost,
+                        newLecturePost: newLecturePost,
+                        newMarketPost: newMarketPost,
+                        newAlbaPost: newAlbaPost,
+                        hotPost: hotPost,
+                    }))
+                })
+            }
+            else{
+                fs.readFile('ejs/main_after.ejs','utf-8',(error,data)=>{
+                    response.writeHead(200,{'Content-Type':'text/html'})
+                    if(error)
+                        throw error
+                    else {
+                        response.end(ejs.render(data, {
+                            nickname: user.nickname,
+                            resizedImage: user.resizedImage,
+                            Lecture: Lecture,
+                            newPost: newPost,
+                            newLecturePost: newLecturePost,
+                            newMarketPost: newMarketPost,
+                            newAlbaPost: newAlbaPost,
+                            hotPost: hotPost,
+                        }))
+                    }
+                })
+            }
         })
-        .then(fs.readFile('ejs/main.ejs','utf-8',(error,data)=>{
-            response.writeHead(200, {'Content-Type': 'text/html'})
-            response.end(ejs.render(data, {
-                nickname: session.sid+1?data.nickname:'',
-                resizedImage: resizedImage,
-                Lecture: Lecture,
-                newPost: newPost,
-                newLecturePost: newLecturePost,
-                newMarketPost: newMarketPost,
-                newAlbaPost: newAlbaPost,
-                hotPost: hotPost
-            }))
-        }))
         .catch((err)=>{
-            nickname='none'
-            resizedImage='https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
             throw err
         })
     //console.log(`nickname in end of get() : ${nickname}` )
     //console.log(resizedImage)
 
 })
-/*
-app.post('/login',(req,res)=>{
-    const body=req.body
-    Users.findOne({userId:body.userId})
-        .then((data)=>{
-            if(bcrypt.compareSync(body.password,data.password)) {
-                req.session.id = data._id
-                console.log('로그인 성공')
-                req.session.save(function(){
-                    res.redirect('/')
-                })
-            }
-            else{
-                console.log('로그인 실패1')
-            }
-        })
-        .catch((err)=>{
-            console.log('로그인 실패2')
-            throw err
-        })
-})
-*/
-/* 로그인-암호화 후
-app.post('/login',(request,response)=>{
-    const body=request.body
-    Users.findOne({userId:body.userId})
-        .then((data) => {
-            //console.log(data)
-            //console.log(data[0].password)
-            if (bcrypt.compareSync(body.password,data.password)){
-                request.session.sid = data._id
-                console.log(`${body.userId}가 접속했습니다.\n`)
-                console.log(`session id : ${request.session.sid}`)
-                request.session.save(function(){
-                    response.redirect('/')
-                })
-            } else
-            {
-                response.send('유효하지 않습니다.\n')
-            }
-        })
-        .catch((err) => {
-            //response.end(err)
-            console.log('로그인 거절')
-            response.redirect('/main')
-            throw err
-        })
-})
-*/
+
 app.post('/logout',(request,response)=>{
     console.log(`${request.session.userId}가 로그아웃했습니다.`)
     delete request.session.userId
-    response.redirect('/main')
+    response.status(200).json({result:'Logout Successful'})
 });
 
 app.get('/signup',(request,response)=>{

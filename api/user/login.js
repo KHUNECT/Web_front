@@ -2,6 +2,14 @@
 
 const User = require('../../models/user')
 const bcrypt=require('bcrypt-nodejs')
+const session=require('express-session')
+const app=require('express')()
+
+app.use(session({
+    secret:'ambc@!vsmkv#!&*!#EDNAnsv#!$()_*#@',
+    resave:false,
+    saveUninitialized:true
+}))
 
 exports.Login = (req, res) => {
     let userId = req.body.userId
@@ -36,7 +44,8 @@ exports.Login = (req, res) => {
         else {
             if (bcrypt.compareSync(password, data.password)) {
                 console.log(`${data.major} ${data.name} 로그인 완료`)
-                req.session.sid=User._id
+                req.session.sid=data._id
+                console.log(data._id)
                 req.session.save(function(){
                     return res.status(200).json({userId: data.userId})
                 })
