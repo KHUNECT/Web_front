@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <title>에브리타임</title>
+  <meta charset="utf-8">
+  <link type="text/css" href="../static/my_info_common.css" rel="stylesheet">
+  <link type="text/css" href="../static/my_info_container.css" rel="stylesheet">
+  <link type="text/css" href="../static/my_info_partial.css" rel="stylesheet">
+  <script type="text/javascript" src="/js/extensions.jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="/js/extensions.jquery.everydate.js"></script>
+  <script type="text/javascript" src="/js/extensions.underscore-min.js"></script>
+  <script type="text/javascript" src="/js/common.js"></script>
+  <script type="text/javascript" src="/js/my.index.js"></script>
+  
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
+  <style>
+      div 
+      {
+        font-family: 'Noto Sans KR', sans-serif;
+      }
+    </style>
+</head>
+<body>
+
+
+  <div id="container" class="my">
+    <aside>
+      <div class="menu">
+        <ol>
+          <li class="active"><a href="/my">기본 정보</a></li>
+          <li><a href="/auth">학교 인증</a></li>
+          <li><a href="/my?filter=setinfo">개인정보 변경</a></li>
+          <li><a href="/my?filter=setpassword">비밀번호 변경</a></li>
+          <li><a href="/my?filter=setpicture">프로필 이미지 변경</a></li>
+          <li><a href="/my?filter=bannedlist">접근 제한</a></li>
+          <li><a href="/my?filter=removeuser">회원 탈퇴</a></li>
+        </ol>
+      </div>
+    </aside>
+    <div class="wrap setting">
+      <form class="information">
+        <p>
+          <label>사진</label>
+          <img src="https://cf-fpi.everytime.kr/0.png" class="picture">
+        </p>
+        <p>
+          <label>아이디</label>
+          <em>whalswl97</em>
+        </p>
+        <p>
+          <label>이름</label>
+          <em>조민지</em>
+        </p>
+        <p>
+          <label>닉네임</label>
+          <em>초디</em>
+        </p>
+        <p>
+          <label>이메일</label>
+          <em>whalswl97@gmail.com</em>
+        </p>
+        <p>
+          <label>학교</label>
+          <em>경희대 국제캠 17학번</em><span class="description"><img src="/images/container.setting.certification.png" title="인증 완료"></span>
+        </p>
+      </form>
+    </div>
+    <hr>
+  </div>
+</body>
+</html>
