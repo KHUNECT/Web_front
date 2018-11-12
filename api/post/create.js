@@ -14,15 +14,17 @@ AWS.config.update({
 })
 
 exports.CreatePost = (req, res) => {
-    const writerId = req.body.writerId
+    const writerId = req.session.sid
     const title = req.body.title
     const context = req.body.context
     const boardId = req.body.boardId
-
+    console.log('-POST /api/post/create-')
+    console.log(` ${writerId}  ${title}  ${context}  ${boardId} `)
     // 0. 쿼리 확인
     const QueryCheck = () => {
         return new Promise((resolve, reject) => {
             if (!writerId || !title || !context || !boardId){
+                console.log(0)
                 return reject({
                     message: 'query error'
                 })
@@ -33,12 +35,14 @@ exports.CreatePost = (req, res) => {
 
     // 1. writerId 체크
     const WriterCheck = () => {
-        return User.findOne({userId: writerId})
+        console.log(1)
+        return User.findOne({_id:writerId})
     }
 
     // 2. boardId 체크
     const BoardCheck = (writer) => {
-        if (writer != null) {
+        if (!writer) {
+            console.log(2)
             return reject({
                 message: 'User Not Exists'
             })
@@ -48,7 +52,7 @@ exports.CreatePost = (req, res) => {
 
     // 3. 포스트 생성
     const Posting = (board) => {
-        if (board != null) {
+        if (!board) {
             return reject({
                 message: 'Board Not Exists'
             })

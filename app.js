@@ -12,6 +12,8 @@ const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
 const morgan = require('morgan')
 const Users=require('./models/user.js')
+const Board=require('./models/board')
+const Post=require('./models/post')
 
 app.use(morgan('[:date[iso]] :method :status :url :response-time(ms) :user-agent'))
 
@@ -247,9 +249,6 @@ app.get('/main',(request,response)=>{
         .catch((err)=>{
             throw err
         })
-    //console.log(`nickname in end of get() : ${nickname}` )
-    //console.log(resizedImage)
-
 })
 
 app.post('/logout',(request,response)=>{
@@ -266,10 +265,22 @@ app.get('/signup',(request,response)=>{
 })
 
 app.get('/myclass/:id',(request,response)=>{
-    fs.readFile('ejs/myclass.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(data)
-    })
+    const lectureId=request.params.id
+    Board.findOne({boardId:lectureId})
+        .then((board)=>{
+            Post.find({boardId:lectureId})
+                .then((posts)=>{
+                    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                        response.writeHead(200,{'Content-Type':'text/html'})
+                        response.end(ejs.render(data,{
+                            boardId:board.boardId,
+                            title:board.title,
+                            posts:posts,
+                            Lecture:Lecture,
+                        }))
+                    })
+                })
+        })
 })
 
 app.get('/study',(request,response)=>{
@@ -324,6 +335,7 @@ app.get('/gonggu',(request,response)=>{
 const posts=[
     {
       writerNickname:'juwon',
+        wrtierId:'5be4625bb9afde36704427f5',
       title:'게시판 테스트 제목',
       recommend:5,
       context:'게시판 테스트 내용',
