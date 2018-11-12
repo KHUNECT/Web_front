@@ -459,36 +459,6 @@ paths:
           schema:
             type: string
             description: 실패 이유
-  /post/list/all:
-    get:
-      tags:
-        - Post
-      summary: 전체 게시글 출력
-      description: 전체 게시글 출력
-      parameters:
-        - in: query
-          name: item
-          description: 출력 하고자 하는 게시글 갯수
-          type: number
-        - in: query
-          name: page
-          description: 페이지 쪽수
-          type: number
-      responses:
-        '200':
-          description: 게시글 반환 성공
-          schema:
-            type: array
-            items:
-              type: object
-              description: 게시글 객체 반환
-        '500':
-          description: 게시글 반환 실패
-          schema:
-            type: object
-            properties:
-              message:
-                type: string
-                description: 실패 이유
+
 
 

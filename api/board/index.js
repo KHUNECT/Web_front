@@ -3,6 +3,7 @@
 const express = require('express')
 const router = express.Router()
 
-router.get('/list', (req, res)=>{res.status(200).json({test:true})})
+
+router.get('/:boardid',)
 
 module.exports = router
