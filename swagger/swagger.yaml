@@ -260,7 +260,7 @@ paths:
       parameters:
         - in: body
           name: body
-          description: KLAS 아이디
+          description: 유저 로그인
           required : true
           schema:
             type: object
@@ -271,6 +271,20 @@ paths:
               password:
                 type: string
                 description: 유저 패스워드
+      responses:
+        '200':
+          description: 로그인 성공
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: 성공 여부
+        '500':
+          description: 로그인 실패
+          schema:
+            type: string
+            description: 에러 이유
   /user/findId:
     post:
       tags:
@@ -459,6 +473,44 @@ paths:
           schema:
             type: string
             description: 실패 이유
-
+  /board/{boardId}/{page}:
+    get:
+      tags:
+        - Board
+      summary: boardId에 해당하는 게시판의 게시글 반환
+      description: boardId에 해당하는 게시판의 게시글 반환
+      parameters:
+        - in: path
+          name: boardId
+          description: 게시판 ID
+          type: string
+          required: true
+        - in: path
+          name: page
+          description: 페이지
+          type: string
+          required: true
+        - in: query
+          name: num
+          description: 게시글 수
+          type: string
+          required: false
+      responses:
+        '200':
+          description: 게시글 리스트 반환, post 스키마에 writerImage, writerNickname 어트리뷰트 추가
+          schema:
+            type: array
+            items:
+              type: object
+              description: Post의 모델과 똑같다.
+              properties:
+                post:
+                  type: string
+                  description: Post 객체
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
 
 
