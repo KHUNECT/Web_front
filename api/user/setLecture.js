@@ -19,6 +19,11 @@ exports.SetLecture = (req, res) => {
             })
         } else {
             json_var = JSON.parse(json)
+            if (json_var.statusCode == 500){
+                return Promise.reject({
+                    message: "Request Error"
+                })
+            }
             return User.findOne({userId: userId})
         }
     }
@@ -73,7 +78,7 @@ exports.SetLecture = (req, res) => {
         .then(FindAndCreate)
         .catch(err => {
             if (err){
-                return res.status(500).json(err)
+                return res.status(500).json(err.message || err)
             }
         })
 }

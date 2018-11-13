@@ -16,6 +16,7 @@ const PostSchema = new Schema({
     }],
     createdDate: {type: Date, default: Date.now},
     boardId: {type: String, required: true},
+    recommend: {type: Number, default: 0}
 },{collection: "posts"}
 )
 

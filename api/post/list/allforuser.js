@@ -4,7 +4,8 @@ const Post = require('../../../models/post')
 const User = require('../../../models/user')
 const Board = require('../../../models/board')
 
-exports.ListAll = (req, res) => {
+exports.AllForUser = (req, res) => {
+    const userId = req.query.userId
     const page = Number(req.query.page) || 1
     const item = Number(req.query.item) || 10
 
