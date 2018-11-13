@@ -27,18 +27,25 @@
               reader.readAsDataURL(input.files[0]);
             }
         }
-    </script>
+	</script>
+	
+	<style>
+		div 
+		{
+		  font-family: 'Noto Sans KR', sans-serif;
+		}
+	  </style>
 </head>
 
-<body>
-	<div id="top-layer_fixed">
-		<table cellspacing="0" cellpadding="0" style="height:100%; margin: 0 auto;">
-			<tr>
-				<td style="vertical-align:middle; padding-left: 200px; padding-right: 220px;">
-					<img src="../static/logo.png" height=45%>
-				</td>
-				<td>
-					<div class="menubar">
+<body style="background-color:#f6f6f6;">
+	<div id="top-layer_fixed" >
+	  <table cellspacing="0" cellpadding="0" style="width:1200px; height:100%; margin: 0 auto;">
+		<tr>
+		  <td style="vertical-align:middle; padding-left: 70px; padding-right: 220px;">
+			<img src="../static/logo.png" height=45%>
+		  </td>
+		  <td style="width:400px;">
+			<div class="menubar">
 						<ul>
 							<li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a></li>
 							<li>
@@ -70,10 +77,6 @@
 		</table>
 	</div>
 	<div id="signup_page">
-		<div id="main_banner">
-			<img src="../static/sign_up_logo2.png" height=100px style="float:inherit; margin-top: 30px;">
-		</div>
-		<form id="signupForm">
 		<div id="signup_form" style="padding-right:15px; padding-top: 30px;">
 			<div>
 				<label for="signupName">이름</label>
@@ -91,11 +94,11 @@
 				<div style="color:gray;">
 				</div>
 			</div>
-			<div style="margin-bottom: 18px;">
+			<div style="margin-bottom: 17px;">
 				<label for="repeatPassword">비밀번호 확인</label>
 				<br>
 				<input type="password" id="repeatPassword" required placeholder="비밀번호 확인" name="password2">
-				<div style="color:gray; font-size:small">
+				<div style="color:gray; font-size:x-small">
 					비밀번호 확인을 위해<br>다시 한번 입력해주세요.
 				</div>
 			</div>
@@ -112,7 +115,7 @@
 				<br>
 				<form id="form1" runat="server">
 					<input type='file' id="imgInp">
-					<div style="margin-top:3px; width: 160px; height: 160px; background-color: grey; margin-bottom: 4px;">
+					<div style="border:1px solid grey;margin-top:3px; width: 160px; height: 160px; background-color:white; margin-bottom: 5px;">
 						<img id="blah" src="#" alt="img" width=160px height=160px>
 					</div>
 				</form>
@@ -127,10 +130,9 @@
 				</div>
 			</div>
 		</div>
-		</form>
 		<br><br>
 		<input type="submit" value="회원가입">
-	</div>
+		
 </body>
 
 </html>
