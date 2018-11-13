@@ -221,7 +221,7 @@ paths:
       parameters:
         - in: body
           name: userId
-          description: KLAS 아이디
+          description: 유저 아이디
           required: true
           schema:
             type: object
@@ -355,6 +355,57 @@ paths:
                 message:
                   type: string
                   description: 성공 여부
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/list/allforuser:
+    post:
+      tags:
+        - Post
+      summary : 유저 아이디를 넣으면 유저가 듣는 강의에 맞춰 게시글 배열 반환
+      description : 유저 아이디를 넣으면 유저가 듣는 강의에 맞춰 게시글 배열 반환
+      parameters:
+        - in: body
+          name: body
+          description: 유저 오브젝트 아이디, 페이지 아이템
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 오브젝트 아이디
+              page:
+                type: string
+                description: 페이지 수
+              item:
+                type: string
+                description: 아이템 반환 갯수
+      responses:
+        '200':
+          description: 게시글 반환
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  description: post object ID
+                title:
+                  type: string
+                  description: 제목
+                writerNickname:
+                  type: string
+                  description: 글쓴이 닉네임
+                boardId:
+                  type: string
+                  description: 게시판 ID
+                boardTitle:
+                  type: string
+                  description: 게시판 이름
         '500':
           description: 요청 실패
           schema:
