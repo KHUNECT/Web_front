@@ -14,7 +14,7 @@ exports.findPassword = (req, res) => {
                 message: "Query Error"
             })
         }
-        return User.findOne({email: email})
+        return User.findOne({userId:userId})
     }
 
     // 2. User Check
@@ -41,8 +41,8 @@ exports.findPassword = (req, res) => {
 
         let str = ""
         for (;str.length < 10;str += Math.random().toString(36).substr(2));
-
-        user.password = str
+        user.password=str
+        //user.generateHash(str)
         user.save()
 
         let mailOptions = {
@@ -54,7 +54,7 @@ exports.findPassword = (req, res) => {
         Mailer.sendMail(mailOptions, (err, info) => {
             if (err) return Promise.reject(err)
         })
-        return res.status(200).json({message: "Success"})
+        return res.status(200).json({message: "Success "+str})
 
 
     }

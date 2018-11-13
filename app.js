@@ -475,6 +475,49 @@ app.get('/info',(request,response)=> {
 
 })
 
+app.get('/info/setInfo',(request,response)=>{
+    Users.findOne({_id:request.session.sid})
+        .then((user)=>{
+            fs.readFile('ejs/setInfo.ejs', 'utf-8', (error, data) => {
+                response.writeHead(200, {'Content-Type': 'text/html'})
+                response.end(ejs.render(data,{
+                    user:user,
+                }))
+            })
+        })
+})
+
+app.get('/info/setPassword',(request,response)=>{
+    Users.findOne({_id:request.session.sid})
+        .then((user)=>{
+            fs.readFile('ejs/setPassword.ejs', 'utf-8', (error, data) => {
+                response.writeHead(200, {'Content-Type': 'text/html'})
+                response.end(ejs.render(data,{
+                    user:user,
+                }))
+            })
+        })
+})
+
+app.get('/info/setImage',(request,response)=>{
+    Users.findOne({_id:request.session.sid})
+        .then((user)=>{
+            fs.readFile('ejs/setImage.ejs', 'utf-8', (error, data) => {
+                response.writeHead(200, {'Content-Type': 'text/html'})
+                response.end(ejs.render(data,{
+                    user:user,
+                }))
+            })
+        })
+})
+
+app.get('/klas',(request,response)=>{
+    console.log(request.session.sid)
+    fs.readFile('ejs/klas.ejs','utf-8',(error,data)=>{
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.end(ejs.render(data))
+    })
+})
 app.use('/api', require('./api'))
 
 const swaggerDocument = YAML.load('./swagger/swagger.yaml')

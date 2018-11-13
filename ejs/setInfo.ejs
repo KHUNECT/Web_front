@@ -27,7 +27,7 @@
   <table cellspacing="0" cellpadding="0" style="width:1200px; height:100%; margin: 0 auto;">
     <tr>
       <td style="vertical-align:middle; padding-left: 70px; padding-right: 220px;">
-        <img src="../static/logo.png" height=45%>
+        <a href="/main"><img src="../static/logo.png" height=45%/></a>
       </td>
       <td style="width:400px;">
         <div class="menubar">
@@ -62,7 +62,7 @@
   </table>
 </div>
 
-<div id="info_page">
+
   <div id="container" class="my">
     <aside>
       <div class="menu">
@@ -70,27 +70,36 @@
           <li class="active"><a href="/info">기본 정보</a></li>
           <li><a href="/info/setinfo">개인정보 변경</a></li>
           <li><a href="/info/setpassword">비밀번호 변경</a></li>
-          <li><a href="/info/setpicture">프로필 이미지 변경</a></li>
+          <li><a href="/info/setImage">프로필 이미지 변경</a></li>
         </ol>
       </div>
     </aside>
     <div class="wrap setting">
-      <form class="information">
-        <h2 style="text-indent:35px;">나의 정보</h2>
+      <form class="setinfo">
+        <h2 style="text-indent:10px;">개인정보 변경</h2>
         <p>
-          <label>사진</label>
-          <img src="<%=user.resizedImage%>" class="picture" />
+          <label>이름 (실명)</label>
+          <input type="text" name="name" value="<%=user.name%>" maxlength="20" class="text">
         </p>
-        <p><label>아이디</label> <em><%=user.userId%></em></p>
-        <p><label>이름</label> <em><%=user.name%></em></p>
-        <p><label>닉네임</label> <em><%=user.nickname%></em></p>
-        <p><label>이메일</label> <em><%=user.email%></em></p>
-        <p><label>학교</label> <em>경희대 국제캠퍼스 전자정보대학</em></p>
+        <p>
+          <label>닉네임</label>
+          <input type="text" name="nickname" value="<%=user.nickname%>" maxlength="10" class="text">
+        </p>
+        <p>
+          <label>이메일</label>
+          <input type="text" name="email" value="<%=user.email%>" class="text">
+        </p>
+        <p>
+          <label>비밀번호 확인</label>
+          <input type="password" name="password" maxlength="20" class="text">
+        </p>
+        <p class="submit" >
+          <input type="button" id="changeInfoButton" value="개인정보 변경">
+        </p>
       </form>
     </div>
-    <hr />
+    <hr>
   </div>
-</div>
 </body>
 
 </html>

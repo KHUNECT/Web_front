@@ -12,7 +12,8 @@ AWS.config.update({
 })
 
 exports.UserModify = (req, res) => {
-    const userId = req.body.userId
+    console.log('-POST modify-')
+    const _id = req.session.sid
     const password = req.body.password || ''
     const nickname = req.body.nickname || ''
     const email = req.body.email || ''
@@ -42,7 +43,7 @@ exports.UserModify = (req, res) => {
     // 1. 쿼리 체크
     const CheckQuery = () =>{
         return new Promise((resolve, reject) => {
-            if (!userId) {
+            if (!_id) {
                 return reject({
                     message: "query error"
                 })
@@ -53,7 +54,7 @@ exports.UserModify = (req, res) => {
 
     // 2. 유저 체크
     const UserCheck = () => {
-        return User.findOne({userId: userId})
+        return User.findOne({_id: _id})
     }
 
     // 3. password, nickname, email 저장
@@ -73,8 +74,8 @@ exports.UserModify = (req, res) => {
         if (req.file == null) {
             result.save((err, data) => {
                 if (err) {
-                    throw err
                     console.log(err)
+                    throw err
                 }
                 return res.status(200).json({message: 'Success'})
             })
@@ -115,8 +116,8 @@ exports.UserModify = (req, res) => {
 
             result.save((err, data) => {
                 if (err) {
-                    throw err
                     console.log(err)
+                    throw err
                 }
             })
 
