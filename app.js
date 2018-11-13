@@ -264,8 +264,8 @@ app.get('/signup',(request,response)=>{
     })
 })
 
-app.get('/:boardId',(request,response)=>{
-    const boardId = request.params.boardId
+app.get('/myclass/:lectureId',(request,response)=>{
+    const boardId = request.params.lectureId
     const page = Number(request.query.page) || 1
     const itemNum = Number(request.query.itemNum) || 10
     // 1. Query Check
