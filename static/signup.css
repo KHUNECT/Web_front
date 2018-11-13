@@ -12,7 +12,7 @@ a {
 #top-layer_fixed {
   margin: 0 auto;
   height: 70px;
-  width: 1200px;
+  width: 100%;
   color: #fff;
   font-size: 12px;
   position: fixed;
