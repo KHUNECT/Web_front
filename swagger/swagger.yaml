@@ -221,7 +221,7 @@ paths:
       parameters:
         - in: body
           name: userId
-          description: KLAS 아이디
+          description: 유저 아이디
           required: true
           schema:
             type: object

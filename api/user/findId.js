@@ -17,7 +17,7 @@ exports.findId = (req, res) => {
 
     // 2. User Check
     const UserCheck = (user) => {
-        if (user != null) {
+        if (user == null) {
             return res.status(200).json({message: "아이디가 존재 하지 않습니다."})
         }
         else
