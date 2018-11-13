@@ -157,6 +157,31 @@ a {
   text-indent: 10px;
 }
 
+#login_submit
+{
+  width:62px;
+  height: 25px;
+  background-color: rgb(164, 15, 22);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px;
+  border-radius: 8px;
+  margin-left:48px;
+}
+
+#logout_submit
+{
+  width:62px;
+  height: 25px;
+  background-color: rgb(164, 15, 22);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px;
+  border-radius: 8px;
+}
+
 .menubar {
   border: none;
   border: 0px;

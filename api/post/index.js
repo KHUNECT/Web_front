@@ -9,6 +9,7 @@ const recommend = require('./recommend')
 const upload = require('../middlewares/multer')
 const detail = require('./detail')
 const addComment = require('./addComment')
+const deleteComment = require('./deleteComment')
 const router = express.Router()
 
 router.use('/list', list)
@@ -18,5 +19,6 @@ router.post('/delete', deletes.DeletePost)
 router.post('/recommend', recommend.Recommend)
 router.get('/detail/:postId', detail.Detail)
 router.post('/addComment', addComment.addComment)
+router.post('/deleteComment', deleteComment.DeleteComment)
 
 module.exports = router
