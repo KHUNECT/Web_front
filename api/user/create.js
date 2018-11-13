@@ -100,11 +100,13 @@ exports.UserCreate = (req, res,) => {
         })
     }
 
+
     DataCheck()
     .then(UserCheck)
     .then(ImageProcess)
     .then(SignUp)
     .then(item => {
+        item.generateHash(password)
         return res.status(200).json({userId: userId, nickname: nickname})
     })
     .catch((err) => {

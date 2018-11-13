@@ -264,22 +264,54 @@ app.get('/signup',(request,response)=>{
     })
 })
 
-app.get('/myclass/:id',(request,response)=>{
-    const lectureId=request.params.id
-    Board.findOne({boardId:lectureId})
-        .then((board)=>{
-            Post.find({boardId:lectureId})
-                .then((posts)=>{
-                    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
-                        response.writeHead(200,{'Content-Type':'text/html'})
-                        response.end(ejs.render(data,{
-                            boardId:board.boardId,
-                            title:board.title,
-                            posts:posts,
-                            Lecture:Lecture,
-                        }))
-                    })
-                })
+app.get('/:boardId',(request,response)=>{
+    const boardId = request.params.boardId
+    const page = Number(request.query.page) || 1
+    const itemNum = Number(request.query.itemNum) || 10
+    // 1. Query Check
+    const QueryCheck = () => {
+        if (!boardId){
+            return Promise.reject({
+                message: "Query Error"
+            })
+        }
+        return Post.find({boardId: boardId}).skip((page-1)*itemNum).limit(itemNum).lean()
+    }
+
+    // 2.
+    const Response = (posts) => {
+        const mapPosts = async () => {
+            try {
+                for (let i = 0; i < posts.length; i++) {
+                    let user = await Users.findOne({_id: posts[i].writerId}).exec()
+                    posts[i].writerNickname = user.nickname
+                    posts[i].writerImage = user.resizedImage
+                }
+                return posts
+            } catch (err) {
+                return Promise.reject(err)
+            }
+        }
+        return mapPosts()
+    }
+
+
+    QueryCheck()
+        .then(Response)
+        .then(posts => {
+            fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                response.writeHead(200,{'Content-Type':'text/html'})
+                response.end(ejs.render(data,{
+                    boardId:request.params.boardId,
+                    title:'test',
+                    posts:posts,
+                    Lecture:Lecture,
+                    hotPost:hotPost,
+                }))
+            })
+        })
+        .catch(err => {
+            if (err) response.status(500).json(err.message || err)
         })
 })
 
@@ -410,18 +442,6 @@ const posts=[
         createdDate:'2018/11/12'
     },
 ]
-
-app.get('/test',(request,response)=>{
-    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(ejs.render(data,{
-            posts:posts,
-            boardId:'test',
-            title:'테스트',
-            Lecture:Lecture,
-        }))
-    })
-})
 
 app.get('/find',(request,response)=> {
     fs.readFile('ejs/find.ejs', 'utf-8', (error, data) => {
