@@ -360,6 +360,84 @@ paths:
           schema:
             type: string
             description: 실패 이유
+  /post/addComment:
+    post:
+      tags:
+        - User
+      summary : 댓글 작성
+      description : 댓글 작성
+      parameters:
+        - in: body
+          name: body
+          description: 댓글 정보
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              postId:
+                type: string
+                description: 게시글 ID
+              context:
+                type: string
+                description: 댓글 내용
+      responses:
+        '200':
+          description: 회원 정보 수정 성공
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: 성공 여부
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/deleteComment:
+    post:
+      tags:
+        - User
+      summary : 댓글 삭제
+      description : 댓글 삭제
+      parameters:
+        - in: body
+          name: body
+          description: 댓글 정보
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              postId:
+                type: string
+                description: 게시글 ID
+              commentId:
+                type: string
+                description: 댓글 ID
+      responses:
+        '200':
+          description: 회원 정보 수정 성공
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: 성공 여부
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
   /post/create:
     post:
       tags:
@@ -566,7 +644,7 @@ paths:
           schema:
             type: string
             description: 실패 이유
-  /board/{boardId}/{page}:
+  /board/{boardId}:
     get:
       tags:
         - Board
@@ -578,7 +656,7 @@ paths:
           description: 게시판 ID
           type: string
           required: true
-        - in: path
+        - in: query
           name: page
           description: 페이지
           type: string
