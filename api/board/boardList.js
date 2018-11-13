@@ -6,7 +6,7 @@ const User = require('../../models/user')
 
 exports.BoardList = (req, res) => {
     const boardId = req.params.boardId
-    const page = Number(req.params.page) || 1
+    const page = Number(req.query.page) || 1
     const itemNum = Number(req.query.itemNum) || 10
 
     // 1. Query Check
