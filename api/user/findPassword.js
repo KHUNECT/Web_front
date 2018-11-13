@@ -14,7 +14,7 @@ exports.findPassword = (req, res) => {
                 message: "Query Error"
             })
         }
-        return User.findOne({email: email})
+        return User.findOne({userId: userId})
     }
 
     // 2. User Check
@@ -32,29 +32,31 @@ exports.findPassword = (req, res) => {
 
     // 3. Email Send
     const EmailSend = (user) => {
-        if (user == 0){
-            return res.status(200).json({message: "아이디가 존재 하지 않습니다."})
-        }
-        else if (user == 1){
-            return res.status(200).json({message: "이메일이 일치 하지 않습니다."})
-        }
+        return new Promise((resolve, reject) => {
+            if (user == 0){
+                return res.status(200).json({message: "아이디가 존재 하지 않습니다."})
+            }
+            else if (user == 1){
+                return res.status(200).json({message: "이메일이 일치 하지 않습니다."})
+            }
 
-        let str = ""
-        for (;str.length < 10;str += Math.random().toString(36).substr(2));
+            let str = ""
+            for (;str.length < 10;str += Math.random().toString(36).substr(2));
 
-        user.password = str
-        user.save()
+            user.password = str
+            user.save()
 
-        let mailOptions = {
-            from: 'KHUNECT',
-            to: user.email,
-            subject: '[KHUNECT] 비밀번호가 변경 되었습니다',
-            text: `${user.nickname} 님의 비밀번호가 변경 되었습니다. 변경 된 비밀번호는 ${str} 입니다.`
-        }
-        Mailer.sendMail(mailOptions, (err, info) => {
-            if (err) return Promise.reject(err)
+            let mailOptions = {
+                from: 'KHUNECT',
+                to: user.email,
+                subject: '[KHUNECT] 비밀번호가 변경 되었습니다',
+                text: `${user.nickname} 님의 비밀번호가 변경 되었습니다. 변경 된 비밀번호는 ${str} 입니다.`
+            }
+            Mailer.sendMail(mailOptions, (err, info) => {
+                if (err) return reject(err)
+            })
+            return res.status(200).json({message: "Success"})
         })
-        return res.status(200).json({message: "Success"})
 
 
     }
