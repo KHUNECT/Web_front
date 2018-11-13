@@ -15,7 +15,7 @@ exports.UserDetail = (req, res) => {
     .then((result) => {
         return res.status(200).json({
             userId: result.userId,
-            image: result.image,
+            resizedImage: result.resizedImage,
             nickname: result.nickname,
             major: result.major,
             email: result.email

@@ -12,12 +12,13 @@ AWS.config.update({
     region: process.env.region
 })
 
-exports.UserCreate = (req, res, returnCode, data) => {
+exports.UserCreate = (req, res,) => {
     const userId = req.body.userId
     const password = req.body.password
     const nickname = req.body.nickname
     const email = req.body.email
     const major = req.body.major
+    const name=req.body.name
     console.log('요청 받음')
     // 0. 데이터 체크
     const DataCheck = () => {
@@ -37,6 +38,8 @@ exports.UserCreate = (req, res, returnCode, data) => {
     const UserCheck = () =>{
         return User.find().or({userId: userId}, {nickname: nickname}, {email: email}).findOne()
     }
+
+    // 1-1.
 
     // 2. image 확인
     const ImageProcess = (User) => {
@@ -62,6 +65,7 @@ exports.UserCreate = (req, res, returnCode, data) => {
         let tempS3 = new AWS.S3()
 
         sharp(req.file.buffer)
+            .rotate()
             .toFormat('jpeg')
             .resize(200,200)
             .toBuffer()
@@ -85,20 +89,16 @@ exports.UserCreate = (req, res, returnCode, data) => {
 
     // 3. 회원 가입
     const SignUp = (resized_loc) => {
-        const salt=bcrypt.genSaltSync(10)
-        const hash=bcrypt.hashSync(password,salt)
         User.create({
+            name:name,
             userId: userId,
-            password: hash,
+            password: password,
             nickname: nickname,
             email: email,
             major: major,
             resizedImage: resized_loc || 'https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
         }, (err, data)=>{ if(err) throw err})
-        res.redirect('/main')
-        //res.status(200).json({userId: userId, nickname: nickname})
-        returnCode=200
-        return
+        res.status(200).json({userId: userId, nickname: nickname})
     }
 
     DataCheck()
@@ -107,10 +107,7 @@ exports.UserCreate = (req, res, returnCode, data) => {
     .then(SignUp)
     .catch((err) => {
         console.log(err)
-        res.redirect('/signup')
-        //res.status(500).json(err.message || err)
-        returnCode=500
-        return
+        res.status(500).json(err.message || err)
     })
 
 }
