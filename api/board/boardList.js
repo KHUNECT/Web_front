@@ -23,12 +23,23 @@ exports.BoardList = (req, res) => {
     const Response = (posts) => {
         const mapPosts = async () => {
             try {
+                let tempPosts = []
                 for (let i = 0; i < posts.length; i++) {
                     let user = await User.findOne({userId: posts[i].writerId}).exec()
-                    posts[i].writerNickname = user.nickname
-                    posts[i].writerImage = user.resizedImage
+                    tempPosts.push({
+                        images: posts[i].images,
+                        title: posts[i].title,
+                        context: posts[i].context,
+                        boardId: posts[i].boardId,
+                        comments: posts[i].comments.length,
+                        createdDate: posts[i].createdDate,
+                        recommend: posts[i].recommend,
+                        writerId: user.writerId,
+                        writerNickname: user.nickname,
+                        writerImage: user.resizedImage
+                    })
                 }
-                return posts
+                return tempPosts
             } catch (err) {
                 return Promise.reject(err)
             }
