@@ -15,7 +15,7 @@ exports.Detail = (req, res) => {
                 message: "Query Error"
             })
         } else {
-            return Post.findOne({_id: postId})
+            return Post.findOne({_id: postId}).lean()
         }
     }
 
@@ -26,16 +26,20 @@ exports.Detail = (req, res) => {
                 message: "Can`t find Post"
             })
         }
-        tempPost = Post
-        return User.findOne({userId: post.userId})
+        tempPost = post
+        return User.findOne({userId: post.writerId})
     }
 
     // 3. User Check
-    const UserCheck = (user) => {
+    const UserCheck = async (user) => {
         if (user == null){
             return Promise.reject({
                 message: "Can`t find User"
             })
+        }
+        for (let i = 0; i < tempPost.comments.length; i++) {
+            let userInfo = await User.findOne({userId: tempPost.comments[i].writerId}).lean().exec()
+            tempPost.comments[i].writerNickname = userInfo.nickname
         }
         return res.status(200).json({
             _id: postId,
@@ -46,7 +50,8 @@ exports.Detail = (req, res) => {
             postContext: tempPost.context,
             postComments: tempPost.comments,
             postRecommend: tempPost.recommend,
-            postImages: tempPost.images
+            postImages: tempPost.images,
+            createdDate: tempPost.createdDate
         })
     }
 

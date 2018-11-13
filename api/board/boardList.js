@@ -16,7 +16,7 @@ exports.BoardList = (req, res) => {
                 message: "Query Error"
             })
         }
-        return Post.find({boardId: boardId}).skip((page-1)*itemNum).limit(itemNum).lean()
+        return Post.find({boardId: boardId}).sort('-createdDate').skip((page-1)*itemNum).limit(itemNum).lean()
     }
 
     // 2.
@@ -27,6 +27,7 @@ exports.BoardList = (req, res) => {
                 for (let i = 0; i < posts.length; i++) {
                     let user = await User.findOne({userId: posts[i].writerId}).exec()
                     tempPosts.push({
+                        _id: posts[i]._id,
                         images: posts[i].images,
                         title: posts[i].title,
                         context: posts[i].context,

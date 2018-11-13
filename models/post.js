@@ -9,10 +9,6 @@ const PostSchema = new Schema({
     comments: [{
         writerId: {type:String, required:true},
         context: {type:String, required:true},
-        nestedComments:[{
-            writerId: {type:String, required:true},
-            context: {type:String, required:true}
-        }]
     }],
     createdDate: {type: Date, default: Date.now},
     boardId: {type: String, required: true},

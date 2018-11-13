@@ -16,7 +16,7 @@ router.post('/create',upload.single('image'), create.CreatePost)
 router.post('/modify', modify.ModifyPost)
 router.post('/delete', deletes.DeletePost)
 router.post('/recommend', recommend.Recommend)
-router.get('/detail/{postId}', detail.Detail)
+router.get('/detail/:postId', detail.Detail)
 router.post('/addComment', addComment.addComment)
 
 module.exports = router

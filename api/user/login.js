@@ -13,12 +13,12 @@ exports.Login = (req, res) => {
                 message: "Query Error"
             })
         }
-        return User.findOne({userId:body.userId})
+        return User.findOne({userId: userId})
     }
 
     // 2. 로그인 시도
     const Login = (data) =>{
-        if (bcrypt.compareSync(body.password,data.password)){
+        if (bcrypt.compareSync(password, data.password)){
             return res.status(200).json({userId: data.userId})
         }
         else
