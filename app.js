@@ -12,6 +12,8 @@ const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
 const morgan = require('morgan')
 const Users=require('./models/user.js')
+const Board=require('./models/board')
+const Post=require('./models/post')
 
 app.use(morgan('[:date[iso]] :method :status :url :response-time(ms) :user-agent'))
 
@@ -44,8 +46,6 @@ app.use(session({
     saveUninitialized:true
 }))
 
-const test_path=['html/','ejs/']
-
 const newPost=[
     {
         boardId:'study',
@@ -67,11 +67,7 @@ const newPost=[
         boardName:'동아리',
         title:'서주원'
     },
-    {
-        boardId:'gonggu',
-        boardName:'공구',
-        title:'조민지'
-    }
+
 ]
 
 const Lecture=[
@@ -141,13 +137,7 @@ const newLecturePost=[
             title:'알고리즘분석',
         }
     },
-    {
-        title:'조민지',
-        lecture: {
-            lectureId:'GED1408-G03',
-            title:'공학과경영',
-        }
-    },
+
 ]
 
 const newMarketPost=[
@@ -167,10 +157,7 @@ const newMarketPost=[
         tag:'팝니다',
         title:'서주원',
     },
-    {
-        tag:'삽니다',
-        title:'조민지',
-    },
+
 ]
 
 const newAlbaPost=[
@@ -187,13 +174,10 @@ const newAlbaPost=[
         title:'박민재'
     },
     {
-        tag:'술집',
+        tag:'과외',
         title:'서주원'
     },
-    {
-        tag:'과외',
-        title:'조민지'
-    },
+
 ]
 
 const hotPost=[
@@ -212,23 +196,13 @@ const hotPost=[
         boardName:'공모전',
         title:'박민재'
     },
-    /*
     {
         boardId:'study',
         boardName:'스터디',
         title:'서주원'
     },
 
-    {
-        boardId:'club',
-        boardName:'동아리',
-        title:'조민지'
-    }
-    */
 ]
-
-const users=new Users()
-//const Users=require('./models/user')
 
 app.get('/',(request,response)=>{
     response.redirect('/main')
@@ -238,132 +212,235 @@ app.get('/main',(request,response)=>{
     console.log('-GET /main-')
     const session=request.session
     console.log(`current session id : ${session.sid}`)
-    let nickname='none'
-    let resizedImage='https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
     Users.findOne({_id:session.sid})
-        .then((data)=>{
-            console.log(data)
-            nickname=data.nickname
-            resizedImage=data.resizedImage
-            console.log(`nickname in find() : ${data.nickname}`)
-        })
-        .then(fs.readFile(test_path[1]+'main.ejs','utf-8',(error,data)=>{
-            response.writeHead(200, {'Content-Type': 'text/html'})
-            response.end(ejs.render(data, {
-                nickname: session.sid+1?data.nickname:'',
-                resizedImage: resizedImage,
-                Lecture: Lecture,
-                newPost: newPost,
-                newLecturePost: newLecturePost,
-                newMarketPost: newMarketPost,
-                newAlbaPost: newAlbaPost,
-                hotPost: hotPost
-            }))
-        }))
-        .catch((err)=>{
-            nickname='none'
-            resizedImage='https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
-            throw err
-        })
-    //console.log(`nickname in end of get() : ${nickname}` )
-    //console.log(resizedImage)
-
-})
-
-app.post('/login',(request,response)=>{
-    console.log('-POST /login-')
-    const body=request.body
-    Users.findOne({userId:body.userId})
-        .then((data) => {
-            //console.log(data)
-            //console.log(data[0].password)
-            if (bcrypt.compareSync(body.password,data.password)){
-                request.session.sid = data._id
-                console.log(`${body.userId}가 접속했습니다.\n`)
-                console.log(`session id : ${request.session.sid}`)
-                request.session.save(function(){
-                    response.redirect('/')
+        .then((user)=>{
+            if(!user){
+                fs.readFile('ejs/main.ejs','utf-8',(error,data)=>{
+                    response.writeHead(200,{'Content-Type':'text/html'})
+                    response.end(ejs.render(data,{
+                        newPost:newPost,
+                        newLecturePost: newLecturePost,
+                        newMarketPost: newMarketPost,
+                        newAlbaPost: newAlbaPost,
+                        hotPost: hotPost,
+                    }))
                 })
-            } else
-            {
-                response.send('유효하지 않습니다.\n')
+            }
+            else{
+                fs.readFile('ejs/main_after.ejs','utf-8',(error,data)=>{
+                    response.writeHead(200,{'Content-Type':'text/html'})
+                    if(error)
+                        throw error
+                    else {
+                        response.end(ejs.render(data, {
+                            nickname: user.nickname,
+                            resizedImage: user.resizedImage,
+                            Lecture: Lecture,
+                            newPost: newPost,
+                            newLecturePost: newLecturePost,
+                            newMarketPost: newMarketPost,
+                            newAlbaPost: newAlbaPost,
+                            hotPost: hotPost,
+                        }))
+                    }
+                })
             }
         })
-        .catch((err) => {
-            //response.end(err)
-            console.log('로그인 거절')
-            response.redirect('/main')
+        .catch((err)=>{
             throw err
         })
 })
 
 app.post('/logout',(request,response)=>{
     console.log(`${request.session.userId}가 로그아웃했습니다.`)
-    delete request.session.userId
-    response.redirect('/main')
+    delete request.session.sid
+    response.status(200).json({result:'Logout Successful'})
 });
 
 app.get('/signup',(request,response)=>{
-    fs.readFile(test_path[1]+'signup.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/signup.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(ejs.render(data,{}))
+        response.end(ejs.render(data))
     })
 })
 
 app.get('/myclass/:id',(request,response)=>{
-    fs.readFile(test_path[0]+'myclass.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
-    })
+    const lectureId=request.params.id
+    Board.findOne({boardId:lectureId})
+        .then((board)=>{
+            Post.find({boardId:lectureId})
+                .then((posts)=>{
+                    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                        response.writeHead(200,{'Content-Type':'text/html'})
+                        response.end(ejs.render(data,{
+                            boardId:board.boardId,
+                            title:board.title,
+                            posts:posts,
+                            Lecture:Lecture,
+                        }))
+                    })
+                })
+        })
 })
 
 app.get('/study',(request,response)=>{
-    fs.readFile(test_path[0]+'study.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/study.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/hobby',(request,response)=>{
-    fs.readFile(test_path[0]+'hobby.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/hobby.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/alba',(request,response)=>{
-    fs.readFile(test_path[0]+'alba.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/alba.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/club',(request,response)=>{
-    fs.readFile(test_path[0]+'club.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/club.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/contest',(request,response)=>{
-    fs.readFile(test_path[0]+'contest.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/contest.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/market',(request,response)=>{
-    fs.readFile(test_path[0]+'market.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/market.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
 })
 
 app.get('/gonggu',(request,response)=>{
-    fs.readFile(test_path[0]+'gonggu.ejs','utf-8',(error,data)=>{
+    fs.readFile('ejs/gonggu.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.send(data)
+        response.end(data)
     })
+})
+
+const posts=[
+    {
+      writerNickname:'juwon',
+        wrtierId:'5be4625bb9afde36704427f5',
+      title:'게시판 테스트 제목',
+      recommend:5,
+      context:'게시판 테스트 내용',
+      comments:[
+          {
+
+          },
+          {
+
+          },
+      ],
+      createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+]
+
+app.get('/test',(request,response)=>{
+    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.end(ejs.render(data,{
+            posts:posts,
+            boardId:'test',
+            title:'테스트',
+            Lecture:Lecture,
+        }))
+    })
+})
+
+app.get('/find',(request,response)=> {
+    fs.readFile('ejs/find.ejs', 'utf-8', (error, data) => {
+        response.writeHead(200, {'Content-Type': 'text/html'})
+        response.end(ejs.render(data))
+    })
+})
+
+app.get('/info',(request,response)=> {
+    Users.findOne({_id:request.session.sid})
+        .then((user)=>{
+            fs.readFile('ejs/info.ejs', 'utf-8', (error, data) => {
+                response.writeHead(200, {'Content-Type': 'text/html'})
+                response.end(ejs.render(data,{
+                    user:user,
+                }))
+            })
+        })
+
 })
 
 app.use('/api', require('./api'))
@@ -371,6 +448,9 @@ app.use('/api', require('./api'))
 const swaggerDocument = YAML.load('./swagger/swagger.yaml')
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
+
+
 
 
 app.listen(process.env.PORT, ()=>{

@@ -7,39 +7,24 @@
   <link rel="stylesheet" type="text/css" href="../static/main.css">
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script>
-    function onEnterLogin() {
-      var KeyCode = windows.event.keyCode;
-      if (keyCode == 13) {
-        loginForm.submit();
-      }
-    }
-    $(document).ready(function(){
-        $('#loginButton').click(function(){
-            var data=new Object()
-            data.userId=$('#userId').val()
-            data.password=$('#password').val()
-            const stringData=JSON.stringify(data)
-            $.ajax({
-                type:'POST',
-                url:'/api/user/login',
-                data:stringData,
-                dataType:'JSON',
-                contentType:'application/json; charset=utf-8',
-                traditional:true,
-                processData:false,
-                success: function(result){
-                    alert('로그인 성공!!')
-                    window.location.href='/main'
-                },
-                error: function(err){
-                    alert('로그인 실패!!')
-                    window.location.href='/main'
-                }
+    <script>
+        $(document).ready(function(){
+            $('#logoutButton').click(function(){
+                $.ajax({
+                    type:'POST',
+                    url:'/logout',
+                    success: function(result){
+                        alert('로그아웃 성공!!')
+                        window.location.href='/main'
+                    },
+                    error:function(error){
+                        alert('로그아웃 실패!!')
+                        window.location.href='/main'
+                    }
+                })
             })
         })
-    })
-  </script>
+    </script>
   <style>
     div 
     {
@@ -53,16 +38,18 @@
     <table cellspacing="0" cellpadding="0" style="width:100%; height:100%;">
       <tr>
         <td style="vertical-align:middle; padding-left: 200px; padding-right: 220px;">
-          <a href="/main"><img src="../static/logo.png" height=45% /></a>
+          <img src="../static/logo.png" height=45%/>
         </td>
         <td>
           <div class="menubar">
             <ul>
-              <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a>
-                <ul>
-                    <li><a>로그인을 해 주세요</a></li>
-                </ul>
-              </li>
+                <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a>
+                    <ul>
+                        <% for(let i=0;i<Lecture.length;i++){%>
+                        <li><a href="/myclass/<%=Lecture[i].Lecture%>"><%=Lecture[i].title%></a></li>
+                        <%}%>
+                    </ul>
+                </li>
               <li><a id="current" style="font-size:16px;font-weight: bold;">함께해요</a>
                 <ul>
                   <li><a href="/study">스터디</a></li>
@@ -125,26 +112,20 @@
 
   <div id="bulletin_board">
     <div id="section_1" style="float:left">
+      <form action="/logout" method="post">
       <div id="profile">
         <div style="text-align: center; margin-bottom:0px;">
-          <img src="../static/logo.png" height=20px style="margin-top:65px;"/>
+          <img src="../static/logo.png" height=20px style="margin-top:15px;">
         </div>
-        <div style="margin-left:11px;margin-right:11px;">
-          <form id="loginForm">
-            <input type="text" id="userId" name="userId" placeholder="아이디" style="width:100%;color:rgb(71,71,71);">
-            <input type="password" id="password" name="password" placeholder="비밀번호" style="width:100%;color:rgb(71,71,71); margin-bottom: 4px;"
-              onkeydown="javascript:onEnterLogin()"><br>
-            <input type="button" id="loginButton" value="로그인" style="margin-left:32%;">
-          </form>
+        <div style="margin:0 auto; margin-left:30px;">    
+          <a href="/info"><img src="<%=resizedImage%>" width="100px" height="100px"></a>
         </div>
         <div style="text-align:center;">
-          <a href="/signup" style="font-size:x-small;">회원가입</a>
-          <a style="font-size:x-small; margin:0 auto;">&nbsp/&nbsp</a>
-          <a href="/find" style="font-size:x-small;">ID찾기</a>
-          <a style="font-size:x-small; margin:0 auto;">&nbsp/&nbsp</a>
-          <a href="/find" style="font-size:x-small;">PW찾기</a>
+          <a href="#" style="font-weight:bold;"><%=nickname%></a><a>님 환영합니다!</a>
+          <input type="button" id="logoutButton" value="로그아웃">
         </div>
       </div>
+      </form>
 
       <div id="my_menu">
       </div>
@@ -166,7 +147,7 @@
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
 
@@ -188,7 +169,7 @@
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>
@@ -209,7 +190,7 @@
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>
@@ -229,7 +210,7 @@
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>
@@ -249,7 +230,7 @@
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>
