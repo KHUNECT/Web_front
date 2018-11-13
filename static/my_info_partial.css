@@ -15,7 +15,7 @@ body.appwebview nav {
   float: left;
 }
 #logo > p > span.name {
-  display: block; color: #c62917; font-size: 18px; font-weight: bold;
+  display: block; color:  rgb(164, 15, 22); font-size: 18px; font-weight: bold;
 }
 #logo > p > span.name.single {
   line-height: 76px;
@@ -37,7 +37,7 @@ body.appwebview nav {
   border: 1px solid #d6d6d6; color: #737373; background-color: #fff;
 }
 #account > li > a.button.red {
-  color: #fff; background-color: #c62917;
+  color: #fff; background-color: rgb(164, 15, 22);
 }
 #account > li > a.picture > img {
   border: 1px solid #d6d6d6; width: 38px; height: 38px; border-radius: 6px;
@@ -47,7 +47,7 @@ body.appwebview nav {
 }
 #menu > li > a:hover,
 #menu > li.active > a {
-  color: #c62917;
+  color: rgb(164, 15, 22);
 }
 #submenu {
   border-bottom: 1px solid #d6d6d6; background-color: #f2f2f2;
@@ -71,10 +71,10 @@ body.appwebview nav {
   display: block; line-height: 25px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 #submenu > div.wrap > div.group > ul > li > a.more {
-  color: #c62917; font-weight: bold; cursor: pointer;
+  color: rgb(164, 15, 22); font-weight: bold; cursor: pointer;
 }
 #submenu > div.wrap > div.group > ul > li > a.search {
-  color: #c62917; font-weight: bold;
+  color: rgb(164, 15, 22); font-weight: bold;
 }
 #submenu > div.wrap > ul > li {
   display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
@@ -83,13 +83,13 @@ body.appwebview nav {
   color: #4c4c4c;
 }
 #submenu > div.wrap ul > li > a.active {
-  color: #c62917; font-weight: bold;
+  color: rgb(164, 15, 22); font-weight: bold;
 }
 #submenu > div.wrap ul > li > a.search {
   color: #a6a6a6;
 }
 #submenu > div.wrap ul > li > a:hover {
-  color: #c62917;
+  color: rgb(164, 15, 22);
 }
 #submenu > div.wrap ul > li > a.new:after {
   content: ''; display: inline-block; margin-left: 5px; margin-bottom: 2px; width: 4px; height: 4px; background: transparent url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+Cjxzdmcgd2lkdGg9IjRweCIgaGVpZ2h0PSI0cHgiIHZpZXdCb3g9IjAgMCA0IDQiIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+CiAgICA8IS0tIEdlbmVyYXRvcjogU2tldGNoIDQxICgzNTMyNikgLSBodHRwOi8vd3d3LmJvaGVtaWFuY29kaW5nLmNvbS9za2V0Y2ggLS0+CiAgICA8dGl0bGU+bmV3PC90aXRsZT4KICAgIDxkZXNjPkNyZWF0ZWQgd2l0aCBTa2V0Y2guPC9kZXNjPgogICAgPGRlZnM+PC9kZWZzPgogICAgPGcgaWQ9InBjIiBzdHJva2U9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj4KICAgICAgICA8ZyBpZD0iaG9tZSIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTM2Ni4wMDAwMDAsIC0xMjUuMDAwMDAwKSIgZmlsbD0iIzBDQTVBRiI+CiAgICAgICAgICAgIDxnIGlkPSJzdWJtZW51IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgwLjAwMDAwMCwgODEuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICA8ZyBpZD0iR3JvdXAiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDI4OC4wMDAwMDAsIDAuMDAwMDAwKSI+CiAgICAgICAgICAgICAgICAgICAgPGNpcmNsZSBpZD0ibmV3IiBjeD0iODAiIGN5PSI0NiIgcj0iMiI+PC9jaXJjbGU+CiAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgIDwvZz4KICAgICAgICA8L2c+CiAgICA8L2c+Cjwvc3ZnPg==') no-repeat center center; background-size: 4px 4px;
@@ -163,7 +163,7 @@ aside > div.title > ol.buttons > li > a.image.setting {
   font-weight: bold;
 }
 #bottom > ul.links > li > a:hover {
-  color: #c62917;
+  color: rgb(164, 15, 22);
 }
 @-webkit-keyframes show_sheet {
   0% { opacity: 0; -webkit-transform: translateY(300px); }
@@ -199,7 +199,7 @@ aside > div.title > ol.buttons > li > a.image.setting {
     display: inline-block; margin: 0 10px; height: 76px; line-height: 80px;
   }
   #menu > li.active {
-    border-bottom: 4px solid #c62917;
+    border-bottom: 4px solid rgb(164, 15, 22);
   }
   #submenu {
     margin-top: 80px;
@@ -230,7 +230,7 @@ aside > div.title > ol.buttons > li > a.image.setting {
   /*** pc aside ***/
 
   aside {
-    float: left; width: 325px;
+    float: left; width: 300px; padding-left: 30px;
   }
   aside.none {
     display: none;
@@ -290,16 +290,16 @@ aside > div.title > ol.buttons > li > a.image.setting {
     color: #737373; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
   aside > div.menu > ol > li.active > a {
-    color: #c62917; font-weight: bold; background-color: #f8f8f8;
+    color: rgb(164, 15, 22); font-weight: bold; background-color: #f8f8f8;
   }
   aside > div.menu > ol > li.highlight > a {
-    color: #c62917;
+    color: rgb(164, 15, 22);
   }
   aside > div.menu > ol > li.new > a {
     background-image: url('/images/new/aside.menu.new.png'); background-repeat: no-repeat; background-position: right 15px center; background-size: 12px 12px;
   }
   aside > div.menu > ol > li.extension > a {
-    padding-left: 40px; color: #c62917; background-repeat: no-repeat; background-position: 15px center; background-size: 15px 15px;
+    padding-left: 40px; color: rgb(164, 15, 22);; background-repeat: no-repeat; background-position: 15px center; background-size: 15px 15px;
   }
   aside > div.menu > ol > li.extension > a.create {
     background-image: url('/images/new/aside.menu.extension.create.png');
@@ -348,7 +348,7 @@ aside > div.title > ol.buttons > li > a.image.setting {
     margin: 0 auto;
   }
   #container > div.wrap {
-    float: right; width: 780px;
+    float: right; width: 750px; padding-right: 20px;
   }
 
   /*** pc bottom ***/
