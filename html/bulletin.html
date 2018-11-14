@@ -14,8 +14,17 @@
    
     <link rel="stylesheet" type="text/css" href="../static/bulletin.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
-
+        alert(document.location.path)
+            $.ajax({
+                url:window.location.path,
+                dataType:'json',
+                success: function(posts){
+                    alert(window.location.path+'로드 성공!')
+                    console.log(posts)
+                }
+            })
     </script>
     <style>
         div {
@@ -80,14 +89,14 @@
 
 
             <table id="post_table" style="margin-top:10px;">
-                <tr">
+                <tr>
                     <td colspan="2" height="50" style="border-bottom: 1px solid #444444; font-weight: bold; border: none; background: transparent;">
                         <input type="text" placeholder="제목" style="margin-top:10px;margin-left: 10px;width:780px; height:40px;">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" height="50" style="border-bottom: 1px solid #444444; border: none; background: transparent;">
-                        <textarea placeholder="제목" style="margin-left: 10px;resize:none; width:780px; height: 130px;"></textarea>
+                        <textarea placeholder="내용" style="margin-left: 10px;resize:none; width:780px; height: 130px;"></textarea>
                     </td>
                 </tr>
                 <tr>

@@ -7,11 +7,11 @@
   <link rel="stylesheet" type="text/css" href="../static/main.css">
   <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script>
-    function onEnterLogin() {
-      var KeyCode = windows.event.keyCode;
+  <script type="text/javascript">
+    function onEnterLogin(event) {
+      var keyCode = event.keyCode;
       if (keyCode == 13) {
-        loginForm.submit();
+        $('#loginButton').trigger('click')
       }
     }
     $(document).ready(function(){
@@ -22,7 +22,7 @@
             const stringData=JSON.stringify(data)
             $.ajax({
                 type:'POST',
-                url:'/api/user/login',
+                url:'api/user/login',
                 data:stringData,
                 dataType:'JSON',
                 contentType:'application/json; charset=utf-8',
@@ -34,7 +34,7 @@
                 },
                 error: function(err){
                     alert('로그인 실패!!')
-                    window.location.href='/main'
+                    return false
                 }
             })
         })
@@ -50,12 +50,12 @@
 
 <body>
   <div id="top-layer_fixed">
-    <table cellspacing="0" cellpadding="0" style="width:100%; height:100%;">
+    <table cellspacing="0" cellpadding="0" style="width:1200px; height:100%; margin:0 auto;">
       <tr>
-        <td style="vertical-align:middle; padding-left: 200px; padding-right: 220px;">
+        <td style="vertical-align:middle; padding-left: 70px; padding-right: 220px;">
           <a href="/main"><img src="../static/logo.png" height=45% /></a>
         </td>
-        <td>
+        <td style="width:400px;">
           <div class="menubar">
             <ul>
               <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a>
@@ -133,7 +133,7 @@
           <form id="loginForm">
             <input type="text" id="userId" name="userId" placeholder="아이디" style="width:100%;color:rgb(71,71,71);">
             <input type="password" id="password" name="password" placeholder="비밀번호" style="width:100%;color:rgb(71,71,71); margin-bottom: 4px;"
-              onkeydown="javascript:onEnterLogin()"><br>
+              onkeydown="javascript:onEnterLogin(event)"><br>
             <input type="button" id="loginButton" value="로그인" style="margin-left:32%;">
           </form>
         </div>
@@ -166,7 +166,7 @@
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
 
@@ -188,7 +188,7 @@
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>
@@ -209,7 +209,7 @@
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>
@@ -229,7 +229,7 @@
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>
@@ -249,7 +249,7 @@
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>

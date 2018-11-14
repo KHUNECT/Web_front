@@ -20,14 +20,14 @@ exports.CreatePost = (req, res) => {
     const boardId = req.body.boardId
     console.log('-POST /api/post/create-')
     console.log(` ${writerId}  ${title}  ${context}  ${boardId} `)
-
     let userId
 
     // 0. 쿼리 확인
     const QueryCheck = () => {
+        console.log(0)
         return new Promise((resolve, reject) => {
             if (!writerId || !title || !context || !boardId){
-                console.log(0)
+                console.log('0 error')
                 return reject({
                     message: 'query error'
                 })
@@ -44,8 +44,9 @@ exports.CreatePost = (req, res) => {
 
     // 2. boardId 체크
     const BoardCheck = (writer) => {
+        console.log(2)
         if (!writer) {
-            console.log(2)
+            console.log('2 error')
             return reject({
                 message: 'User Not Exists'
             })
@@ -56,7 +57,9 @@ exports.CreatePost = (req, res) => {
 
     // 3. 포스트 생성
     const Posting = (board) => {
+        console.log(3)
         if (!board) {
+            console.log('3 error')
             return reject({
                 message: 'Board Not Exists'
             })
@@ -66,7 +69,7 @@ exports.CreatePost = (req, res) => {
                 writerId: userId,
                 title: title,
                 context: context,
-                boardId: boardId
+                boardId: boardId,
             })
         }
 

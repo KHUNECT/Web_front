@@ -14,7 +14,7 @@ exports.findPassword = (req, res) => {
                 message: "Query Error"
             })
         }
-        return User.findOne({userId: userId})
+        return User.findOne({userId:userId})
     }
 
     // 2. User Check
@@ -39,7 +39,6 @@ exports.findPassword = (req, res) => {
             else if (user == 1){
                 return res.status(200).json({message: "이메일이 일치 하지 않습니다."})
             }
-
             let str = ""
             for (;str.length < 10;str += Math.random().toString(36).substr(2));
 

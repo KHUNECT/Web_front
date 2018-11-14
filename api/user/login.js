@@ -42,7 +42,8 @@ exports.Login = (req, res) => {
                 message:'User_does_not_exists'
         })
         else {
-            if (bcrypt.compareSync(password, data.password)) {
+            console.log(data.validPassword(password))
+            if (data.validPassword(password)) {
                 console.log(`${data.major} ${data.name} 로그인 완료`)
                 req.session.sid=data._id
                 console.log(data._id)
@@ -51,6 +52,7 @@ exports.Login = (req, res) => {
                 })
             }
             else {
+                console.log('비밀번호가 일치하지 않습니다')
                 return Promise.reject({
                     message: "Login Failed"
                 })

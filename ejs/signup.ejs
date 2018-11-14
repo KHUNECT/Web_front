@@ -44,8 +44,8 @@
                     contentType:false,
                     cache:false,
                     success: function(){
-                        alert('회원가입 완료!')
-                        window.location.href='/main'
+                        alert('회원가입 완료! klas 연동페이지로 이동합니다!')
+                        window.location.href='/klas'
                     },
                     error: function(){
                         alert('회원가입 실패!')
@@ -63,14 +63,14 @@
     </style>
 </head>
 
-<body>
+<body style="background-color: #f6f6f6">
 <div id="top-layer_fixed">
-    <table cellspacing="0" cellpadding="0" style="height:100%; margin: 0 auto;">
+    <table cellspacing="0" cellpadding="0" style="width:1200px; margin: 0 auto;">
         <tr>
-            <td style="vertical-align:middle; padding-left: 200px; padding-right: 220px;">
-                <img src="../static/logo.png" height=45% />
+            <td style="vertical-align:middle; padding-left: 70px; padding-right: 220px;">
+                <a href="/main"><img src="../static/logo.png" height=45% /></a>
             </td>
-            <td>
+            <td style="width:400px;">
                 <div class="menubar">
                     <ul>
                         <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a></li>
@@ -103,11 +103,9 @@
     </table>
 </div>
 <div id="signup_page">
-    <div id="main_banner">
-        <img src="../static/sign_up_logo2.png" height=100px style="float:inherit; margin-top: 30px;">
-    </div>
-    <form id="signupForm" action="/main" method="get">
-        <div id="signup_form" style="padding-right:15px; padding-top: 30px;">
+    <form id="signupForm">
+        <div id="container">
+        <div id="signup_form" style="margin-right:25px; margin-top: 30px; padding-left:24px;">
             <div>
                 <label for="signupName">이름</label>
                 <br>
@@ -124,11 +122,11 @@
                 <div style="color:gray;">
                 </div>
             </div>
-            <div style="margin-bottom: 15px;">
+            <div style="margin-bottom: 22px;">
                 <label for="repeatPassword">비밀번호 확인</label>
                 <br>
                 <input type="password" id="repeatPassword" required placeholder="비밀번호 확인" name="password2">
-                <div style="color:gray; font-size:small">
+                <div style="color:gray; font-size:x-small">
                     비밀번호 확인을 위해<br>다시 한번 입력해주세요.
                 </div>
             </div>
@@ -144,9 +142,9 @@
                 <label for="signupName">프로필 사진</label>
                 <br>
                 <form id="form1" runat="server">
-                    <input type='file' id="imgInp" name="image">
-                    <div style="margin-top:3px; width: 160px; height: 160px; background-color: grey; margin-bottom: 4px;">
-                        <img id="blah" src="#" alt="img" width=160px height=160px>
+                    <input type='file' id="imgInp" style="width:200px;" name="image">
+                    <div style="border:1px solid grey;margin-top:3px; width: 170px; height: 170px; background-color:white; margin-bottom: 5px;">
+                        <img id="blah" src="#" alt="img" width=170px height=170px>
                     </div>
                 </form>
                 <div>
@@ -157,12 +155,15 @@
                     <label for="signupName">전공</label>
                     <br>
                     <input type="text" id="major" required placeholder="전공" name="major">
+                    <br><br>
                 </div>
             </div>
+        </div>
         </div>
     </form>
     <br><br>
     <input type="button" id="sendButton" value="회원가입">
+    <br><br>
 </div>
 </body>
 

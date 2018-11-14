@@ -9,6 +9,9 @@ a {
   color: #000;
 }
 
+input{
+  height: 18px;
+}
 #top-layer_fixed {
   margin: 0 auto;
   height: 70px;
@@ -166,18 +169,44 @@ a {
 }
 
 #signup_page {
-  width: 1200px;
-  margin: 0 auto;
+  width:1200px;
+  margin:0 auto;
   margin-top: 70px;
   text-align:center;
 } 
 
+#container
+{
+  display:inline-block;
+  background-color: white;
+  border:1px solid grey;
+  margin-top:50px;
+}
+
 #signup_form {
   display:inline-block;
-  width: 165px;
   height: 100%;
   position: relative;
   margin: 0 auto;
   text-align:left;
   vertical-align:top;
+}
+
+#signup_form:after
+{
+  display: block;
+  visibility: hidden;
+  content: "";
+  clear: both;
+}
+
+#signup_button
+{
+  width:250px;
+  height: 36px;
+  background-color: rgb(164, 15, 22);
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  border: 0px;
 }

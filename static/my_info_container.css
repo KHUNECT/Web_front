@@ -16,13 +16,13 @@
 	border-top: 1px solid #e3e3e3;
 }
 #container > div.setting > form p label {
-	float: left; line-height: 20px; color: #737373; font-size: 13px; font-weight: bold; text-align: right;
+	float: left; line-height: 20px; color:#4B4B4B;; font-size: 13px; font-weight: bold; text-align: right;
 }
 #container > div.setting > form p em {
 	line-height: 20px; color: #292929; font-size: 14px; font-weight: normal; letter-spacing: 0;
 }
 #container > div.setting > form p span.caution {
-	color: #c62917; font-size: 13px;
+	color: rgb(164, 15, 22); font-size: 13px;
 }
 #container > div.setting > form p span.description {
 	margin-left: 5px; color: #a6a6a6; font-size: 12px;
@@ -38,14 +38,14 @@
 	color: #292929; font-size: 14px;
 }
 #container > div.setting > form p input.text:focus {
-	border-color: #c62917;
+	border-color: rgb(164, 15, 22);
 }
 #container > div.setting > form p.submit {
 	text-align: right;
 }
 #container > div.setting > form p.submit input {
 	padding: 0 10px; height: 30px; line-height: 30px; border: 0;
-	color: #fff; font-size: 12px; font-weight: bold; background-color: #c62917; cursor: pointer;
+	color: #fff; font-size: 12px; font-weight: bold; background-color: rgb(164, 15, 22); cursor: pointer;
 }
 #container > div.setting > form dl {
 	padding: 15px; border-top: 1px solid #e3e3e3;
@@ -64,7 +64,7 @@
 		padding: 15px;
 	}
 	#container > div.setting > form p label {
-		margin-right: 15px; width: 80px;
+		margin-right: 25px; width: 90px;
 	}
 	#container > div.setting > form p span.caution {
 		margin-right: 15px;

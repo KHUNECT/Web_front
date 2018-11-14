@@ -16,29 +16,31 @@
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function(){
-            $('#postButton').click(function(){
-                var form=$('#postForm')[0]
-                var formData=new FormData(form)
+        $(document).ready(function() {
+            $('#postButton').click(function () {
+                var form = $('#postForm')[0]
+                var formData = new FormData(form)
                 console.log($('#boardId').val())
-                formData.append('boardId','<%=boardId%>')
+                formData.append('boardId', '<%=boardId%>')
                 $.ajax({
-                    type:'POST',
-                    url:'../api/post/create',
-                    data:formData,
-                    enctype:'multipart/form-data;charset=utf-8',
-                    processData:false,
-                    contentType:false,
-                    cache:false,
-                    success: function(result){
-                        alert('게시물 업로드 성공!')
+                    type: 'POST',
+                    url: '../api/post/create',
+                    data: formData,
+                    enctype: 'multipart/form-data;charset=utf-8',
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (result) {
+                        alert(result['message'])
+                        location.reload()
                     },
-                    error:function(error){
-                        alert(JSON.stringify(error))
+                    error: function (error) {
+                        alert(error['message'])
                     }
                 })
             })
         })
+
     </script>
     <style>
         div {
@@ -49,12 +51,12 @@
 
 <body>
     <div id="top-layer_fixed">
-        <table cellspacing="0" cellpadding="0" style="width:100%; height:100%;">
+        <table cellspacing="0" cellpadding="0" style="width:1200px; height:100%; margin: 0 auto;">
             <tr>
-                <td style="vertical-align:middle; padding-left: 200px; padding-right: 220px;">
-                    <img src="../static/logo.png" height=45% />
+                <td style="vertical-align:middle; padding-left: 70px; padding-right: 220px;">
+                    <a href="/main"> <img src="../static/logo.png" height=45%/></a>
                 </td>
-                <td>
+                <td style="width:400px;">
                     <div class="menubar">
                         <ul>
                             <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a>
@@ -100,7 +102,7 @@
                 <table style="height:100%">
                     <tr>
                         <td style="text-indent:15px; ">
-                            <a href="/<%=boardId%>" id="boardId" style="font-weight:bold; vertical-align:middle;"><%=title%></a>
+                            <a href="/board/<%=boardId%>" id="boardId" style="font-weight:bold; font-size:110%; vertical-align:middle;"><%=title%></a>
                         </td>
                     </tr>
                 </table>
@@ -111,12 +113,12 @@
                 <form id="postForm">
                 <tr>
                     <td colspan="2" height="50" style="border-bottom: 1px solid #444444; font-weight: bold; border: none; background: transparent;">
-                        <input type="text" placeholder="제목" style="width:790px; height:50px;" name="title">
+                        <input type="text" placeholder="제목" style="margin-top:10px;margin-left:10px;width:780px;height:40px;" name="title">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" height="50" style="border-bottom: 1px solid #444444; border: none; background: transparent;">
-                        <textarea placeholder="내용" style="resize:none; width:790px; height: 130px;" name="context"></textarea>
+                        <textarea placeholder="내용" style="margin-left:10px;resize:none; width:780px; height: 130px;" name="context"></textarea>
                     </td>
                 </tr>
                 </form>
@@ -127,12 +129,12 @@
                 </tr>
             </table>
 
-            <% for (let i=0;i<5 && i<posts.length;i++){ %>
+            <% for (let i=0;i<posts.length;i++){ %>
             <table id="bulletin_table" style="margin-top:20px;">
                 <tr>
                     <td rowspan="3" width="150" style="text-align:center;">
-                        <img src="https://khunect-bucket.s3.ap-northeast-2.amazonaws.com/images/1541694042870_제목 없음.png" height=90px width=90px>
-                        <br><%=posts[i].writerId%>
+                        <img src="<%=posts[i].writerImage%>" height=90px width=90px>
+                        <br><%=posts[i].writerNickname%>
                     </td>
                     <td style="border-bottom: 1px solid #444444; text-indent: 15px; font-weight: bold;"><%=posts[i].title%></td>
                     <td width="100" height="50" style="text-align:center;">
@@ -147,26 +149,33 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="font-size:x-small;text-align:center;"><%=posts[i].createdDate%><br>11:15</td>
+                    <td style="font-size:x-small;text-align:center;"><%=posts[i].createdDate%></td>
                 </tr>
             </table>
             <%}%>
 
-
+            <% var pageDiv5=Math.ceil(page/5)-1%>
+            <h2><%=page%></h2>
+            <% var previousPageNum,nextPageNum %>
+            <% if (pageDiv5>0) {%>
+            <% previousPageNum=pageDiv5*5 %>
+            <% nextPageNum=(pageDiv5+1)*5+1 %>
+            <% } else { %>
+            <% previousPageNum=1 %>
+            <% nextPageNum=6 %>
+            <%}%>
             <nav>
                 <ul class="pagination" >
                     <li>
-                        <a href="#" aria-label="Previous" style="color:black;">
+                        <a href="?page=<%=previousPageNum%>" aria-label="Previous" style="color:black;">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li><a href="#" style="color:black;">1</a></li>
-                    <li><a href="#" style="color:black;">2</a></li>
-                    <li><a href="#" style="color:black;">3</a></li>
-                    <li><a href="#" style="color:black;">4</a></li>
-                    <li><a href="#" style="color:black;">5</a></li>
+                    <% for (let i=1;i<=5;i++) { %>
+                    <li><a href="?page=<%=pageDiv5*5+i%>" style="color:black;"><%=pageDiv5*5+i%></a></li>
+                    <%}%>
                     <li>
-                        <a href="#" aria-label="Next" style="color:black;">
+                        <a href="?page=<%=nextPageNum%>" aria-label="Next" style="color:black;">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -178,38 +187,23 @@
             <div id="board_2" style="float:left;">
                 <table id="board_table">
                     <tr id="board_table_maintr">
-                        <td id="board_table_td"><a style="color: rgb(164, 15, 22);">내 수업</a></td>
+                        <td id="board_table_td"><a style="color: rgb(164, 15, 22);">뜨거운 게시물</a></td>
                     </tr>
+                    <% let i=0 %>
+                    <% for (i=0;i<hotPost.length && i<5;i++) {%>
                     <tr id="board_table_tr">
                         <td id="board_table_td">
-                            <a href="#" style="font-weight: bold;">[과목1]</a>
-                            <a>게시물1</a>
+                            <a href="/<%=hotPost[i].boardId%>" style="font-weight: bold;">[<%=hotPost[i].boardName%>]</a>
+                            <a href="#"><%=hotPost[i].title%></a>
                         </td>
                     </tr>
-                    <tr id="board_table_tr">
-                        <td id="board_table_td">
-                            <a href="#" style="font-weight: bold;">[과목2]</a>
-                            <a>게시물2</a>
-                        </td>
-                    </tr>
-                    <tr id="board_table_tr">
-                        <td id="board_table_td">
-                            <a href="#" style="font-weight: bold;">[과목3]</a>
-                            <a>게시물3</a>
-                        </td>
-                    </tr>
-                    <tr id="board_table_tr">
-                        <td id="board_table_td">
-                            <a href="#" style="font-weight: bold;">[과목4]</a>
-                            <a>게시물4</a>
-                        </td>
-                    </tr>
-                    <tr id="board_table_tr">
-                        <td id="board_table_td">
-                            <a href="#" style="font-weight: bold;">[과목5]</a>
-                            <a>게시물5</a>
-                        </td>
-                    </tr>
+                    <%}%>
+                    <% if(i!=5) { %>
+                    <% for (;i<5;i++) { %>
+                    <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
+                    <% }%>
+                    <% }%>
+
                 </table>
             </div>
 

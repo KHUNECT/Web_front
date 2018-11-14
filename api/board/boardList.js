@@ -6,7 +6,7 @@ const User = require('../../models/user')
 
 exports.BoardList = (req, res) => {
     const boardId = req.params.boardId
-    const page = Number(req.params.page) || 1
+    const page = Number(req.query.page) || 1
     const itemNum = Number(req.query.itemNum) || 10
 
     // 1. Query Check
@@ -25,14 +25,14 @@ exports.BoardList = (req, res) => {
             try {
                 let tempPosts = []
                 for (let i = 0; i < posts.length; i++) {
-                    let user = await User.findOne({userId: posts[i].writerId}).exec()
+                    let user = await User.findOne({_id: posts[i].writerId}).exec()
                     tempPosts.push({
                         _id: posts[i]._id,
                         images: posts[i].images,
                         title: posts[i].title,
                         context: posts[i].context,
                         boardId: posts[i].boardId,
-                        comments: posts[i].comments.length,
+                        comments: posts[i].comments,
                         createdDate: posts[i].createdDate,
                         recommend: posts[i].recommend,
                         writerId: user.writerId,
