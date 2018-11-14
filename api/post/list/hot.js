@@ -6,11 +6,11 @@ const Board = require('../../../models/board')
 
 exports.Hot = (req, res) => {
 
+    const item = Number(req.query.item) || 10
+
     // 0. 쿼리 실행
     const Querying = () => {
-        let date = new Date()
-        date.setDate(date.getDate()-7)
-        return Post.find({createdDate: {$gte:date}}).or([{boardId: 'club'}, {boardId: 'contest'}, {boardId: 'trade'}, {boardId: 'groupbuying'}, {boardId: 'study'}, {boardId: 'hobby'}, {boardId: 'alba'}]).sort('-recommend').skip((page - 1) * item).limit(item).lean()
+        return Post.find().where('recommend').gte(5).or([{boardId: 'club'}, {boardId: 'contest'}, {boardId: 'trade'}, {boardId: 'groupbuying'}, {boardId: 'study'}, {boardId: 'hobby'}, {boardId: 'alba'}]).sort('-createDate').limit(item).lean()
     }
 
     // 1. 전송
@@ -22,6 +22,9 @@ exports.Hot = (req, res) => {
             tempList.push({
                 _id: posts[i]._id,
                 title: posts[i].title,
+                context: posts[i].context,
+                date: posts[i].createdDate,
+                recommend: posts[i].recommend,
                 writerNickname: user.nickname,
                 writerImage: user.resizedImage,
                 boardId: board.boardId,

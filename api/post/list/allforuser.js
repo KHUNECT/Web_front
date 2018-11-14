@@ -45,6 +45,9 @@ exports.AllForUser = (req, res) => {
             newPosts.push({
                 _id: posts[i]._id,
                 title: posts[i].title,
+                context: posts[i].context,
+                date: posts[i].createdDate,
+                recommend: posts[i].recommend,
                 writerNickname: user.nickname,
                 writerImage: user.resizedImage,
                 boardId: board.boardId,
