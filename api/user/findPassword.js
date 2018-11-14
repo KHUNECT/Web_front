@@ -63,3 +63,4 @@ exports.findPassword = (req, res) => {
             if (err) return res.status(500).json(err)
         })
 }
+

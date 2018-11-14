@@ -11,6 +11,7 @@ exports.AllForUser = (req, res) => {
 
     // 0. Query Check
     const QueryCheck = () =>{
+        console.log(req.session.sid)
         if (!userId){
             return Promise.reject({
                 message: "Query Error"

@@ -8,9 +8,10 @@ exports.BoardList = (req, res) => {
     const boardId = req.params.boardId
     const page = Number(req.query.page) || 1
     const itemNum = Number(req.query.itemNum) || 10
-
+    console.log(0)
     // 1. Query Check
     const QueryCheck = () => {
+        console.log(1)
         if (!boardId){
             return Promise.reject({
                 message: "Query Error"
@@ -21,6 +22,7 @@ exports.BoardList = (req, res) => {
 
     // 2.
     const Response = (posts) => {
+        console.log(2)
         const mapPosts = async () => {
             try {
                 let tempPosts = []
@@ -42,6 +44,7 @@ exports.BoardList = (req, res) => {
                 }
                 return tempPosts
             } catch (err) {
+                console.log('2 error')
                 return Promise.reject(err)
             }
         }
