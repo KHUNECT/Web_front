@@ -5,8 +5,8 @@ const Board = require('../../models/board')
 const rp = require('request-promise')
 
 exports.SetLecture = (req, res) => {
-    console.log('-POST api/user/setLecture-')
-    const _id = req.session.sid
+    console.log('-POST api/user/create-')
+    const _id = req.session.sid || req.body.userId
     const klasId = req.body.klasId
     const klasPassword = req.body.klasPassword
 

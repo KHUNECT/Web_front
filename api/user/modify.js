@@ -13,7 +13,7 @@ AWS.config.update({
 
 exports.UserModify = (req, res) => {
     console.log('-POST modify-')
-    const _id = req.session.sid
+    const _id = req.session.sid || req.body.userId
     const password = req.body.password || ''
     const nickname = req.body.nickname || ''
     const email = req.body.email || ''

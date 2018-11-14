@@ -48,7 +48,7 @@ exports.Login = (req, res) => {
                 req.session.sid=data._id
                 console.log(data._id)
                 req.session.save(function(){
-                    return res.status(200).json({userId: data.userId})
+                    return res.status(200).json({_id: data._id})
                 })
             }
             else {

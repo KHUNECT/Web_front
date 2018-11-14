@@ -38,5 +38,5 @@ exports.ListAll = (req, res) => {
 
     Querying()
         .then(Response)
-        .catch((err) => {if (err) return res.status(500).json({message: "MongoDB error"})})
+        .catch((err) => {if (err) return res.status(500).json(err)})
 }
