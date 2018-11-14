@@ -107,6 +107,7 @@ exports.UserCreate = (req, res,) => {
     .then(SignUp)
     .then(item => {
         item.generateHash(password)
+        req.session.sid=item._id
         return res.status(200).json({userId: userId, nickname: nickname})
     })
     .catch((err) => {

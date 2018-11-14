@@ -20,6 +20,27 @@
       font-family: "Noto Sans KR", sans-serif;
     }
   </style>
+
+      <script type="text/javascript">
+        $(function() {
+            $("#imgInp").on('change', function(){
+                readURL(this);
+            });
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+              reader.readAsDataURL(input.files[0]);
+            }
+        }
+	</script>
+
 </head>
 
 <body style="background-color:#f6f6f6;">
@@ -27,7 +48,7 @@
   <table cellspacing="0" cellpadding="0" style="width:1200px; height:100%; margin: 0 auto;">
     <tr>
       <td style="vertical-align:middle; padding-left: 70px; padding-right: 220px;">
-        <img src="../static/logo.png" height=45%>
+        <a href="/main"><img src="../static/logo.png" height=45%/></a>
       </td>
       <td style="width:400px;">
         <div class="menubar">
@@ -62,7 +83,7 @@
   </table>
 </div>
 
-<div id="info_page">
+
   <div id="container" class="my">
     <aside>
       <div class="menu">
@@ -70,27 +91,30 @@
           <li class="active"><a href="/info">기본 정보</a></li>
           <li><a href="/info/setinfo">개인정보 변경</a></li>
           <li><a href="/info/setpassword">비밀번호 변경</a></li>
-          <li><a href="/info/setpicture">프로필 이미지 변경</a></li>
+          <li><a href="/info/setImage">프로필 이미지 변경</a></li>
         </ol>
       </div>
     </aside>
-    <div class="wrap setting">
-      <form class="information">
-        <h2 style="text-indent:35px;">나의 정보</h2>
-        <p>
-          <label>사진</label>
-          <img src="<%=user.resizedImage%>" class="picture" />
-        </p>
-        <p><label>아이디</label> <em><%=user.userId%></em></p>
-        <p><label>이름</label> <em><%=user.name%></em></p>
-        <p><label>닉네임</label> <em><%=user.nickname%></em></p>
-        <p><label>이메일</label> <em><%=user.email%></em></p>
-        <p><label>학교</label> <em>경희대 국제캠퍼스 전자정보대학</em></p>
-      </form>
-    </div>
-    <hr />
-  </div>
-</div>
-</body>
+      <div class="wrap setting">
+          <form class="setpicture" enctype="multipart/form-data">
+            <input type="hidden" name="base64data">
+            <h2>프로필 이미지 변경</h2>
+            <p>
+              <label>현재 사진</label>
+              <img id="blah"  src="<%=user.resizedImage%>" class="picture">
+            </p>
+            <p>
+              <label>변경할 사진</label>
+              <input type="file" name="picture"  id="imgInp">
+            </p>
+            <p class="submit">
+              <input type="button" id="deleteImageButton" value="삭제" class="remove">
+              <input type="button" id="changeImageButton" value="변경 완료">
+            </p>
+          </form>
+        </div>
+        <hr>
+      </div>
+      </body>
 
 </html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <title>KHU:NECT</title>
+    <link rel="stylesheet" type="text/css" href="../static/forget.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#loginButton').click(function(){
+                var data=new Object()
+                data.klasId=$('#klasId').val()
+                data.klasPassword=$('#klasPassword').val()
+                const stringData=JSON.stringify(data)
+                $.ajax({
+                    type:'POST',
+                    url:'api/user/setLecture',
+                    data:stringData,
+                    dataType:'JSON',
+                    contentType:'application/json; charset=utf-8',
+                    traditional:true,
+                    processData:false,
+                    success: function(result){
+                        alert('로그인 성공!!')
+                        window.location.href='/main'
+                    },
+                    error: function(err){
+                        alert('로그인 실패!!')
+                        return false
+                    }
+                })
+            })
+        })
+    </script>
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean"
+      rel="stylesheet"
+    />
+    <style>
+      div {
+        font-family: "Noto Sans KR", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body style="background-color: #f6f6f6;">
+    <div id="top-layer_fixed">
+      <table
+        cellspacing="0"
+        cellpadding="0"
+        style="width:1200px; height:100%; margin: 0 auto;"
+      >
+        <tr>
+          <td
+            style="vertical-align:middle; padding-left: 70px; padding-right: 220px;"
+          >
+            <a><img src="../static/logo.png" height="45%" /></a>
+          </td>
+          <td style="width:400px;">
+            <div class="menubar">
+              <ul>
+                <li>
+                  <a id="current" style="font-size:16px;font-weight: bold;"
+                    >내 수업</a
+                  >
+                </li>
+                <li>
+                  <a id="current" style="font-size:16px;font-weight: bold;"
+                    >함께해요</a
+                  >
+                  <ul>
+                    <li><a href="/study">스터디</a></li>
+                    <li><a href="/hobby">취미</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a id="current" style="font-size:16px;font-weight: bold;"
+                    >홍보</a
+                  >
+                  <ul>
+                    <li><a href="/alba">알바</a></li>
+                    <li><a href="/club">동아리</a></li>
+                    <li><a href="/contest">공모전</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a id="current" style="font-size:16px;font-weight: bold;"
+                    >거래</a
+                  >
+                  <ul>
+                    <li><a href="/market">거래</a></li>
+                    <li><a href="/gonggu">공구</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!--
+      <div id="main_banner">
+
+      </div>
+    -->
+
+    <div id="forget_page">
+      <div style="width:400px; margin-left: 400px;">
+        <div id="container" class="find">
+          <h2 style="font-size: 24px;color:#4B4B4B;">KLAS 연동</h2>
+          <form class="findpassword" style="border:1px solid grey;">
+            <p class="input">
+              <input
+                type="text"
+                id="klasId"
+                name="klasId"
+                class="text"
+                placeholder="학번"
+                autocomplete="off"
+              />
+            </p>
+            <p class="input">
+              <input
+                type="password"
+                id="klasPassword"
+                name="klasPassword"
+                class="text"
+                placeholder="비밀번호"
+                autocomplete="off"
+              />
+            </p>
+          </form>
+          <p class="submit">
+            <input type="button" id="loginButton" value="확인" class="text" />
+          </p>
+          <p class="description" style="color:grey;">
+            # 5회이상 오류시 KLAS에 접속하여 비밀번호를 변경해주셔야 합니다.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

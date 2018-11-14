@@ -22,7 +22,7 @@
             const stringData=JSON.stringify(data)
             $.ajax({
                 type:'POST',
-                url:'/api/user/login',
+                url:'api/user/login',
                 data:stringData,
                 dataType:'JSON',
                 contentType:'application/json; charset=utf-8',
@@ -34,7 +34,7 @@
                 },
                 error: function(err){
                     alert('로그인 실패!!')
-                    window.location.href='/main'
+                    return false
                 }
             })
         })

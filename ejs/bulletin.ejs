@@ -16,28 +16,31 @@
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        $(document).ready(function(){
-            $('#postButton').click(function(){
-                var form=$('#postForm')[0]
-                var formData=new FormData(form)
+        $(document).ready(function() {
+            $('#postButton').click(function () {
+                var form = $('#postForm')[0]
+                var formData = new FormData(form)
                 console.log($('#boardId').val())
-                formData.append('boardId','<%=boardId%>')
+                formData.append('boardId', '<%= boardId %>')
                 $.ajax({
-                    type:'POST',
-                    url:'../api/post/create',
-                    data:formData,
-                    enctype:'multipart/form-data;charset=utf-8',
-                    processData:false,
-                    contentType:false,
-                    cache:false,
-                    success: function(result){
+                    type: 'POST',
+                    url: '../api/post/create',
+                    data: formData,
+                    enctype: 'multipart/form-data;charset=utf-8',
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (result) {
                         alert('게시물 업로드 성공!')
                         location.reload()
                     },
-                    error:function(error){
+                    error: function (error) {
                         alert(JSON.stringify(error))
+                    }
+                })
             })
         })
+
     </script>
     <style>
         div {
@@ -159,11 +162,11 @@
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li><a href="#" style="color:black;">1</a></li>
-                    <li><a href="#" style="color:black;">2</a></li>
-                    <li><a href="#" style="color:black;">3</a></li>
-                    <li><a href="#" style="color:black;">4</a></li>
-                    <li><a href="#" style="color:black;">5</a></li>
+                    <li><a href="?page=1" style="color:black;">1</a></li>
+                    <li><a href="?page=2" style="color:black;">2</a></li>
+                    <li><a href="?page=3" style="color:black;">3</a></li>
+                    <li><a href="?page=4" style="color:black;">4</a></li>
+                    <li><a href="?page=5" style="color:black;">5</a></li>
                     <li>
                         <a href="#" aria-label="Next" style="color:black;">
                             <span aria-hidden="true">&raquo;</span>
