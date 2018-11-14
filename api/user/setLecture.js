@@ -21,7 +21,7 @@ exports.SetLecture = (req, res) => {
             })
         } else {
             json_var = JSON.parse(json)
-            if (json_var.statusCode == 500){
+            if (json_var.statusCode == 500 || json_var.statusCode == 404){
                 console.log('1 error')
                 return Promise.reject({
                     message: "Request Error"
