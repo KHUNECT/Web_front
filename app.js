@@ -285,7 +285,7 @@ app.get('/myclass/:lectureId',(request,response)=>{
             try {
                 let tempPosts = []
                 for (let i = 0; i < posts.length; i++) {
-                    let user = await Users.findOne({_id: posts[i].writerId}).exec()
+                    let user = await Users.findOne({userId: posts[i].writerId}).exec()
                     tempPosts.push({
                         _id: posts[i]._id,
                         images: posts[i].images,
