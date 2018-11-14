@@ -46,6 +46,7 @@ exports.AllForUser = (req, res) => {
                 _id: posts[i]._id,
                 title: posts[i].title,
                 writerNickname: user.nickname,
+                writerImage: user.resizedImage,
                 boardId: board.boardId,
                 boardTitle: board.title,
             })

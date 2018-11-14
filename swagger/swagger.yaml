@@ -400,6 +400,57 @@ paths:
                 writerNickname:
                   type: string
                   description: 글쓴이 닉네임
+                writerImage:
+                  type: string
+                  description: 글쓴이 이미지
+                boardId:
+                  type: string
+                  description: 게시판 ID
+                boardTitle:
+                  type: string
+                  description: 게시판 이름
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/list/all:
+    get:
+      tags:
+        - Post
+      summary : 강의 제외 게시글 전체 반환
+      description : 강의 제외 게시글 전체 반환
+      parameters:
+        - in: query
+          name: page
+          description: 페이지 수
+          required : true
+          type: string
+        - in: query
+          name: item
+          description: 아이템 수
+          required : true
+          type: string
+      responses:
+        '200':
+          description: 게시글 반환
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  description: post object ID
+                title:
+                  type: string
+                  description: 제목
+                writerNickname:
+                  type: string
+                  description: 글쓴이 닉네임
+                writerImage:
+                  type: string
+                  description: 글쓴이 이미지
                 boardId:
                   type: string
                   description: 게시판 ID
@@ -414,7 +465,7 @@ paths:
   /post/addComment:
     post:
       tags:
-        - User
+        - Post
       summary : 댓글 작성
       description : 댓글 작성
       parameters:
@@ -453,7 +504,7 @@ paths:
   /post/deleteComment:
     post:
       tags:
-        - User
+        - Post
       summary : 댓글 삭제
       description : 댓글 삭제
       parameters:
@@ -473,6 +524,48 @@ paths:
               commentId:
                 type: string
                 description: 댓글 ID
+      responses:
+        '200':
+          description: 회원 정보 수정 성공
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: 성공 여부
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/modifyComment:
+    post:
+      tags:
+        - Post
+      summary : 댓글 수정
+      description : 댓글 수정
+      parameters:
+        - in: body
+          name: body
+          description: 댓글 정보
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              postId:
+                type: string
+                description: 게시글 ID
+              commentId:
+                type: string
+                description: 댓글 ID
+              context:
+                type: string
+                description: 내용
       responses:
         '200':
           description: 회원 정보 수정 성공
