@@ -709,7 +709,7 @@ paths:
         - multipart/form-data
       parameters:
         - in: formData
-          name: writerId
+          name: userId
           description: 작성자 아이디
           type: string
           required: true
