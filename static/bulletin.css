@@ -267,7 +267,7 @@ background: rgb(109,109,109);
   color: #ffffff;
   text-decoration: none;
 }
-
+s
 .menubar p {
   clear: left;
 }
@@ -275,4 +275,24 @@ background: rgb(109,109,109);
 a {
   text-decoration: none;
   color: #000;
+}
+
+#post_page{
+  border:1px solid black;
+  width:100%
+}
+
+#comment_table
+{
+  border:1px solid black;
+  border-collapse: collapse;
+  width:100% 
+}
+#comment_table_tr
+{
+  border:1px solid black;
+}
+#comment_table_td
+{
+  border:1px solid black;
 }
