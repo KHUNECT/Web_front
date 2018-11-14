@@ -76,7 +76,7 @@ exports.SetLecture = (req, res) => {
         })
     }
 
-    rp.post('http://localhost:5000', {form:{
+    rp.post('http://13.125.196.191:8000', {form:{
         id: klasId,
         password: klasPassword
     }})

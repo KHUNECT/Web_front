@@ -6,11 +6,11 @@ const Board = require('../../../models/board')
 
 exports.Hot = (req, res) => {
 
-    const item = Number(req.query.item) || 10
+    const item = Number(req.query.item) || 5
 
     // 0. 쿼리 실행
     const Querying = () => {
-        return Post.find().where('recommend').gte(5).or([{boardId: 'club'}, {boardId: 'contest'}, {boardId: 'trade'}, {boardId: 'groupbuying'}, {boardId: 'study'}, {boardId: 'hobby'}, {boardId: 'alba'}]).sort('-createDate').limit(item).lean()
+        return Post.find().where('recommend').gte(5).or([{boardId: 'club'}, {boardId: 'contest'}, {boardId: 'market'}, {boardId: 'gonggu'}, {boardId: 'study'}, {boardId: 'hobby'}, {boardId: 'alba'}]).sort('-createDate').limit(item).lean()
     }
 
     // 1. 전송

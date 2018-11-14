@@ -14,6 +14,9 @@ const morgan = require('morgan')
 const Users=require('./models/user.js')
 const Board=require('./models/board')
 const Post=require('./models/post')
+const request=require('request')
+const cheerio=require('cheerio')
+const rp=require('request-promise')
 
 app.use(morgan('[:date[iso]] :method :status :url :response-time(ms) :user-agent'))
 
@@ -46,7 +49,7 @@ app.use(session({
     saveUninitialized:true
 }))
 
-const newPost=[
+let newPost=[
     {
         boardId:'study',
         boardName:'스터디',
@@ -70,7 +73,7 @@ const newPost=[
 
 ]
 
-const Lecture=[
+let Lecture=[
     {
         lectureId:'CSE203-01',
         title:'컴퓨터구조',
@@ -108,7 +111,7 @@ const Lecture=[
     }
 ]
 
-const newLecturePost=[
+let newLecturePost=[
     {
         title:'노강호',
         lecture: {
@@ -140,7 +143,7 @@ const newLecturePost=[
 
 ]
 
-const newMarketPost=[
+let newMarketPost=[
     {
         tag:'삽니다',
         title:'노강호',
@@ -160,7 +163,7 @@ const newMarketPost=[
 
 ]
 
-const newAlbaPost=[
+let newAlbaPost=[
     {
         tag:'상하차',
         title:'노강호'
@@ -180,75 +183,74 @@ const newAlbaPost=[
 
 ]
 
-const hotPost=[
-    {
-        boardId:'alba',
-        boardName:'알바',
-        title:'노강호'
-    },
-    {
-        boardId:'gonggu',
-        boardName:'공구',
-        title:'노현욱'
-    },
-    {
-        boardId:'contest',
-        boardName:'공모전',
-        title:'박민재'
-    },
-    {
-        boardId:'study',
-        boardName:'스터디',
-        title:'서주원'
-    },
-
-]
+let hotPost
 
 app.get('/',(request,response)=>{
     response.redirect('/main')
 })
 
-app.get('/main',(request,response)=>{
+app.get('/main',(req,res)=>{
     console.log('-GET /main-')
-    const session=request.session
+    const session=req.session
     console.log(`current session id : ${session.sid}`)
-    Users.findOne({_id:session.sid})
-        .then((user)=>{
-            if(!user){
-                fs.readFile('ejs/main.ejs','utf-8',(error,data)=>{
-                    response.writeHead(200,{'Content-Type':'text/html'})
-                    response.end(ejs.render(data,{
-                        newPost:newPost,
-                        newLecturePost: newLecturePost,
-                        newMarketPost: newMarketPost,
-                        newAlbaPost: newAlbaPost,
-                        hotPost: hotPost,
-                    }))
+    rp({uri:'http://localhost/api/post/list/hot',json:true})
+        .then((hotPost)=>{
+            console.log(1)
+            rp({uri:'http://localhost/api/post/list/all',json:true})
+                .then((newPost)=>{
+                    console.log(2)
+                    rp({uri:'http://localhost/api/board/market?itemNum=5',json:true})
+                        .then((newMarketPost)=>{
+                            console.log(3)
+                            rp({uri:'http://localhost/api/board/alba?itemNum=5',json:true})
+                                .then((newAlbaPost)=>{
+                                    console.log(4)
+                                    Users.findOne({_id:session.sid})
+                                        .then((user)=> {
+                                            if (!user) {
+                                                fs.readFile('ejs/main.ejs', 'utf-8', (error, data) => {
+                                                    res.writeHead(200, {'Content-Type': 'text/html'})
+                                                    res.end(ejs.render(data, {
+                                                        newPost: newPost,
+                                                        newLecturePost: newLecturePost,
+                                                        newMarketPost: newMarketPost,
+                                                        newAlbaPost: newAlbaPost,
+                                                        hotPost: hotPost,
+                                                    }))
+                                                })
+                                            }
+                                            else {
+                                                rp({uri:'http://localhost/api/post/list/allforuser', method:'POST' ,json:true, jar: true, form:{userId:session.sid}})
+                                                    .then((newLecturePost)=>{
+                                                        console.log(5)
+                                                        fs.readFile('ejs/main_after.ejs', 'utf-8', (error, data) => {
+                                                            res.writeHead(200, {'Content-Type': 'text/html'})
+                                                            if (error)
+                                                                throw error
+                                                            else {
+                                                                res.end(ejs.render(data, {
+                                                                    nickname: user.nickname,
+                                                                    resizedImage: user.resizedImage,
+                                                                    Lecture: Lecture,
+                                                                    newPost: newPost,
+                                                                    newLecturePost: newLecturePost,
+                                                                    newMarketPost: newMarketPost,
+                                                                    newAlbaPost: newAlbaPost,
+                                                                    hotPost: hotPost,
+                                                                }))
+                                                            }
+                                                        })
+                                                    })
+                                            }})
+                                })
+                        })
                 })
-            }
-            else{
-                fs.readFile('ejs/main_after.ejs','utf-8',(error,data)=>{
-                    response.writeHead(200,{'Content-Type':'text/html'})
-                    if(error)
-                        throw error
-                    else {
-                        response.end(ejs.render(data, {
-                            nickname: user.nickname,
-                            resizedImage: user.resizedImage,
-                            Lecture: Lecture,
-                            newPost: newPost,
-                            newLecturePost: newLecturePost,
-                            newMarketPost: newMarketPost,
-                            newAlbaPost: newAlbaPost,
-                            hotPost: hotPost,
-                        }))
-                    }
-                })
-            }
+
         })
-        .catch((err)=>{
-            throw err
+        .catch((error)=>{
+            throw error
         })
+
 })
 
 app.post('/logout',(request,response)=>{
@@ -307,22 +309,23 @@ app.get('/myclass/:lectureId',(request,response)=>{
         }
         return mapPosts()
     }
-
-
     QueryCheck()
         .then(Response)
         .then(posts => {
-            fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
-                response.writeHead(200,{'Content-Type':'text/html'})
-                response.end(ejs.render(data,{
-                    boardId:request.params.lectureId,
-                    title:'test',
-                    posts:posts,
-                    Lecture:Lecture,
-                    hotPost:hotPost,
-                    page:request.query.page || 1
-                }))
-            })
+            rp({uri:'http://localhost/api/post/list/hot' ,json:true})
+                .then((hotPost)=>{
+                    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                        response.writeHead(200,{'Content-Type':'text/html'})
+                        response.end(ejs.render(data,{
+                            boardId:request.params.lectureId,
+                            title:'test',
+                            posts:posts,
+                            Lecture:Lecture,
+                            hotPost:hotPost,
+                            page:request.query.page || 1
+                        }))
+                    })
+                })
         })
         .catch(err => {
             if (err) response.status(500).json(err.message || err)
@@ -330,52 +333,458 @@ app.get('/myclass/:lectureId',(request,response)=>{
 })
 
 app.get('/study',(request,response)=>{
-    fs.readFile('ejs/study.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(data)
-    })
+    const QueryCheck = () => {
+        const boardId = 'study'
+        const page = Number(request.query.page) || 1
+        const itemNum = Number(request.query.itemNum) || 10
+        if (!boardId){
+            return Promise.reject({
+                message: "Query Error"
+            })
+        }
+        return Post.find({boardId: boardId}).sort('-createdDate').skip((page-1)*itemNum).limit(itemNum).lean()
+    }
+
+    // 2.
+    const Response = (posts) => {
+        console.log(2)
+        const mapPosts = async () => {
+            try {
+                let tempPosts = []
+                for (let i = 0; i < posts.length; i++) {
+                    let user = await Users.findOne({userId: posts[i].writerId}).exec()
+                    tempPosts.push({
+                        _id: posts[i]._id,
+                        images: posts[i].images,
+                        title: posts[i].title,
+                        context: posts[i].context,
+                        boardId: posts[i].boardId,
+                        comments: posts[i].comments,
+                        createdDate: posts[i].createdDate,
+                        recommend: posts[i].recommend,
+                        writerId: posts[i].writerId,
+                        writerNickname: user.nickname,
+                        writerImage: user.resizedImage
+                    })
+                }
+                return tempPosts
+            } catch (err) {
+                return Promise.reject(err)
+            }
+        }
+        return mapPosts()
+    }
+    QueryCheck()
+        .then(Response)
+        .then(posts => {
+            rp({uri:'http://localhost/api/post/list/hot',json:true,})
+                .then((hotPost)=>{
+                    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                        response.writeHead(200,{'Content-Type':'text/html'})
+                        response.end(ejs.render(data,{
+                            boardId:'study',
+                            title:'스터디',
+                            posts:posts,
+                            Lecture:Lecture,
+                            hotPost:hotPost,
+                            page:request.query.page || 1
+                        }))
+                    })
+                })
+        })
+        .catch(err => {
+            if (err) response.status(500).json(err.message || err)
+        })
 })
 
 app.get('/hobby',(request,response)=>{
-    fs.readFile('ejs/hobby.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(data)
-    })
+    const QueryCheck = () => {
+        const boardId = 'hobby'
+        const page = Number(request.query.page) || 1
+        const itemNum = Number(request.query.itemNum) || 10
+        if (!boardId){
+            return Promise.reject({
+                message: "Query Error"
+            })
+        }
+        return Post.find({boardId: boardId}).sort('-createdDate').skip((page-1)*itemNum).limit(itemNum).lean()
+    }
+
+    // 2.
+    const Response = (posts) => {
+        console.log(2)
+        const mapPosts = async () => {
+            try {
+                let tempPosts = []
+                for (let i = 0; i < posts.length; i++) {
+                    let user = await Users.findOne({userId: posts[i].writerId}).exec()
+                    tempPosts.push({
+                        _id: posts[i]._id,
+                        images: posts[i].images,
+                        title: posts[i].title,
+                        context: posts[i].context,
+                        boardId: posts[i].boardId,
+                        comments: posts[i].comments,
+                        createdDate: posts[i].createdDate,
+                        recommend: posts[i].recommend,
+                        writerId: posts[i].writerId,
+                        writerNickname: user.nickname,
+                        writerImage: user.resizedImage
+                    })
+                }
+                return tempPosts
+            } catch (err) {
+                return Promise.reject(err)
+            }
+        }
+        return mapPosts()
+    }
+    QueryCheck()
+        .then(Response)
+        .then(posts => {
+            rp({uri:'http://localhost/api/post/list/hot',json:true, })
+                .then((hotPost)=>{
+                    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                        response.writeHead(200,{'Content-Type':'text/html'})
+                        response.end(ejs.render(data,{
+                            boardId:'hobby',
+                            title:'취미',
+                            posts:posts,
+                            Lecture:Lecture,
+                            hotPost:hotPost,
+                            page:request.query.page || 1
+                        }))
+                    })
+                })
+        })
+        .catch(err => {
+            if (err) response.status(500).json(err.message || err)
+        })
 })
 
 app.get('/alba',(request,response)=>{
-    fs.readFile('ejs/alba.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(data)
-    })
+    const QueryCheck = () => {
+        const boardId = 'alba'
+        const page = Number(request.query.page) || 1
+        const itemNum = Number(request.query.itemNum) || 10
+        if (!boardId){
+            return Promise.reject({
+                message: "Query Error"
+            })
+        }
+        return Post.find({boardId: boardId}).sort('-createdDate').skip((page-1)*itemNum).limit(itemNum).lean()
+    }
+
+    // 2.
+    const Response = (posts) => {
+        console.log(2)
+        const mapPosts = async () => {
+            try {
+                let tempPosts = []
+                for (let i = 0; i < posts.length; i++) {
+                    let user = await Users.findOne({userId: posts[i].writerId}).exec()
+                    tempPosts.push({
+                        _id: posts[i]._id,
+                        images: posts[i].images,
+                        title: posts[i].title,
+                        context: posts[i].context,
+                        boardId: posts[i].boardId,
+                        comments: posts[i].comments,
+                        createdDate: posts[i].createdDate,
+                        recommend: posts[i].recommend,
+                        writerId: posts[i].writerId,
+                        writerNickname: user.nickname,
+                        writerImage: user.resizedImage
+                    })
+                }
+                return tempPosts
+            } catch (err) {
+                return Promise.reject(err)
+            }
+        }
+        return mapPosts()
+    }
+    QueryCheck()
+        .then(Response)
+        .then(posts => {
+            rp({uri:'http://localhost/api/post/list/hot',json:true,})
+                .then((hotPost)=>{
+                    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                        response.writeHead(200,{'Content-Type':'text/html'})
+                        response.end(ejs.render(data,{
+                            boardId:'alba',
+                            title:'title',
+                            posts:posts,
+                            Lecture:Lecture,
+                            hotPost:hotPost,
+                            page:request.query.page || 1
+                        }))
+                    })
+                })
+        })
+        .catch(err => {
+            if (err) response.status(500).json(err.message || err)
+        })
 })
 
 app.get('/club',(request,response)=>{
-    fs.readFile('ejs/club.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(data)
-    })
+    const QueryCheck = () => {
+        const boardId = 'club'
+        const page = Number(request.query.page) || 1
+        const itemNum = Number(request.query.itemNum) || 10
+        if (!boardId){
+            return Promise.reject({
+                message: "Query Error"
+            })
+        }
+        return Post.find({boardId: boardId}).sort('-createdDate').skip((page-1)*itemNum).limit(itemNum).lean()
+    }
+
+    // 2.
+    const Response = (posts) => {
+        console.log(2)
+        const mapPosts = async () => {
+            try {
+                let tempPosts = []
+                for (let i = 0; i < posts.length; i++) {
+                    let user = await Users.findOne({userId: posts[i].writerId}).exec()
+                    tempPosts.push({
+                        _id: posts[i]._id,
+                        images: posts[i].images,
+                        title: posts[i].title,
+                        context: posts[i].context,
+                        boardId: posts[i].boardId,
+                        comments: posts[i].comments,
+                        createdDate: posts[i].createdDate,
+                        recommend: posts[i].recommend,
+                        writerId: posts[i].writerId,
+                        writerNickname: user.nickname,
+                        writerImage: user.resizedImage
+                    })
+                }
+                return tempPosts
+            } catch (err) {
+                return Promise.reject(err)
+            }
+        }
+        return mapPosts()
+    }
+    QueryCheck()
+        .then(Response)
+        .then(posts => {
+            rp({uri:'http://localhost/api/post/list/hot',json:true,})
+                .then((hotPost)=>{
+                    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                        response.writeHead(200,{'Content-Type':'text/html'})
+                        response.end(ejs.render(data,{
+                            boardId:'club',
+                            title:'동아리',
+                            posts:posts,
+                            Lecture:Lecture,
+                            hotPost:hotPost,
+                            page:request.query.page || 1
+                        }))
+                    })
+                })
+        })
+        .catch(err => {
+            if (err) response.status(500).json(err.message || err)
+        })
 })
 
 app.get('/contest',(request,response)=>{
-    fs.readFile('ejs/contest.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(data)
-    })
+    const QueryCheck = () => {
+        const boardId = 'contest'
+        const page = Number(request.query.page) || 1
+        const itemNum = Number(request.query.itemNum) || 10
+        if (!boardId){
+            return Promise.reject({
+                message: "Query Error"
+            })
+        }
+        return Post.find({boardId: boardId}).sort('-createdDate').skip((page-1)*itemNum).limit(itemNum).lean()
+    }
+
+    // 2.
+    const Response = (posts) => {
+        console.log(2)
+        const mapPosts = async () => {
+            try {
+                let tempPosts = []
+                for (let i = 0; i < posts.length; i++) {
+                    let user = await Users.findOne({userId: posts[i].writerId}).exec()
+                    tempPosts.push({
+                        _id: posts[i]._id,
+                        images: posts[i].images,
+                        title: posts[i].title,
+                        context: posts[i].context,
+                        boardId: posts[i].boardId,
+                        comments: posts[i].comments,
+                        createdDate: posts[i].createdDate,
+                        recommend: posts[i].recommend,
+                        writerId: posts[i].writerId,
+                        writerNickname: user.nickname,
+                        writerImage: user.resizedImage
+                    })
+                }
+                return tempPosts
+            } catch (err) {
+                return Promise.reject(err)
+            }
+        }
+        return mapPosts()
+    }
+    QueryCheck()
+        .then(Response)
+        .then(posts => {
+            rp({uri:'http://localhost/api/post/list/hot',json:true, })
+                .then((hotPost)=>{
+                    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                        response.writeHead(200,{'Content-Type':'text/html'})
+                        response.end(ejs.render(data,{
+                            boardId:'contest',
+                            title:'공모전',
+                            posts:posts,
+                            Lecture:Lecture,
+                            hotPost:hotPost,
+                            page:request.query.page || 1
+                        }))
+                    })
+                })
+        })
+        .catch(err => {
+            if (err) response.status(500).json(err.message || err)
+        })
 })
 
 app.get('/market',(request,response)=>{
-    fs.readFile('ejs/market.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(data)
-    })
+    const QueryCheck = () => {
+        const boardId = 'market'
+        const page = Number(request.query.page) || 1
+        const itemNum = Number(request.query.itemNum) || 10
+        if (!boardId){
+            return Promise.reject({
+                message: "Query Error"
+            })
+        }
+        return Post.find({boardId: boardId}).sort('-createdDate').skip((page-1)*itemNum).limit(itemNum).lean()
+    }
+
+    // 2.
+    const Response = (posts) => {
+        console.log(2)
+        const mapPosts = async () => {
+            try {
+                let tempPosts = []
+                for (let i = 0; i < posts.length; i++) {
+                    let user = await Users.findOne({userId: posts[i].writerId}).exec()
+                    tempPosts.push({
+                        _id: posts[i]._id,
+                        images: posts[i].images,
+                        title: posts[i].title,
+                        context: posts[i].context,
+                        boardId: posts[i].boardId,
+                        comments: posts[i].comments,
+                        createdDate: posts[i].createdDate,
+                        recommend: posts[i].recommend,
+                        writerId: posts[i].writerId,
+                        writerNickname: user.nickname,
+                        writerImage: user.resizedImage
+                    })
+                }
+                return tempPosts
+            } catch (err) {
+                return Promise.reject(err)
+            }
+        }
+        return mapPosts()
+    }
+    QueryCheck()
+        .then(Response)
+        .then(posts => {
+            rp({uri:'http://localhost/api/post/list/hot',json:true,})
+                .then((hotPost)=>{
+                    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                        response.writeHead(200,{'Content-Type':'text/html'})
+                        response.end(ejs.render(data,{
+                            boardId:'market',
+                            title:'거래',
+                            posts:posts,
+                            Lecture:Lecture,
+                            hotPost:hotPost,
+                            page:request.query.page || 1
+                        }))
+                    })
+                })
+        })
+        .catch(err => {
+            if (err) response.status(500).json(err.message || err)
+        })
 })
 
 app.get('/gonggu',(request,response)=>{
-    fs.readFile('ejs/gonggu.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(data)
-    })
+    const QueryCheck = () => {
+        const boardId = 'gonggu'
+        const page = Number(request.query.page) || 1
+        const itemNum = Number(request.query.itemNum) || 10
+        if (!boardId){
+            return Promise.reject({
+                message: "Query Error"
+            })
+        }
+        return Post.find({boardId: boardId}).sort('-createdDate').skip((page-1)*itemNum).limit(itemNum).lean()
+    }
+
+    // 2.
+    const Response = (posts) => {
+        console.log(2)
+        const mapPosts = async () => {
+            try {
+                let tempPosts = []
+                for (let i = 0; i < posts.length; i++) {
+                    let user = await Users.findOne({userId: posts[i].writerId}).exec()
+                    tempPosts.push({
+                        _id: posts[i]._id,
+                        images: posts[i].images,
+                        title: posts[i].title,
+                        context: posts[i].context,
+                        boardId: posts[i].boardId,
+                        comments: posts[i].comments,
+                        createdDate: posts[i].createdDate,
+                        recommend: posts[i].recommend,
+                        writerId: posts[i].writerId,
+                        writerNickname: user.nickname,
+                        writerImage: user.resizedImage
+                    })
+                }
+                return tempPosts
+            } catch (err) {
+                return Promise.reject(err)
+            }
+        }
+        return mapPosts()
+    }
+    QueryCheck()
+        .then(Response)
+        .then(posts => {
+            rp({uri:'http://localhost/api/post/list/hot',json:true,})
+                .then((hotPost)=>{
+                    fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                        response.writeHead(200,{'Content-Type':'text/html'})
+                        response.end(ejs.render(data,{
+                            boardId:'gonggu',
+                            title:'공구',
+                            posts:posts,
+                            Lecture:Lecture,
+                            hotPost:hotPost,
+                            page:request.query.page || 1
+                        }))
+                    })
+                })
+        })
+        .catch(err => {
+            if (err) response.status(500).json(err.message || err)
+        })
 })
 
 const posts=[
@@ -525,10 +934,6 @@ app.use('/api', require('./api'))
 const swaggerDocument = YAML.load('./swagger/swagger.yaml')
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-
-
-
-
 
 app.listen(process.env.PORT, ()=>{
     console.log(`listening on port: ${process.env.PORT}`)

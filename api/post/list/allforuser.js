@@ -5,12 +5,13 @@ const User = require('../../../models/user')
 const Board = require('../../../models/board')
 
 exports.AllForUser = (req, res) => {
-    const userId = req.body.userId
+    const userId = req.session.sid || req.body.userId
     const page = Number(req.body.page) || 1
     const item = Number(req.body.item) || 5
 
     // 0. Query Check
     const QueryCheck = () =>{
+        console.log(req.session.sid)
         if (!userId){
             return Promise.reject({
                 message: "Query Error"

@@ -140,7 +140,7 @@
           <% for (i=0;i<hotPost.length && i<5;i++) {%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a href="/<%=hotPost[i].boardId%>" style="font-weight: bold;">[<%=hotPost[i].boardName%>]</a>
+              <a href="/<%=hotPost[i].boardId%>" style="font-weight: bold;">[<%=hotPost[i].boardTitle%>]</a>
               <a href="#"><%=hotPost[i].title%></a>
             </td>
           </tr>
@@ -183,7 +183,7 @@
           <%for(i=0;i<newMarketPost.length && i<5;i++){%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a style="font-weight: bold;">[<%=newMarketPost[i].tag%>]</a>
+              <a style="font-weight: bold;">[<%=newMarketPost[i].boardTitle%>]</a>
               <a href="#"><%=newMarketPost[i].title%></a>
             </td>
           </tr>
@@ -203,7 +203,7 @@
           <%for(i=0;i<newAlbaPost.length && i<5;i++){%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a style="font-weight: bold;">[<%=newAlbaPost[i].tag%>]</a>
+              <a style="font-weight: bold;">[<%=newAlbaPost[i].boardTitle%>]</a>
               <a href="#"><%=newAlbaPost[i].title%></a>
             </td>
           </tr>
@@ -223,7 +223,7 @@
           <% for (i=0;i<newPost.length && i<5;i++) {%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a href="/<%=newPost[i].boardId%>" style="font-weight: bold;">[<%=newPost[i].boardName%>]</a>
+              <a href="/<%=newPost[i].boardId%>" style="font-weight: bold;">[<%=newPost[i].boardTitle%>]</a>
               <a href="#"><%=newPost[i].title%></a>
             </td>
           </tr>
