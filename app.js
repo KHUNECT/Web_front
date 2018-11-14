@@ -12,6 +12,8 @@ const swaggerUi = require('swagger-ui-express')
 const YAML = require('yamljs')
 const morgan = require('morgan')
 const Users=require('./models/user.js')
+const Board=require('./models/board')
+const Post=require('./models/post')
 
 app.use(morgan('[:date[iso]] :method :status :url :response-time(ms) :user-agent'))
 
@@ -43,8 +45,6 @@ app.use(session({
     resave:false,
     saveUninitialized:true
 }))
-
-const test_path=['html/','ejs/']
 
 const newPost=[
     {
@@ -249,29 +249,84 @@ app.get('/main',(request,response)=>{
         .catch((err)=>{
             throw err
         })
-    //console.log(`nickname in end of get() : ${nickname}` )
-    //console.log(resizedImage)
-
 })
 
 app.post('/logout',(request,response)=>{
     console.log(`${request.session.userId}가 로그아웃했습니다.`)
-    delete request.session.userId
+    delete request.session.sid
     response.status(200).json({result:'Logout Successful'})
 });
 
 app.get('/signup',(request,response)=>{
     fs.readFile('ejs/signup.ejs','utf-8',(error,data)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(ejs.render(data,{}))
+        response.end(ejs.render(data))
     })
 })
 
-app.get('/myclass/:id',(request,response)=>{
-    fs.readFile('ejs/myclass.ejs','utf-8',(error,data)=>{
-        response.writeHead(200,{'Content-Type':'text/html'})
-        response.end(data)
-    })
+app.get('/myclass/:lectureId',(request,response)=>{
+    // 1. Query Check
+    const QueryCheck = () => {
+        const boardId = request.params.lectureId
+        const page = Number(request.query.page) || 1
+        const itemNum = Number(request.query.itemNum) || 10
+        if (!boardId){
+            return Promise.reject({
+                message: "Query Error"
+            })
+        }
+        return Post.find({boardId: boardId}).sort('-createdDate').skip((page-1)*itemNum).limit(itemNum).lean()
+    }
+
+    // 2.
+    const Response = (posts) => {
+        console.log(2)
+        const mapPosts = async () => {
+            try {
+                let tempPosts = []
+                for (let i = 0; i < posts.length; i++) {
+                    let user = await Users.findOne({userId: posts[i].writerId}).exec()
+                    tempPosts.push({
+                        _id: posts[i]._id,
+                        images: posts[i].images,
+                        title: posts[i].title,
+                        context: posts[i].context,
+                        boardId: posts[i].boardId,
+                        comments: posts[i].comments,
+                        createdDate: posts[i].createdDate,
+                        recommend: posts[i].recommend,
+                        writerId: posts[i].writerId,
+                        writerNickname: user.nickname,
+                        writerImage: user.resizedImage
+                    })
+                }
+                return tempPosts
+            } catch (err) {
+                return Promise.reject(err)
+            }
+        }
+        return mapPosts()
+    }
+
+
+    QueryCheck()
+        .then(Response)
+        .then(posts => {
+            fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
+                response.writeHead(200,{'Content-Type':'text/html'})
+                response.end(ejs.render(data,{
+                    boardId:request.params.lectureId,
+                    title:'test',
+                    posts:posts,
+                    Lecture:Lecture,
+                    hotPost:hotPost,
+                    page:request.query.page || 1
+                }))
+            })
+        })
+        .catch(err => {
+            if (err) response.status(500).json(err.message || err)
+        })
 })
 
 app.get('/study',(request,response)=>{
@@ -323,11 +378,156 @@ app.get('/gonggu',(request,response)=>{
     })
 })
 
+const posts=[
+    {
+      writerNickname:'juwon',
+        wrtierId:'5be4625bb9afde36704427f5',
+      title:'게시판 테스트 제목',
+      recommend:5,
+      context:'게시판 테스트 내용',
+      comments:[
+          {
+
+          },
+          {
+
+          },
+      ],
+      createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+    {
+        writerNickname:'juwon',
+        title:'게시판 테스트 제목',
+        recommend:5,
+        context:'게시판 테스트 내용',
+        comments:[
+            {
+
+            },
+            {
+
+            },
+        ],
+        createdDate:'2018/11/12'
+    },
+]
+
+app.get('/find',(request,response)=> {
+    fs.readFile('ejs/find.ejs', 'utf-8', (error, data) => {
+        response.writeHead(200, {'Content-Type': 'text/html'})
+        response.end(ejs.render(data))
+    })
+})
+
+app.get('/info',(request,response)=> {
+    Users.findOne({_id:request.session.sid})
+        .then((user)=>{
+            fs.readFile('ejs/info.ejs', 'utf-8', (error, data) => {
+                response.writeHead(200, {'Content-Type': 'text/html'})
+                response.end(ejs.render(data,{
+                    user:user,
+                }))
+            })
+        })
+
+})
+
+app.get('/info/setInfo',(request,response)=>{
+    Users.findOne({_id:request.session.sid})
+        .then((user)=>{
+            fs.readFile('ejs/setInfo.ejs', 'utf-8', (error, data) => {
+                response.writeHead(200, {'Content-Type': 'text/html'})
+                response.end(ejs.render(data,{
+                    user:user,
+                }))
+            })
+        })
+})
+
+app.get('/info/setPassword',(request,response)=>{
+    Users.findOne({_id:request.session.sid})
+        .then((user)=>{
+            fs.readFile('ejs/setPassword.ejs', 'utf-8', (error, data) => {
+                response.writeHead(200, {'Content-Type': 'text/html'})
+                response.end(ejs.render(data,{
+                    user:user,
+                }))
+            })
+        })
+})
+
+app.get('/info/setImage',(request,response)=>{
+    Users.findOne({_id:request.session.sid})
+        .then((user)=>{
+            fs.readFile('ejs/setImage.ejs', 'utf-8', (error, data) => {
+                response.writeHead(200, {'Content-Type': 'text/html'})
+                response.end(ejs.render(data,{
+                    user:user,
+                }))
+            })
+        })
+})
+
+app.get('/klas',(request,response)=>{
+    console.log(request.session.sid)
+    fs.readFile('ejs/klas.ejs','utf-8',(error,data)=>{
+        response.writeHead(200,{'Content-Type':'text/html'})
+        response.end(ejs.render(data))
+    })
+})
 app.use('/api', require('./api'))
 
 const swaggerDocument = YAML.load('./swagger/swagger.yaml')
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
+
+
+
 
 
 app.listen(process.env.PORT, ()=>{

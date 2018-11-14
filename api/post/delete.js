@@ -3,7 +3,7 @@
 const Post = require('../../models/post')
 
 exports.DeletePost = (req, res) => {
-    const writerId = req.body.writerId
+    const writerId = req.session.sid || req.body.writerId
     const postId = req.body.postId
 
     // 0. 쿼리 확인
@@ -32,7 +32,7 @@ exports.DeletePost = (req, res) => {
                     message: 'Post Not Exists'
                 })
             }
-            if (post.writerId != writerId) {
+            if (post._id != writerId) {
                 return reject({
                     message: 'User Not Matches'
                 })

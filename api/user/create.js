@@ -19,7 +19,7 @@ exports.UserCreate = (req, res,) => {
     const email = req.body.email
     const major = req.body.major
     const name=req.body.name
-    console.log('요청 받음')
+
     // 0. 데이터 체크
     const DataCheck = () => {
         return new Promise((resolve,reject) => {
@@ -38,8 +38,6 @@ exports.UserCreate = (req, res,) => {
     const UserCheck = () =>{
         return User.find().or({userId: userId}, {nickname: nickname}, {email: email}).findOne()
     }
-
-    // 1-1.
 
     // 2. image 확인
     const ImageProcess = (User) => {
@@ -89,7 +87,7 @@ exports.UserCreate = (req, res,) => {
 
     // 3. 회원 가입
     const SignUp = (resized_loc) => {
-        User.create({
+        return User.create({
             name:name,
             userId: userId,
             password: password,
@@ -97,14 +95,19 @@ exports.UserCreate = (req, res,) => {
             email: email,
             major: major,
             resizedImage: resized_loc || 'https://s3.ap-northeast-2.amazonaws.com/khunect-bucket/images/avatar.png'
-        }, (err, data)=>{ if(err) throw err})
-        res.status(200).json({userId: userId, nickname: nickname})
+        })
     }
+
 
     DataCheck()
     .then(UserCheck)
     .then(ImageProcess)
     .then(SignUp)
+    .then(item => {
+        item.generateHash(password)
+        req.session.sid=item._id
+        return res.status(200).json({userId: userId, nickname: nickname})
+    })
     .catch((err) => {
         console.log(err)
         res.status(500).json(err.message || err)

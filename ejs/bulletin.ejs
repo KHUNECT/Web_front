@@ -10,21 +10,37 @@
     <!-- 부가적인 테마 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
     <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-   
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>-->
+
     <link rel="stylesheet" type="text/css" href="../static/bulletin.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript">
-        alert(document.location.path)
-            $.ajax({
-                url:window.location.path,
-                dataType:'json',
-                success: function(posts){
-                    alert(window.location.path+'로드 성공!')
-                    console.log(posts)
-                }
+    <script>
+        $(document).ready(function() {
+            $('#postButton').click(function () {
+                var form = $('#postForm')[0]
+                var formData = new FormData(form)
+                console.log($('#boardId').val())
+                formData.append('boardId', '<%=boardId%>')
+                $.ajax({
+                    type: 'POST',
+                    url: '../api/post/create',
+                    data: formData,
+                    enctype: 'multipart/form-data;charset=utf-8',
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    success: function (result) {
+                        alert(result['message'])
+                        location.reload()
+                    },
+                    error: function (error) {
+                        alert(error['message'])
+                    }
+                })
             })
+        })
+
     </script>
     <style>
         div {
@@ -35,15 +51,20 @@
 
 <body>
     <div id="top-layer_fixed">
-      <table cellspacing="0" cellpadding="0" style="width:1200px; height:100%; margin: 0 auto;">
-        <tr>
-          <td style="vertical-align:middle; padding-left: 70px; padding-right: 220px;">
-            <a href="./main._after.html"><img src="../static/logo.png" height=45%></a>
-        </td>
-          <td style="width:400px;">
-            <div class="menubar">
+        <table cellspacing="0" cellpadding="0" style="width:1200px; height:100%; margin: 0 auto;">
+            <tr>
+                <td style="vertical-align:middle; padding-left: 70px; padding-right: 220px;">
+                    <a href="/main"> <img src="../static/logo.png" height=45%/></a>
+                </td>
+                <td style="width:400px;">
+                    <div class="menubar">
                         <ul>
                             <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a>
+                                <ul>
+                                    <% for(let i=0;i<Lecture.length;i++){%>
+                                    <li><a href="/myclass/<%=Lecture[i].Lecture%>"><%=Lecture[i].title%></a></li>
+                                    <%}%>
+                                </ul>
                             </li>
                             <li><a id="current" style="font-size:16px;font-weight: bold;">함께해요</a>
                                 <ul>
@@ -81,7 +102,7 @@
                 <table style="height:100%">
                     <tr>
                         <td style="text-indent:15px; ">
-                            <a href="#" style="font-size:110%;font-weight:bold; vertical-align:middle;"># 무슨무슨 게시판</a>
+                            <a href="/board/<%=boardId%>" id="boardId" style="font-weight:bold; font-size:110%; vertical-align:middle;"><%=title%></a>
                         </td>
                     </tr>
                 </table>
@@ -89,108 +110,72 @@
 
 
             <table id="post_table" style="margin-top:10px;">
+                <form id="postForm">
                 <tr>
                     <td colspan="2" height="50" style="border-bottom: 1px solid #444444; font-weight: bold; border: none; background: transparent;">
-                        <input type="text" placeholder="제목" style="margin-top:10px;margin-left: 10px;width:780px; height:40px;">
+                        <input type="text" placeholder="제목" style="margin-top:10px;margin-left:10px;width:780px;height:40px;" name="title">
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2" height="50" style="border-bottom: 1px solid #444444; border: none; background: transparent;">
-                        <textarea placeholder="내용" style="margin-left: 10px;resize:none; width:780px; height: 130px;"></textarea>
+                        <textarea placeholder="내용" style="margin-left:10px;resize:none; width:780px; height: 130px;" name="context"></textarea>
                     </td>
                 </tr>
+                </form>
                 <tr>
-                    <td>
-                        <input type="checkbox" style="margin-left: 10px;"">익명
-                    </td>
                     <td style="text-align:right;">
-                        <input type="submit" value="글쓰기" style="margin-bottom:4px;margin-right:10px;">
+                        <input id="postButton" type="button" value="글쓰기" style="margin-bottom:4px;margin-right:4px;">
                     </td>
                 </tr>
             </table>
 
+            <% for (let i=0;i<posts.length;i++){ %>
             <table id="bulletin_table" style="margin-top:20px;">
                 <tr>
                     <td rowspan="3" width="150" style="text-align:center;">
-                        <img src="../static/profile.jpg" height=90px width=90px>
-                        <br>익명
+                        <img src="<%=posts[i].writerImage%>" height=90px width=90px>
+                        <br><%=posts[i].writerNickname%>
                     </td>
-                    <td style="border-bottom: 1px solid #444444; text-indent: 15px; font-weight: bold;">으앙망한것같아ㅎㅎㅎ</td>
+                    <td style="border-bottom: 1px solid #444444; text-indent: 15px; font-weight: bold;"><%=posts[i].title%></td>
                     <td width="100" height="50" style="text-align:center;">
-                        <img src="../static/good.png" height=15px>&nbsp2
+                        <img src="../static/good.png" height=15px>&nbsp<%=posts[i].recommend%>
                     </td>
                 </tr>
                 <tr>
-                    <td rowspan="2" style="text-indent: 15px;">띠바 눈이너무아프당 눈깔이뽑힐것같아</td>
+                    <td rowspan="2" style="text-indent: 15px;"><%=posts[i].context%></td>
 
                     <td height="50" style="text-align:center;">
-                        <img src="../static/comment.png" height=14px>&nbsp14
+                        <img src="../static/comment.png" height=14px>&nbsp<%=posts[i].comments.length%>
                     </td>
                 </tr>
                 <tr>
-                    <td style="font-size:x-small;text-align:center;">2018/10/31<br>11:15</td>
+                    <td style="font-size:x-small;text-align:center;"><%=posts[i].createdDate%></td>
                 </tr>
             </table>
+            <%}%>
 
-            <table id="bulletin_table" style="margin-top:20px;">
-                <tr>
-                    <td rowspan="3" width="150" style="text-align:center;">
-                        <img src="../static/profile.jpg" height=90px width=90px>
-                        <br>익명
-                    </td>
-                    <td style="border-bottom: 1px solid #444444; text-indent: 15px; font-weight: bold;">으앙망한것같아ㅎㅎㅎ</td>
-                    <td width="100" height="50" style="text-align:center;">
-                        <img src="../static/good.png" height=15px>&nbsp2
-                    </td>
-                </tr>
-                <tr>
-                    <td rowspan="2" style="text-indent: 15px;">띠바 눈이너무아프당 눈깔이뽑힐것같아</td>
-
-                    <td height="50" style="text-align:center;">
-                        <img src="../static/comment.png" height=14px>&nbsp14
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size:x-small;text-align:center;">2018/10/31<br>11:15</td>
-                </tr>
-            </table>
-
-            <table id="bulletin_table" style="margin-top:20px;">
-                <tr>
-                    <td rowspan="3" width="150" style="text-align:center;">
-                        <img src="../static/profile.jpg" height=90px width=90px>
-                        <br>익명
-                    </td>
-                    <td style="border-bottom: 1px solid #444444; text-indent: 15px; font-weight: bold;">으앙망한것같아ㅎㅎㅎ</td>
-                    <td width="100" height="50" style="text-align:center;">
-                        <img src="../static/good.png" height=15px>&nbsp2
-                    </td>
-                </tr>
-                <tr>
-                    <td rowspan="2" style="text-indent: 15px;">띠바 눈이너무아프당 눈깔이뽑힐것같아</td>
-
-                    <td height="50" style="text-align:center;">
-                        <img src="../static/comment.png" height=14px>&nbsp14
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size:x-small;text-align:center;">2018/10/31<br>11:15</td>
-                </tr>
-            </table>
+            <% var pageDiv5=Math.ceil(page/5)-1%>
+            <h2><%=page%></h2>
+            <% var previousPageNum,nextPageNum %>
+            <% if (pageDiv5>0) {%>
+            <% previousPageNum=pageDiv5*5 %>
+            <% nextPageNum=(pageDiv5+1)*5+1 %>
+            <% } else { %>
+            <% previousPageNum=1 %>
+            <% nextPageNum=6 %>
+            <%}%>
             <nav>
                 <ul class="pagination" >
                     <li>
-                        <a href="#" aria-label="Previous" style="color:black;">
+                        <a href="?page=<%=previousPageNum%>" aria-label="Previous" style="color:black;">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li><a href="#" style="color:black;">1</a></li>
-                    <li><a href="#" style="color:black;">2</a></li>
-                    <li><a href="#" style="color:black;">3</a></li>
-                    <li><a href="#" style="color:black;">4</a></li>
-                    <li><a href="#" style="color:black;">5</a></li>
+                    <% for (let i=1;i<=5;i++) { %>
+                    <li><a href="?page=<%=pageDiv5*5+i%>" style="color:black;"><%=pageDiv5*5+i%></a></li>
+                    <%}%>
                     <li>
-                        <a href="#" aria-label="Next" style="color:black;">
+                        <a href="?page=<%=nextPageNum%>" aria-label="Next" style="color:black;">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
@@ -202,38 +187,23 @@
             <div id="board_2" style="float:left;">
                 <table id="board_table">
                     <tr id="board_table_maintr">
-                        <td id="board_table_td"><a style="color: rgb(164, 15, 22);">내 수업</a></td>
+                        <td id="board_table_td"><a style="color: rgb(164, 15, 22);">뜨거운 게시물</a></td>
                     </tr>
+                    <% let i=0 %>
+                    <% for (i=0;i<hotPost.length && i<5;i++) {%>
                     <tr id="board_table_tr">
                         <td id="board_table_td">
-                            <a href="#" style="font-weight: bold;">[과목1]</a>
-                            <a>게시물1</a>
+                            <a href="/<%=hotPost[i].boardId%>" style="font-weight: bold;">[<%=hotPost[i].boardName%>]</a>
+                            <a href="#"><%=hotPost[i].title%></a>
                         </td>
                     </tr>
-                    <tr id="board_table_tr">
-                        <td id="board_table_td">
-                            <a href="#" style="font-weight: bold;">[과목2]</a>
-                            <a>게시물2</a>
-                        </td>
-                    </tr>
-                    <tr id="board_table_tr">
-                        <td id="board_table_td">
-                            <a href="#" style="font-weight: bold;">[과목3]</a>
-                            <a>게시물3</a>
-                        </td>
-                    </tr>
-                    <tr id="board_table_tr">
-                        <td id="board_table_td">
-                            <a href="#" style="font-weight: bold;">[과목4]</a>
-                            <a>게시물4</a>
-                        </td>
-                    </tr>
-                    <tr id="board_table_tr">
-                        <td id="board_table_td">
-                            <a href="#" style="font-weight: bold;">[과목5]</a>
-                            <a>게시물5</a>
-                        </td>
-                    </tr>
+                    <%}%>
+                    <% if(i!=5) { %>
+                    <% for (;i<5;i++) { %>
+                    <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
+                    <% }%>
+                    <% }%>
+
                 </table>
             </div>
 
@@ -274,11 +244,11 @@
                     </tr>
 
 
-                </div>
+
             
 
                 </table>
-
+            </div>
 
             </div>
 
