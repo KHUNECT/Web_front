@@ -45,7 +45,6 @@ exports.findPassword = (req, res) => {
             user.password = str
             user.save()
 
-
             let mailOptions = {
                 from: 'KHUNECT',
                 to: user.email,

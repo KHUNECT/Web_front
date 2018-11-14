@@ -64,8 +64,15 @@ exports.UserModify = (req, res) => {
                 message: "Can't Find User"
             })
         }
-        if (password != '')
-            result.password = password
+        if (password != '') {
+            if (result.validPassword(req.body.currPassword))
+                result.password = password
+            else{
+                return reject({
+                    message:"Current Password is invalid"
+                })
+            }
+        }
         if (nickname != '')
             result.nickname = nickname
         if (email != '')
