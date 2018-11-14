@@ -17,7 +17,7 @@ exports.UserModify = (req, res) => {
     const password = req.body.password || ''
     const nickname = req.body.nickname || ''
     const email = req.body.email || ''
-
+    console.log('file:'+req.file)
     // 0. 중복 체크
     const CheckNickname = () =>{
         return User.findOne({nickname: nickname})
@@ -74,11 +74,18 @@ exports.UserModify = (req, res) => {
             }
         }
         if (nickname != '')
-            result.nickname = nickname
+            if (result.validPassword(req.body.currPassword))
+                result.nickname = nickname
+            else{
+                return reject({
+                    message:"Current Password is invalid"
+                })
+            }
         if (email != '')
             result.email = email
 
         if (req.file == null) {
+            console.log('there is no image')
             result.save((err, data) => {
                 if (err) {
                     console.log(err)
@@ -88,6 +95,8 @@ exports.UserModify = (req, res) => {
             })
         }
         else {
+            console.log('there is image'+req.file)
+
             let file_location = 'images/'
             let origin_name = Date.now() + "_" + path.basename(req.file.originalname)
 
@@ -127,7 +136,6 @@ exports.UserModify = (req, res) => {
                     throw err
                 }
             })
-
             return res.status(200).json({message: 'success'})
         }
     }

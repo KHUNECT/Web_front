@@ -265,11 +265,11 @@ app.get('/signup',(request,response)=>{
 })
 
 app.get('/myclass/:lectureId',(request,response)=>{
-    const boardId = request.params.lectureId
-    const page = Number(request.query.page) || 1
-    const itemNum = Number(request.query.itemNum) || 10
     // 1. Query Check
     const QueryCheck = () => {
+        const boardId = request.params.lectureId
+        const page = Number(request.query.page) || 1
+        const itemNum = Number(request.query.itemNum) || 10
         if (!boardId){
             return Promise.reject({
                 message: "Query Error"
@@ -280,6 +280,7 @@ app.get('/myclass/:lectureId',(request,response)=>{
 
     // 2.
     const Response = (posts) => {
+        console.log(2)
         const mapPosts = async () => {
             try {
                 let tempPosts = []
@@ -294,7 +295,7 @@ app.get('/myclass/:lectureId',(request,response)=>{
                         comments: posts[i].comments,
                         createdDate: posts[i].createdDate,
                         recommend: posts[i].recommend,
-                        writerId: user.writerId,
+                        writerId: posts[i].writerId,
                         writerNickname: user.nickname,
                         writerImage: user.resizedImage
                     })
@@ -314,11 +315,12 @@ app.get('/myclass/:lectureId',(request,response)=>{
             fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
                 response.writeHead(200,{'Content-Type':'text/html'})
                 response.end(ejs.render(data,{
-                    boardId:request.params.boardId,
+                    boardId:request.params.lectureId,
                     title:'test',
                     posts:posts,
                     Lecture:Lecture,
                     hotPost:hotPost,
+                    page:request.query.page || 1
                 }))
             })
         })
