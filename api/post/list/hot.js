@@ -4,13 +4,13 @@ const Post = require('../../../models/post')
 const User = require('../../../models/user')
 const Board = require('../../../models/board')
 
-exports.ListAll = (req, res) => {
-    const page = Number(req.query.page) || 1
+exports.Hot = (req, res) => {
+
     const item = Number(req.query.item) || 10
 
     // 0. 쿼리 실행
     const Querying = () => {
-        return Post.find().or([{boardId: 'club'}, {boardId: 'contest'}, {boardId: 'trade'}, {boardId: 'groupbuying'}, {boardId: 'study'}, {boardId: 'hobby'}, {boardId: 'alba'}]).sort('-createdDate').skip((page - 1) * item).limit(item).lean()
+        return Post.find().where('recommend').gte(5).or([{boardId: 'club'}, {boardId: 'contest'}, {boardId: 'trade'}, {boardId: 'groupbuying'}, {boardId: 'study'}, {boardId: 'hobby'}, {boardId: 'alba'}]).sort('-createDate').limit(item).lean()
     }
 
     // 1. 전송
