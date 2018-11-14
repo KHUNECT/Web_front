@@ -24,7 +24,7 @@ class S(BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    server_address = ('', 5000)
+    server_address = ('', 8000)
     httpd = HTTPServer(server_address, S)
     print("Crawling Server Start")
     httpd.serve_forever()
