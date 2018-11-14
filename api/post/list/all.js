@@ -13,7 +13,7 @@ exports.ListAll = (req, res) => {
 
         return Post.find().or([{boardId: 'club'}, {boardId: 'contest'}, {boardId: 'market'}, {boardId: 'gonggu'}, {boardId: 'study'}, {boardId: 'hobby'}, {boardId: 'alba'}]).sort('-createdDate').skip((page - 1) * item).limit(item).lean()
 
-
+    }
     // 1. 전송
     const Response = async (posts) =>{
         let tempList = []
