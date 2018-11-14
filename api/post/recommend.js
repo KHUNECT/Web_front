@@ -4,10 +4,8 @@ const User = require('../../models/user')
 const Post = require('../../models/post')
 
 exports.Recommend = (req, res) => {
-    const userId = req.body.userId
+    const userId = req.session.sid || req.body.userId
     const postId = req.body.postId
-
-    let userObjId
 
     // 1. Query Check
     const QueryCheck = () => {
@@ -16,7 +14,7 @@ exports.Recommend = (req, res) => {
                 message: "Query Error"
             })
         } else {
-            return User.findOne({userId: userId})
+            return User.findOne({_id: userId})
         }
     }
 
@@ -27,7 +25,6 @@ exports.Recommend = (req, res) => {
                 message: "Can`t find user"
             })
         }
-        userObjId = user._id
         return Post.findOne({_id: postId})
     }
 

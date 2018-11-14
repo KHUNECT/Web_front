@@ -8,6 +8,8 @@ exports.DeleteComment = (req, res) => {
     const postId = req.body.postId
     const commentId = req.body.commentId
 
+    let writerId
+
     // 1. Query Check
     const QueryCheck = () =>{
         if (!userId || !postId || !commentId) {
@@ -15,7 +17,7 @@ exports.DeleteComment = (req, res) => {
                 message: 'Query Error'
             })
         }
-        return User.findOne({userId: userId})
+        return User.findOne({_id: userId})
     }
 
     // 2. User Check
@@ -25,6 +27,7 @@ exports.DeleteComment = (req, res) => {
                 message: 'Can`t find User'
             })
         }
+        writerId = user.userId
         return Post.findOne({_id: postId})
     }
 
@@ -38,9 +41,16 @@ exports.DeleteComment = (req, res) => {
         }
         for (let i = 0; i < post.comments.length; i++){
             if (post.comments[i]._id == commentId){
-                check = true
-                post.comments.splice(i,1)
-                break
+                if (post.comments[i].writerId == writerId){
+                    check = true
+                    post.comments.splice(i,1)
+                    break
+                } else {
+                    return Promise.reject({
+                        message: 'User Not Matches'
+                    })
+                }
+
             }
         }
         if (check == true){

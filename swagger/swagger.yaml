@@ -406,6 +406,9 @@ paths:
                 recommend:
                   type: number
                   description: 추천 갯수
+                comments:
+                  type: number
+                  description: 댓글 갯수
                 writerNickname:
                   type: string
                   description: 글쓴이 닉네임
@@ -463,6 +466,9 @@ paths:
                 recommend:
                   type: number
                   description: 추천 갯수
+                comments:
+                  type: number
+                  description: 댓글 갯수
                 writerNickname:
                   type: string
                   description: 글쓴이 닉네임
@@ -515,6 +521,9 @@ paths:
                 recommend:
                   type: number
                   description: 추천 갯수
+                comments:
+                  type: number
+                  description: 댓글 갯수
                 writerNickname:
                   type: string
                   description: 글쓴이 닉네임
