@@ -39,8 +39,6 @@ exports.UserCreate = (req, res,) => {
         return User.find().or({userId: userId}, {nickname: nickname}, {email: email}).findOne()
     }
 
-    // 1-1.
-
     // 2. image 확인
     const ImageProcess = (User) => {
         if (User != null){
