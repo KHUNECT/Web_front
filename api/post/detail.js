@@ -43,8 +43,8 @@ exports.Detail = (req, res) => {
         }
         return res.status(200).json({
             _id: postId,
-            writerId: user.writerId,
-            writerNickname: user.writerNickname,
+            writerId: user.userId,
+            writerNickname: user.nickname,
             writerImage: user.resizedImage,
             postTitle: tempPost.title,
             postContext: tempPost.context,
