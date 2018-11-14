@@ -35,7 +35,7 @@ exports.BoardList = (req, res) => {
                         comments: posts[i].comments,
                         createdDate: posts[i].createdDate,
                         recommend: posts[i].recommend,
-                        writerId: user.writerId,
+                        writerId: user.userId,
                         writerNickname: user.nickname,
                         writerImage: user.resizedImage
                     })
