@@ -49,139 +49,39 @@ app.use(session({
     saveUninitialized:true
 }))
 
-let newPost=[
-    {
-        boardId:'study',
-        boardName:'스터디',
-        title:'노강호'
-    },
-    {
-        boardId:'alba',
-        boardName:'알바',
-        title:'노현욱'
-    },
-    {
-        boardId:'contest',
-        boardName:'공모전',
-        title:'박민재'
-    },
-    {
-        boardId:'club',
-        boardName:'동아리',
-        title:'서주원'
-    },
-
-]
+let newPost
 
 let Lecture=[
     {
-        lectureId:'CSE203-01',
-        title:'컴퓨터구조',
-        professor:'정연모'
+        lectureId:'',
+        title:'',
+        professor:''
     },
     {
-        lectureId:'CSE223-00',
-        title:'오픈소스SW개발',
-        professor:'진성욱'
+        lectureId:'',
+        title:'',
+        professor:''
     },
     {
-        lectureId:'CSE302-00',
-        title:'컴퓨터네트워크',
-        professor:'유인태'
+        lectureId:'',
+        title:'',
+        professor:''
     },
-    {
-        lectureId:'CSE304-00',
-        title:'알고리즘분석',
-        professor:'한치근'
-    },
-    {
-        lectureId:'GED1408-G03',
-        title:'공학과경영',
-        professor:'김명섭'
-    },
-    {
-        lectureId:'GED1504-G01',
-        title:'공학과윤리',
-        professor:'박수정'
-    },
-    {
-        lectureId:'GEE1344-G02',
-        title:'내손안의소프트웨어',
-        professor:'이승형'
-    }
 ]
 
 let newLecturePost=[
     {
-        title:'노강호',
+        title:'',
         lecture: {
-            lectureId:'CSE203-01',
-            title:'컴퓨터구조',
+            lectureId:'',
+            title:'',
         }
-    },
-    {
-        title:'노현욱',
-        lecture: {
-            lectureId:'CSE223-00',
-            title:'오픈소스SW개발',
-        }
-    },
-    {
-        title:'박민재',
-        lecture: {
-            lectureId:'CSE302-00',
-            title:'컴퓨터네트워크',
-        }
-    },
-    {
-        title:'서주원',
-        lecture: {
-            lectureId:'CSE304-00',
-            title:'알고리즘분석',
-        }
-    },
-
+    }
 ]
 
-let newMarketPost=[
-    {
-        tag:'삽니다',
-        title:'노강호',
-    },
-    {
-        tag:'삽니다',
-        title:'노현욱',
-    },
-    {
-        tag:'팝니다',
-        title:'박민재',
-    },
-    {
-        tag:'팝니다',
-        title:'서주원',
-    },
+let newMarketPost
 
-]
-
-let newAlbaPost=[
-    {
-        tag:'상하차',
-        title:'노강호'
-    },
-    {
-        tag:'고깃집',
-        title:'노현욱'
-    },
-    {
-        tag:'도서관 근로',
-        title:'박민재'
-    },
-    {
-        tag:'과외',
-        title:'서주원'
-    },
-
-]
+let newAlbaPost
 
 let hotPost
 
@@ -222,24 +122,27 @@ app.get('/main',(req,res)=>{
                                             else {
                                                 rp({uri:'http://localhost/api/post/list/allforuser', method:'POST' ,json:true, jar: true, form:{userId:session.sid}})
                                                     .then((newLecturePost)=>{
-                                                        console.log(5)
-                                                        fs.readFile('ejs/main_after.ejs', 'utf-8', (error, data) => {
-                                                            res.writeHead(200, {'Content-Type': 'text/html'})
-                                                            if (error)
-                                                                throw error
-                                                            else {
-                                                                res.end(ejs.render(data, {
-                                                                    nickname: user.nickname,
-                                                                    resizedImage: user.resizedImage,
-                                                                    Lecture: Lecture,
-                                                                    newPost: newPost,
-                                                                    newLecturePost: newLecturePost,
-                                                                    newMarketPost: newMarketPost,
-                                                                    newAlbaPost: newAlbaPost,
-                                                                    hotPost: hotPost,
-                                                                }))
-                                                            }
-                                                        })
+                                                        rp({uri:'http://localhost/api/user/getLecture', method:'POST' ,json:true, jar: true, form:{userId:session.sid}})
+                                                            .then((lecture)=>{
+                                                                console.log(5)
+                                                                fs.readFile('ejs/main_after.ejs', 'utf-8', (error, data) => {
+                                                                    res.writeHead(200, {'Content-Type': 'text/html'})
+                                                                    if (error)
+                                                                        throw error
+                                                                    else {
+                                                                        res.end(ejs.render(data, {
+                                                                            nickname: user.nickname,
+                                                                            resizedImage: user.resizedImage,
+                                                                            Lecture:lecture,
+                                                                            newPost: newPost,
+                                                                            newLecturePost: newLecturePost,
+                                                                            newMarketPost: newMarketPost,
+                                                                            newAlbaPost: newAlbaPost,
+                                                                            hotPost: hotPost,
+                                                                        }))
+                                                                    }
+                                                                })
+                                                             })
                                                     })
                                             }})
                                 })

@@ -131,9 +131,9 @@
         </div>
         <div style="margin-left:11px;margin-right:11px;">
           <form id="loginForm">
-            <input type="text" id="userId" name="userId" placeholder="아이디" style="width:100%;color:rgb(71,71,71);">
+            <input type="text" id="userId" name="userId" placeholder="아이디" style="width:100%;color:rgb(71,71,71);" autocomplete="off">
             <input type="password" id="password" name="password" placeholder="비밀번호" style="width:100%;color:rgb(71,71,71); margin-bottom: 4px;"
-              onkeydown="javascript:onEnterLogin(event)"><br>
+              onkeydown="javascript:onEnterLogin(event)" autocomplete="off"><br>
             <input type="button" id="loginButton" value="로그인" style="margin-left:32%;">
           </form>
         </div>
@@ -178,19 +178,9 @@
           <tr id="board_table_maintr">
             <td id="board_table_td"><a style="color: rgb(164, 15, 22);">내 수업 최신 게시물</a></td>
           </tr>
-          <%for(i=0;i<newLecturePost.length && i<5;i++){%>
-          <tr id="board_table_tr">
-            <td id="board_table_td">
-              <a href="/<%=newLecturePost[i].lecture.lectureId%>" style="font-weight: bold;">[<%=newLecturePost[i].lecture.title%>]</a>
-              <a href="#"><%=newLecturePost[i].title%></a>
-            </td>
-          </tr>
-          <%}%>
-          <% if(i!=5) { %>
-          <% for (;i<5;i++) { %>
+          <%for(i=0;i<5;i++){%>
           <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
-          <% }%>
-          <% }%>
+          <%}%>
         </table>
       </div>
 
@@ -202,7 +192,7 @@
           <%for(i=0;i<newMarketPost.length && i<5;i++){%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a style="font-weight: bold;">[<%=newMarketPost[i].tag%>]</a>
+              <a style="font-weight: bold;">[장터]</a>
               <a href="#"><%=newMarketPost[i].title%></a>
             </td>
           </tr>
@@ -222,7 +212,7 @@
           <%for(i=0;i<newAlbaPost.length && i<5;i++){%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a style="font-weight: bold;">[<%=newAlbaPost[i].tag%>]</a>
+              <a style="font-weight: bold;">[알바]</a>
               <a href="#"><%=newAlbaPost[i].title%></a>
             </td>
           </tr>
