@@ -14,17 +14,13 @@
    
     <link rel="stylesheet" type="text/css" href="../static/bulletin.css">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
-        alert(document.location.path)
-            $.ajax({
-                url:window.location.path,
-                dataType:'json',
-                success: function(posts){
-                    alert(window.location.path+'로드 성공!')
-                    console.log(posts)
-                }
-            })
+        function onEnterLogin() {
+            var KeyCode = windows.event.keyCode;
+            if (keyCode == 13) {
+                loginForm.submit();
+            }
+        }
     </script>
     <style>
         div {
@@ -87,115 +83,102 @@
                 </table>
             </div>
 
-
-            <table id="post_table" style="margin-top:10px;">
-                <tr>
-                    <td colspan="2" height="50" style="border-bottom: 1px solid #444444; font-weight: bold; border: none; background: transparent;">
-                        <input type="text" placeholder="제목" style="margin-top:10px;margin-left: 10px;width:780px; height:40px;">
+        <div style="width:800px;margin-top:10px;padding:10px;background-color: #f6f6f6">
+            <table id="post_page">
+                <tr >
+                    <td style="padding: 15px; width: 40px;">
+                        <img src="../static/profile.jpg" width=40px hegiht=40px>
                     </td>
-                </tr>
-                <tr>
-                    <td colspan="2" height="50" style="border-bottom: 1px solid #444444; border: none; background: transparent;">
-                        <textarea placeholder="내용" style="margin-left: 10px;resize:none; width:780px; height: 130px;"></textarea>
+                    <td style="margin-top:0 auto;">
+                            <p style="font-weight:bold;font-size:medium;">&nbsp&nbsp익명</p>
                     </td>
-                </tr>
-                <tr>
                     <td>
-                        <input type="checkbox" style="margin-left: 10px;"">익명
-                    </td>
-                    <td style="text-align:right;">
-                        <input type="submit" value="글쓰기" style="margin-bottom:4px;margin-right:10px;">
+                        <p style="text-align: right; font-size:x-small">2018/10/31&nbsp11:15&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>    
                     </td>
                 </tr>
+                <tr>
+                    <td colspan="3" style="padding-left: 15px; font-size:xx-large;">
+                        제목제목제목제목제목제목제목
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="padding: 15px;"">
+                        내용내용내용내용내용내용내용내용내용
+                        내용내용내용내용내용내용내용내용내용
+                        내용내용내용내용내용내용내용내용내용
+                        내용내용내용내용내용내용내용내용내용
+                        내용내용내용내용내용내용내용내용내용
+                        내용내용내용내용내용내용내용내용내용
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: right; padding-top:5px;padding-right:15px; padding-bottom: 5px;">
+                        <img src="../static/good.png" alt="추천" width=15px>
+                        <a style="color:rgb(164, 15, 22)">15</a>
+                        &nbsp
+                        <img src="../static/comment.png" alt="추천" width=15px>
+                        <a style="color:rgb(13,50,111)">15</a>
+                    </td>
+                </tr>
+    
             </table>
+        </div>
 
-            <table id="bulletin_table" style="margin-top:20px;">
+        <div style="width:800px;margin-top:10px;padding:10px;background-color: #f6f6f6">
+            <table id="comment_table">
                 <tr>
-                    <td rowspan="3" width="150" style="text-align:center;">
-                        <img src="../static/profile.jpg" height=90px width=90px>
-                        <br>익명
+                    <td width=40px style="padding:10px;">
+                        <img src="../static/profile.jpg" width=20px hegiht=20px>
                     </td>
-                    <td style="border-bottom: 1px solid #444444; text-indent: 15px; font-weight: bold;">으앙망한것같아ㅎㅎㅎ</td>
-                    <td width="100" height="50" style="text-align:center;">
-                        <img src="../static/good.png" height=15px>&nbsp2
+                    <td style="font-weight: bold;">
+                        익명
+                    </td>
+                    <td>
+                        <p style="text-align: right; font-size:x-small">2018/10/31&nbsp11:15&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>    
                     </td>
                 </tr>
                 <tr>
-                    <td rowspan="2" style="text-indent: 15px;">띠바 눈이너무아프당 눈깔이뽑힐것같아</td>
+                    <td colspan="3" style="padding:10px;padding-top:0px;">
+                        내용내용내용내용내용내용내용내용내용
+                    </td>
+                </tr>
 
-                    <td height="50" style="text-align:center;">
-                        <img src="../static/comment.png" height=14px>&nbsp14
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size:x-small;text-align:center;">2018/10/31<br>11:15</td>
-                </tr>
+                <tr style="border-top:1px solid black;">
+                        <td width=40px style="padding:10px;">
+                            <img src="../static/profile.jpg" width=20px hegiht=20px>
+                        </td>
+                        <td style="font-weight: bold;">
+                            익명
+                        </td>
+                        <td>
+                            <p style="text-align: right; font-size:x-small">2018/10/31&nbsp11:15&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>    
+                        </td>        
+                    </tr>
+                    <tr>
+                        <td colspan="3" style="padding:10px;padding-top:0px;">
+                            내용내용내용내용내용내용내용내용내용
+                        </td>
+                    </tr>
+
+                    <tr style="border-top:1px solid black;">
+                            <td width=40px style="padding:10px;">
+                                <img src="../static/profile.jpg" width=20px hegiht=20px>
+                            </td>
+                            <td style="font-weight: bold;">
+                                익명
+                            </td>
+                            <td>
+                                <p style="text-align: right; font-size:x-small">2018/10/31&nbsp11:15&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</p>    
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" style="padding:10px;padding-top:0px;">
+                                내용내용내용내용내용내용내용내용내용
+                            </td>
+                        </tr>
             </table>
+        </div>
 
-            <table id="bulletin_table" style="margin-top:20px;">
-                <tr>
-                    <td rowspan="3" width="150" style="text-align:center;">
-                        <img src="../static/profile.jpg" height=90px width=90px>
-                        <br>익명
-                    </td>
-                    <td style="border-bottom: 1px solid #444444; text-indent: 15px; font-weight: bold;">으앙망한것같아ㅎㅎㅎ</td>
-                    <td width="100" height="50" style="text-align:center;">
-                        <img src="../static/good.png" height=15px>&nbsp2
-                    </td>
-                </tr>
-                <tr>
-                    <td rowspan="2" style="text-indent: 15px;">띠바 눈이너무아프당 눈깔이뽑힐것같아</td>
-
-                    <td height="50" style="text-align:center;">
-                        <img src="../static/comment.png" height=14px>&nbsp14
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size:x-small;text-align:center;">2018/10/31<br>11:15</td>
-                </tr>
-            </table>
-
-            <table id="bulletin_table" style="margin-top:20px;">
-                <tr>
-                    <td rowspan="3" width="150" style="text-align:center;">
-                        <img src="../static/profile.jpg" height=90px width=90px>
-                        <br>익명
-                    </td>
-                    <td style="border-bottom: 1px solid #444444; text-indent: 15px; font-weight: bold;">으앙망한것같아ㅎㅎㅎ</td>
-                    <td width="100" height="50" style="text-align:center;">
-                        <img src="../static/good.png" height=15px>&nbsp2
-                    </td>
-                </tr>
-                <tr>
-                    <td rowspan="2" style="text-indent: 15px;">띠바 눈이너무아프당 눈깔이뽑힐것같아</td>
-
-                    <td height="50" style="text-align:center;">
-                        <img src="../static/comment.png" height=14px>&nbsp14
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size:x-small;text-align:center;">2018/10/31<br>11:15</td>
-                </tr>
-            </table>
-            <nav>
-                <ul class="pagination" >
-                    <li>
-                        <a href="#" aria-label="Previous" style="color:black;">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li><a href="#" style="color:black;">1</a></li>
-                    <li><a href="#" style="color:black;">2</a></li>
-                    <li><a href="#" style="color:black;">3</a></li>
-                    <li><a href="#" style="color:black;">4</a></li>
-                    <li><a href="#" style="color:black;">5</a></li>
-                    <li>
-                        <a href="#" aria-label="Next" style="color:black;">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
         </div>
 
         <div id="section_2" style="float:left">

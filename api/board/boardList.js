@@ -27,7 +27,7 @@ exports.BoardList = (req, res) => {
             try {
                 let tempPosts = []
                 for (let i = 0; i < posts.length; i++) {
-                    let user = await User.findOne({_id: posts[i].writerId}).exec()
+                    let user = await User.findOne({userId: posts[i].writerId}).exec()
                     tempPosts.push({
                         _id: posts[i]._id,
                         images: posts[i].images,
@@ -37,7 +37,7 @@ exports.BoardList = (req, res) => {
                         comments: posts[i].comments,
                         createdDate: posts[i].createdDate,
                         recommend: posts[i].recommend,
-                        writerId: user.writerId,
+                        writerId: user.userId,
                         writerNickname: user.nickname,
                         writerImage: user.resizedImage
                     })

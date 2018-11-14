@@ -11,6 +11,7 @@ exports.Hot = (req, res) => {
     // 0. 쿼리 실행
     const Querying = () => {
         return Post.find().where('recommend').gte(5).or([{boardId: 'club'}, {boardId: 'contest'}, {boardId: 'market'}, {boardId: 'gonggu'}, {boardId: 'study'}, {boardId: 'hobby'}, {boardId: 'alba'}]).sort('-createDate').limit(item).lean()
+
     }
 
     // 1. 전송
