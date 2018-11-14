@@ -4,10 +4,12 @@ const User = require('../../models/user')
 const Post = require('../../models/post')
 
 exports.modifyComment = (req, res) => {
-    const userId = req.body.userId
+    const userId = req.session.sid || req.body.userId
     const postId = req.body.postId
     const commentId = req.body.commentId
     const context = req.body.context
+
+    let writerId
 
     // 1. Query Check
     const QueryCheck = () =>{
@@ -16,7 +18,7 @@ exports.modifyComment = (req, res) => {
                 message: 'Query Error'
             })
         }
-        return User.findOne({userId: userId})
+        return User.findOne({_id: userId})
     }
 
     // 2. User Check
@@ -26,6 +28,7 @@ exports.modifyComment = (req, res) => {
                 message: 'Can`t find User'
             })
         }
+        writerId = user.userId
         return Post.findOne({_id: postId})
     }
 
@@ -39,9 +42,14 @@ exports.modifyComment = (req, res) => {
         }
         for (let i = 0; i < post.comments.length; i++){
             if (post.comments[i]._id == commentId){
-                check = true
-                post.comments[i].context = context
-                break
+                if (post.comments[i].writerId == writerId){
+                    check = true
+                    post.comments[i].context = context
+                    break
+                }
+                return Promise.reject({
+                    message: 'User Not Matches'
+                })
             }
         }
         if (check == true){

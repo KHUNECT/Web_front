@@ -48,6 +48,7 @@ exports.AllForUser = (req, res) => {
                 context: posts[i].context,
                 date: posts[i].createdDate,
                 recommend: posts[i].recommend,
+                comments: posts[i].comments.length,
                 writerNickname: user.nickname,
                 writerImage: user.resizedImage,
                 boardId: board.boardId,

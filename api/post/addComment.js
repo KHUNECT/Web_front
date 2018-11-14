@@ -4,9 +4,11 @@ const User = require('../../models/user')
 const Post = require('../../models/post')
 
 exports.addComment = (req, res) => {
-    const userId = req.body.userId
+    const userId = req.session.sid || req.body.userId
     const postId = req.body.postId
     const context = req.body.context
+
+    let writerId
 
     // 1. Query Check
     const QueryCheck = () => {
@@ -15,7 +17,7 @@ exports.addComment = (req, res) => {
                 message: "Query Error"
             })
         }
-        return User.findOne({userId: userId})
+        return User.findOne({_id: userId})
     }
 
     // 2. User Check
@@ -25,6 +27,7 @@ exports.addComment = (req, res) => {
                 message: "Can`t find User"
             })
         }
+        writerId = user.userId
         return Post.findOne({_id : postId})
     }
 
@@ -36,7 +39,7 @@ exports.addComment = (req, res) => {
             })
         }
         post.comments.push({
-            writerId: userId,
+            writerId: writerId,
             context: context
         })
         post.save()

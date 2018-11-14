@@ -14,13 +14,14 @@ AWS.config.update({
 })
 
 exports.CreatePost = (req, res) => {
-    const writerId = req.session.sid
+    const writerId = req.session.sid || req.body.userId
     const title = req.body.title
     const context = req.body.context
     const boardId = req.body.boardId
-    let thisUser
     console.log('-POST /api/post/create-')
     console.log(` ${writerId}  ${title}  ${context}  ${boardId} `)
+    let userId
+
     // 0. 쿼리 확인
     const QueryCheck = () => {
         console.log(0)
@@ -43,7 +44,6 @@ exports.CreatePost = (req, res) => {
 
     // 2. boardId 체크
     const BoardCheck = (writer) => {
-        thisUser=writer
         console.log(2)
         if (!writer) {
             console.log('2 error')
@@ -51,6 +51,7 @@ exports.CreatePost = (req, res) => {
                 message: 'User Not Exists'
             })
         }
+        userId = writer.userId
         return Board.findOne({boardId: boardId})
     }
 
@@ -65,7 +66,7 @@ exports.CreatePost = (req, res) => {
         }
         if (req.file == null){
             return Post.create({
-                writerId: thisUser._id,
+                writerId: userId,
                 title: title,
                 context: context,
                 boardId: boardId,
@@ -94,7 +95,7 @@ exports.CreatePost = (req, res) => {
             })
             .then(data => {
                 return Post.create({
-                    writerId: writerId,
+                    writerId: userId,
                     title: title,
                     context: context,
                     boardId: boardId,
