@@ -133,6 +133,44 @@ paths:
           schema:
             type: string
             description: 실패 이유
+  /user/detailByID:
+    post:
+      tags:
+        - User
+      summary : 회원 정보 반환
+      description : 회원 정보 반환
+      parameters:
+        - in: query
+          name: userId
+          description: 유저 아이디
+          type: string
+          required : true
+      responses:
+        '200':
+          description: 회원 정보가 반환 됨
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              image:
+                type: string
+                description: 유저 프로필 사진
+              nickname:
+                type: string
+                description: 유저 닉네임
+              major:
+                type: string
+                description: 전공
+              email:
+                type: string
+                description: 유저 이메일
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
   /user/modify:
     post:
       tags:
