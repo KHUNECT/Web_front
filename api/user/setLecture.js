@@ -5,7 +5,7 @@ const Board = require('../../models/board')
 const rp = require('request-promise')
 
 exports.SetLecture = (req, res) => {
-    console.log('-POST api/user/create-')
+    console.log('-POST api/user/setLecture-')
     const _id = req.session.sid
     const klasId = req.body.klasId
     const klasPassword = req.body.klasPassword
@@ -76,7 +76,7 @@ exports.SetLecture = (req, res) => {
         })
     }
 
-    rp.post('http://13.125.196.191:5000', {form:{
+    rp.post('http://localhost:5000', {form:{
         id: klasId,
         password: klasPassword
     }})
