@@ -4,6 +4,7 @@ const User = require('../../models/user')
 const sharp = require('sharp')
 const path = require('path')
 const AWS = require('aws-sdk')
+const bcrypt = require('bcrypt-nodejs')
 
 AWS.config.update({
     accessKeyId: process.env.AWSAccessKeyId,
@@ -58,17 +59,17 @@ exports.UserModify = (req, res) => {
     }
 
     // 3. password, nickname, email 저장
-    const Modify = (result) =>{
+    const Modify = async (result) =>{
         if (result == null) {
-            return reject({
+            return Promise.reject({
                 message: "Can't Find User"
             })
         }
         if (password != '') {
             if (result.validPassword(req.body.currPassword))
-                result.password = password
+                await result.generateHash(password)
             else{
-                return reject({
+                return Promise.reject({
                     message:"Current Password is invalid"
                 })
             }
@@ -77,7 +78,7 @@ exports.UserModify = (req, res) => {
             if (result.validPassword(req.body.currPassword))
                 result.nickname = nickname
             else{
-                return reject({
+                return Promise.reject({
                     message:"Current Password is invalid"
                 })
             }

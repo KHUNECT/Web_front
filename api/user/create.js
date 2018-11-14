@@ -103,8 +103,9 @@ exports.UserCreate = (req, res,) => {
     .then(UserCheck)
     .then(ImageProcess)
     .then(SignUp)
-    .then(item => {
-        item.generateHash(password)
+    .then(async (item) => {
+        await item.generateHash(password)
+        item.save()
         req.session.sid=item._id
         return res.status(200).json({userId: userId, nickname: nickname})
     })
