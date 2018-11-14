@@ -35,7 +35,7 @@ class KLAS():
             lec_list_var2 = user_soup.select('#tbl > tbody > tr > td:nth-of-type(4)')
             
             lec_list1 = list(map(lambda x: x.text[:x.text.find('[')], lec_list_var1))
-            lec_list2 = list(map(lambda x: x.text[x.text.find('[')+1:-1], lec_list_var1))
+            lec_list2 = list(map(lambda x: x.text[x.text.find('[')+1:x.text.find(']')], lec_list_var1))
             lec_list3 = list(map(lambda x: x.text, lec_list_var2))
             
             
