@@ -15,7 +15,7 @@ const router = express.Router()
 
 router.post('/create', upload.single('image'), create.UserCreate)
 router.get('/detail', detail.UserDetail)
-router.post('/')
+router.post('/detailByID', detailByID.UserDetailById)
 router.post('/modify', upload.single('image'), modify.UserModify)
 router.post('/login', login.Login)
 router.post('/setLecture', setLecture.SetLecture)
