@@ -27,7 +27,7 @@
     <table cellspacing="0" cellpadding="0" style="width:1200px; height:100%; margin: 0 auto;">
       <tr>
         <td style="vertical-align:middle; padding-left: 70px; padding-right: 220px;">
-          <img src="../static/logo.png" height=45%>
+          <a href="./main._after.html"><img src="../static/logo.png" height=45%></a>
         </td>
         <td style="width:400px;">
           <div class="menubar">
@@ -104,8 +104,17 @@
           <img src="../static/profile.jpg" width=120px>
         </div>
         <div style="text-align:center;">
-          <a href="#" style="font-weight:bold;">닉네임</a><a>님 환영합니다!</a>
-          <input type="submit" id="logout_submit" value="로그아웃">
+          <a style="font-weight:bold;font-size: medium;">닉네임</a><a>님 환영합니다!</a>
+          <table width=100%>
+            <tr>
+              <td>
+                <button type="button" onclick="location.href='./change_info.html'" id="logout_submit" value="내 정보" style="font-size:small;float:right;">내 정보</button>
+              </td>
+              <td>
+                <input type="submit" id="logout_submit" value="로그아웃" style="font-size:small;float:left;">
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
 
