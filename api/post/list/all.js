@@ -10,7 +10,7 @@ exports.ListAll = (req, res) => {
 
     // 0. 쿼리 실행
     const Querying = () => {
-        return Post.find().or([{boardId: 'club'}, {boardId: 'contest'}, {boardId: 'trade'}, {boardId: 'groupbuying'}, {boardId: 'study'}, {boardId: 'hobby'}, {boardId: 'alba'}]).sort('-createdDate').skip((page - 1) * item).limit(item).lean()
+        return Post.find().or([{boardId: 'club'}, {boardId: 'contest'}, {boardId: 'trade'}, {boardId: 'groupbuying'}, {boardId: 'study'}, {boardId: 'hobby'}, {boardId: 'alba'}, {boardId: 'review'}]).sort('-createdDate').skip((page - 1) * item).limit(item).lean()
     }
 
     // 1. 전송
