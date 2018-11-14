@@ -39,7 +39,7 @@ exports.CreatePost = (req, res) => {
     // 1. writerId 체크
     const WriterCheck = () => {
         console.log(1)
-        return User.findOne({_id:writerId})
+        return User.findById(writerId)
     }
 
     // 2. boardId 체크
