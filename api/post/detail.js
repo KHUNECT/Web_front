@@ -4,7 +4,7 @@ const Post = require('../../models/post')
 const User = require('../../models/user')
 
 exports.Detail = (req, res) => {
-    const postId = req.params.postId
+    const postId = req.query.postId
 
     let tempPost
 

@@ -7,7 +7,7 @@ exports.addComment = (req, res) => {
     const userId = req.session.sid || req.body.userId
     const postId = req.body.postId
     const context = req.body.context
-
+    console.log('-post api/post/addComment-')
     let writerId
 
     // 1. Query Check
