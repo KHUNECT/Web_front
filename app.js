@@ -93,16 +93,16 @@ app.get('/main',(req,res)=>{
     console.log('-GET /main-')
     const session=req.session
     console.log(`current session id : ${session.sid}`)
-    rp({uri:'http://localhost/api/post/list/hot',json:true})
+    rp({uri:'http://13.125.196.191/api/post/list/hot',json:true})
         .then((hotPost)=>{
             console.log(1)
-            rp({uri:'http://localhost/api/post/list/all',json:true})
+            rp({uri:'http://13.125.196.191/api/post/list/all',json:true})
                 .then((newPost)=>{
                     console.log(2)
-                    rp({uri:'http://localhost/api/board/market?itemNum=5',json:true})
+                    rp({uri:'http://13.125.196.191/api/board/market?itemNum=5',json:true})
                         .then((newMarketPost)=>{
                             console.log(3)
-                            rp({uri:'http://localhost/api/board/alba?itemNum=5',json:true})
+                            rp({uri:'http://13.125.196.191/api/board/alba?itemNum=5',json:true})
                                 .then((newAlbaPost)=>{
                                     console.log(4)
                                     Users.findOne({_id:session.sid})
@@ -120,9 +120,9 @@ app.get('/main',(req,res)=>{
                                                 })
                                             }
                                             else {
-                                                rp({uri:'http://localhost/api/post/list/allforuser', method:'POST' ,json:true, jar: true, form:{userId:session.sid}})
+                                                rp({uri:'http://13.125.196.191/api/post/list/allforuser', method:'POST' ,json:true, jar: true, form:{userId:session.sid}})
                                                     .then((newLecturePost)=>{
-                                                        rp({uri:'http://localhost/api/user/getLecture', method:'POST' ,json:true, jar: true, form:{userId:session.sid}})
+                                                        rp({uri:'http://13.125.196.191/api/user/getLecture', method:'POST' ,json:true, jar: true, form:{userId:session.sid}})
                                                             .then((lecture)=>{
                                                                 console.log(5)
                                                                 fs.readFile('ejs/main_after.ejs', 'utf-8', (error, data) => {
@@ -215,7 +215,7 @@ app.get('/myclass/:lectureId',(request,response)=>{
     QueryCheck()
         .then(Response)
         .then(posts => {
-            rp({uri:'http://localhost/api/post/list/hot' ,json:true})
+            rp({uri:'http://l13.125.196.191/api/post/list/hot' ,json:true})
                 .then((hotPost)=>{
                     fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
                         response.writeHead(200,{'Content-Type':'text/html'})
@@ -280,7 +280,7 @@ app.get('/study',(request,response)=>{
     QueryCheck()
         .then(Response)
         .then(posts => {
-            rp({uri:'http://localhost/api/post/list/hot',json:true,})
+            rp({uri:'http://13.125.196.191/api/post/list/hot',json:true,})
                 .then((hotPost)=>{
                     fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
                         response.writeHead(200,{'Content-Type':'text/html'})
@@ -345,7 +345,7 @@ app.get('/hobby',(request,response)=>{
     QueryCheck()
         .then(Response)
         .then(posts => {
-            rp({uri:'http://localhost/api/post/list/hot',json:true, })
+            rp({uri:'http://13.125.196.191/api/post/list/hot',json:true, })
                 .then((hotPost)=>{
                     fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
                         response.writeHead(200,{'Content-Type':'text/html'})
@@ -410,7 +410,7 @@ app.get('/alba',(request,response)=>{
     QueryCheck()
         .then(Response)
         .then(posts => {
-            rp({uri:'http://localhost/api/post/list/hot',json:true,})
+            rp({uri:'http://13.125.196.191/api/post/list/hot',json:true,})
                 .then((hotPost)=>{
                     fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
                         response.writeHead(200,{'Content-Type':'text/html'})
@@ -475,7 +475,7 @@ app.get('/club',(request,response)=>{
     QueryCheck()
         .then(Response)
         .then(posts => {
-            rp({uri:'http://localhost/api/post/list/hot',json:true,})
+            rp({uri:'http://13.125.196.191/api/post/list/hot',json:true,})
                 .then((hotPost)=>{
                     fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
                         response.writeHead(200,{'Content-Type':'text/html'})
@@ -540,7 +540,7 @@ app.get('/contest',(request,response)=>{
     QueryCheck()
         .then(Response)
         .then(posts => {
-            rp({uri:'http://localhost/api/post/list/hot',json:true, })
+            rp({uri:'http://13.125.196.191/api/post/list/hot',json:true, })
                 .then((hotPost)=>{
                     fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
                         response.writeHead(200,{'Content-Type':'text/html'})
@@ -605,7 +605,7 @@ app.get('/market',(request,response)=>{
     QueryCheck()
         .then(Response)
         .then(posts => {
-            rp({uri:'http://localhost/api/post/list/hot',json:true,})
+            rp({uri:'http://13.125.196.191/api/post/list/hot',json:true,})
                 .then((hotPost)=>{
                     fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
                         response.writeHead(200,{'Content-Type':'text/html'})
@@ -670,7 +670,7 @@ app.get('/gonggu',(request,response)=>{
     QueryCheck()
         .then(Response)
         .then(posts => {
-            rp({uri:'http://localhost/api/post/list/hot',json:true,})
+            rp({uri:'http://13.125.196.191/api/post/list/hot',json:true,})
                 .then((hotPost)=>{
                     fs.readFile('ejs/bulletin.ejs','utf-8',(error,data)=>{
                         response.writeHead(200,{'Content-Type':'text/html'})
@@ -831,6 +831,23 @@ app.get('/klas',(request,response)=>{
         response.writeHead(200,{'Content-Type':'text/html'})
         response.end(ejs.render(data))
     })
+})
+
+app.get('/post',(request,response)=>{
+    const postId=request.query.id
+    rp({url:'http://13.125.196.191/api/post/detail?postId='+postId,json:true})
+        .then((post)=> {
+            rp({uri: 'http://13.125.196.191/api/post/list/hot', json: true,})
+                .then((hotPost) => {
+                    fs.readFile('ejs/post.ejs', 'utf-8', (error, data) => {
+                        response.writeHead(200, {'Content-Type': 'text/html'})
+                        response.end(ejs.render(data, {
+                            post: post,
+                            hotPost: hotPost,
+                        }))
+                    })
+                })
+        })
 })
 app.use('/api', require('./api'))
 
