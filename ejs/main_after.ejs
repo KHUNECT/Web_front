@@ -35,18 +35,18 @@
 
 <body>
   <div id="top-layer_fixed">
-    <table cellspacing="0" cellpadding="0" style="width:100%; height:100%;">
+    <table cellspacing="0" cellpadding="0" style="width:1200px; height:100%; margin:0 auto;">
       <tr>
-        <td style="vertical-align:middle; padding-left: 200px; padding-right: 220px;">
+        <td style="vertical-align:middle; padding-left: 70px; padding-right: 220px;">
           <img src="../static/logo.png" height=45%/>
         </td>
-        <td>
+        <td style="width:400px;">
           <div class="menubar">
             <ul>
                 <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a>
                     <ul>
                         <% for(let i=0;i<Lecture.length;i++){%>
-                        <li><a href="/myclass/<%=Lecture[i].Lecture%>"><%=Lecture[i].title%></a></li>
+                        <li><a href="/myclass/<%=Lecture[i].boardId%>"><%=Lecture[i].title%></a></li>
                         <%}%>
                     </ul>
                 </li>
@@ -118,7 +118,7 @@
           <img src="../static/logo.png" height=20px style="margin-top:15px;">
         </div>
         <div style="margin:0 auto; margin-left:30px;">    
-          <img src="<%=resizedImage%>">
+          <a href="/info"><img src="<%=resizedImage%>" width="100px" height="100px"></a>
         </div>
         <div style="text-align:center;">
           <a href="#" style="font-weight:bold;"><%=nickname%></a><a>님 환영합니다!</a>
@@ -128,7 +128,6 @@
       </form>
 
       <div id="my_menu">
-        s
       </div>
     </div>
     <div id="section_2" style="float:left">
@@ -141,14 +140,14 @@
           <% for (i=0;i<hotPost.length && i<5;i++) {%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a href="/<%=hotPost[i].boardId%>" style="font-weight: bold;">[<%=hotPost[i].boardName%>]</a>
+              <a href="/<%=hotPost[i].boardId%>" style="font-weight: bold;">[<%=hotPost[i].boardTitle%>]</a>
               <a href="#"><%=hotPost[i].title%></a>
             </td>
           </tr>
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
 
@@ -163,14 +162,14 @@
           <%for(i=0;i<newLecturePost.length && i<5;i++){%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a href="/<%=newLecturePost[i].lecture.lectureId%>" style="font-weight: bold;">[<%=newLecturePost[i].lecture.title%>]</a>
+              <a href="/<%=newLecturePost[i].boardId%>" style="font-weight: bold;">[<%=newLecturePost[i].boardTitle%>]</a>
               <a href="#"><%=newLecturePost[i].title%></a>
             </td>
           </tr>
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>
@@ -184,14 +183,14 @@
           <%for(i=0;i<newMarketPost.length && i<5;i++){%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a style="font-weight: bold;">[<%=newMarketPost[i].tag%>]</a>
+              <a style="font-weight: bold;">[장터]</a>
               <a href="#"><%=newMarketPost[i].title%></a>
             </td>
           </tr>
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>
@@ -204,14 +203,14 @@
           <%for(i=0;i<newAlbaPost.length && i<5;i++){%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a style="font-weight: bold;">[<%=newAlbaPost[i].tag%>]</a>
+              <a style="font-weight: bold;">[알바]</a>
               <a href="#"><%=newAlbaPost[i].title%></a>
             </td>
           </tr>
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>
@@ -224,14 +223,14 @@
           <% for (i=0;i<newPost.length && i<5;i++) {%>
           <tr id="board_table_tr">
             <td id="board_table_td">
-              <a href="/<%=newPost[i].boardId%>" style="font-weight: bold;">[<%=newPost[i].boardName%>]</a>
+              <a href="/<%=newPost[i].boardId%>" style="font-weight: bold;">[<%=newPost[i].boardTitle%>]</a>
               <a href="#"><%=newPost[i].title%></a>
             </td>
           </tr>
           <%}%>
           <% if(i!=5) { %>
           <% for (;i<5;i++) { %>
-          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#eaeaea;">empty row</a></td></tr>
+          <tr id="board_table_tr"><td id="board_table_td"><a style="color:#f6f6f6;">empty row</a></td></tr>
           <% }%>
           <% }%>
         </table>

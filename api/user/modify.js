@@ -4,6 +4,7 @@ const User = require('../../models/user')
 const sharp = require('sharp')
 const path = require('path')
 const AWS = require('aws-sdk')
+const bcrypt = require('bcrypt-nodejs')
 
 AWS.config.update({
     accessKeyId: process.env.AWSAccessKeyId,
@@ -12,11 +13,12 @@ AWS.config.update({
 })
 
 exports.UserModify = (req, res) => {
-    const userId = req.body.userId
+    console.log('-POST modify-')
+    const _id = req.session.sid || req.body.userId
     const password = req.body.password || ''
     const nickname = req.body.nickname || ''
     const email = req.body.email || ''
-
+    console.log('file:'+req.file)
     // 0. 중복 체크
     const CheckNickname = () =>{
         return User.findOne({nickname: nickname})
@@ -42,7 +44,7 @@ exports.UserModify = (req, res) => {
     // 1. 쿼리 체크
     const CheckQuery = () =>{
         return new Promise((resolve, reject) => {
-            if (!userId) {
+            if (!_id) {
                 return reject({
                     message: "query error"
                 })
@@ -53,33 +55,49 @@ exports.UserModify = (req, res) => {
 
     // 2. 유저 체크
     const UserCheck = () => {
-        return User.findOne({userId: userId})
+        return User.findOne({_id: _id})
     }
 
     // 3. password, nickname, email 저장
-    const Modify = (result) =>{
+    const Modify = async (result) =>{
         if (result == null) {
-            return reject({
+            return Promise.reject({
                 message: "Can't Find User"
             })
         }
-        if (password != '')
-            result.password = password
+        if (password != '') {
+            if (result.validPassword(req.body.currPassword))
+                await result.generateHash(password)
+            else{
+                return Promise.reject({
+                    message:"Current Password is invalid"
+                })
+            }
+        }
         if (nickname != '')
-            result.nickname = nickname
+            if (result.validPassword(req.body.currPassword))
+                result.nickname = nickname
+            else{
+                return Promise.reject({
+                    message:"Current Password is invalid"
+                })
+            }
         if (email != '')
             result.email = email
 
         if (req.file == null) {
+            console.log('there is no image')
             result.save((err, data) => {
                 if (err) {
-                    throw err
                     console.log(err)
+                    throw err
                 }
                 return res.status(200).json({message: 'Success'})
             })
         }
         else {
+            console.log('there is image'+req.file)
+
             let file_location = 'images/'
             let origin_name = Date.now() + "_" + path.basename(req.file.originalname)
 
@@ -115,11 +133,10 @@ exports.UserModify = (req, res) => {
 
             result.save((err, data) => {
                 if (err) {
-                    throw err
                     console.log(err)
+                    throw err
                 }
             })
-
             return res.status(200).json({message: 'success'})
         }
     }

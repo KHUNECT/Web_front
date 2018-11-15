@@ -133,6 +133,44 @@ paths:
           schema:
             type: string
             description: 실패 이유
+  /user/detailByID:
+    post:
+      tags:
+        - User
+      summary : 회원 정보 반환
+      description : 회원 정보 반환
+      parameters:
+        - in: query
+          name: userId
+          description: 유저 아이디
+          type: string
+          required : true
+      responses:
+        '200':
+          description: 회원 정보가 반환 됨
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              image:
+                type: string
+                description: 유저 프로필 사진
+              nickname:
+                type: string
+                description: 유저 닉네임
+              major:
+                type: string
+                description: 전공
+              email:
+                type: string
+                description: 유저 이메일
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
   /user/modify:
     post:
       tags:
@@ -221,9 +259,14 @@ paths:
       parameters:
         - in: body
           name: userId
-          description: KLAS 아이디
+          description: 유저 아이디
           required: true
-          type: string
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
       responses:
         '200':
           description: 회원 정보 수정 성공
@@ -255,7 +298,7 @@ paths:
       parameters:
         - in: body
           name: body
-          description: KLAS 아이디
+          description: 유저 로그인
           required : true
           schema:
             type: object
@@ -263,6 +306,40 @@ paths:
               userId:
                 type: string
                 description: 유저 아이디
+              password:
+                type: string
+                description: 유저 패스워드
+      responses:
+        '200':
+          description: 로그인 성공
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: 성공 여부
+        '500':
+          description: 로그인 실패
+          schema:
+            type: string
+            description: 에러 이유
+  /user/findId:
+    post:
+      tags:
+        - User
+      summary : id 찾기
+      description : email을 입력해 아이디를 찾는다.
+      parameters:
+        - in: body
+          name: body
+          description: KLAS 아이디
+          required : true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: 유저 이메일
       responses:
         '200':
           description: 회원 정보 수정 성공
@@ -285,6 +362,343 @@ paths:
           schema:
             type: string
             description: 실패 이유
+  /user/findPassword:
+    post:
+      tags:
+        - User
+      summary : 비밀번호 찾기
+      description : 아이디와 email을 입력해 비밀번호를 초기화 한다.
+      parameters:
+        - in: body
+          name: body
+          description: 회원 정보
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              email:
+                type: string
+                description: 유저 이메일
+      responses:
+        '200':
+          description: 회원 정보 수정 성공
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: 성공 여부
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/list/allforuser:
+    post:
+      tags:
+        - Post
+      summary : 유저 아이디를 넣으면 유저가 듣는 강의에 맞춰 게시글 배열 반환
+      description : 유저 아이디를 넣으면 유저가 듣는 강의에 맞춰 게시글 배열 반환
+      parameters:
+        - in: body
+          name: body
+          description: 유저 오브젝트 아이디, 페이지 아이템
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 오브젝트 아이디
+              page:
+                type: number
+                description: 페이지 수
+              item:
+                type: number
+                description: 아이템 반환 갯수
+      responses:
+        '200':
+          description: 게시글 반환
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  description: post object ID
+                title:
+                  type: string
+                  description: 제목
+                context:
+                  type: string
+                  description: 내용
+                date:
+                  type: string
+                  description: 날짜
+                recommend:
+                  type: number
+                  description: 추천 갯수
+                comments:
+                  type: number
+                  description: 댓글 갯수
+                writerNickname:
+                  type: string
+                  description: 글쓴이 닉네임
+                writerImage:
+                  type: string
+                  description: 글쓴이 이미지
+                boardId:
+                  type: string
+                  description: 게시판 ID
+                boardTitle:
+                  type: string
+                  description: 게시판 이름
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/list/all:
+    get:
+      tags:
+        - Post
+      summary : 강의 제외 게시글 전체 반환
+      description : 강의 제외 게시글 전체 반환
+      parameters:
+        - in: query
+          name: page
+          description: 페이지 수
+          required : true
+          type: number
+        - in: query
+          name: item
+          description: 아이템 수
+          required : true
+          type: number
+      responses:
+        '200':
+          description: 게시글 반환
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  description: post object ID
+                title:
+                  type: string
+                  description: 제목
+                context:
+                  type: string
+                  description: 내용
+                date:
+                  type: string
+                  description: 날짜
+                recommend:
+                  type: number
+                  description: 추천 갯수
+                comments:
+                  type: number
+                  description: 댓글 갯수
+                writerNickname:
+                  type: string
+                  description: 글쓴이 닉네임
+                writerImage:
+                  type: string
+                  description: 글쓴이 이미지
+                boardId:
+                  type: string
+                  description: 게시판 ID
+                boardTitle:
+                  type: string
+                  description: 게시판 이름
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/list/hot:
+    get:
+      tags:
+        - Post
+      summary : 핫 게시판
+      description : 핫 게시판
+      parameters:
+        - in: query
+          name: item
+          description: 아이템 수
+          required : true
+          type: number
+      responses:
+        '200':
+          description: 게시글 반환
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  description: post object ID
+                title:
+                  type: string
+                  description: 제목
+                context:
+                  type: string
+                  description: 내용
+                date:
+                  type: string
+                  description: 날짜
+                recommend:
+                  type: number
+                  description: 추천 갯수
+                comments:
+                  type: number
+                  description: 댓글 갯수
+                writerNickname:
+                  type: string
+                  description: 글쓴이 닉네임
+                writerImage:
+                  type: string
+                  description: 글쓴이 이미지
+                boardId:
+                  type: string
+                  description: 게시판 ID
+                boardTitle:
+                  type: string
+                  description: 게시판 이름
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/addComment:
+    post:
+      tags:
+        - Post
+      summary : 댓글 작성
+      description : 댓글 작성
+      parameters:
+        - in: body
+          name: body
+          description: 댓글 정보
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              postId:
+                type: string
+                description: 게시글 ID
+              context:
+                type: string
+                description: 댓글 내용
+      responses:
+        '200':
+          description: 회원 정보 수정 성공
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: 성공 여부
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/deleteComment:
+    post:
+      tags:
+        - Post
+      summary : 댓글 삭제
+      description : 댓글 삭제
+      parameters:
+        - in: body
+          name: body
+          description: 댓글 정보
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              postId:
+                type: string
+                description: 게시글 ID
+              commentId:
+                type: string
+                description: 댓글 ID
+      responses:
+        '200':
+          description: 회원 정보 수정 성공
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: 성공 여부
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /post/modifyComment:
+    post:
+      tags:
+        - Post
+      summary : 댓글 수정
+      description : 댓글 수정
+      parameters:
+        - in: body
+          name: body
+          description: 댓글 정보
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              postId:
+                type: string
+                description: 게시글 ID
+              commentId:
+                type: string
+                description: 댓글 ID
+              context:
+                type: string
+                description: 내용
+      responses:
+        '200':
+          description: 회원 정보 수정 성공
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: 성공 여부
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
   /post/create:
     post:
       tags:
@@ -295,7 +709,7 @@ paths:
         - multipart/form-data
       parameters:
         - in: formData
-          name: writerId
+          name: userId
           description: 작성자 아이디
           type: string
           required: true
@@ -398,36 +812,173 @@ paths:
           schema:
             type: string
             description: 실패 이유
-  /post/list/all:
-    get:
+  /post/recommend:
+    post:
       tags:
         - Post
-      summary: 전체 게시글 출력
-      description: 전체 게시글 출력
+      summary : 게시글 추천
+      description : 유저 명의로 게시글 추천
       parameters:
-        - in: query
-          name: item
-          description: 출력 하고자 하는 게시글 갯수
-          type: number
-        - in: query
-          name: page
-          description: 페이지 쪽수
-          type: number
+        - in: body
+          name: body
+          description: 유저, 게시글 정보
+          required : true
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: 유저 아이디
+              postId:
+                type: string
+                description: 게시글 Object 아이디
       responses:
         '200':
-          description: 게시글 반환 성공
+          description: 성공 여부
           schema:
-            type: array
-            items:
-              type: object
-              description: 게시글 객체 반환
+            type: object
+            properties:
+              message:
+                type: string
+                description: 성공 여부
         '500':
-          description: 게시글 반환 실패
+          description: 실패 여부
           schema:
             type: object
             properties:
               message:
                 type: string
                 description: 실패 이유
+  /post/detail/{postId}:
+    get:
+      tags:
+        - Post
+      summary : 게시글 정보 반환
+      description : 게시글 정보 반환
+      parameters:
+        - in: path
+          name: postId
+          description: 게시글 아이디
+          type: string
+          required : true
+      responses:
+        '200':
+          description: 게시글 정보가 반환 됨
+          schema:
+            type: object
+            properties:
+              _id:
+                type: string
+                description: 게시글 아이디
+              writerId:
+                type: string
+                description: 유저 아이디
+              writerNickname:
+                type: string
+                description: 유저 프로필 사진
+              writerImage:
+                type: string
+                description: 유저 닉네임
+              postTitle:
+                type: string
+                description: 게시글 제목
+              postContext:
+                type: string
+                description: 게시글 내용
+              postComments:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    writerNickname:
+                      type: string
+                      description: 닉네임 내용
+                    context:
+                      type: string
+                      description: 댓글 내용
+              postRecommend:
+                type: string
+
+
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /board/{boardId}:
+    get:
+      tags:
+        - Board
+      summary: boardId에 해당하는 게시판의 게시글 반환
+      description: boardId에 해당하는 게시판의 게시글 반환
+      parameters:
+        - in: path
+          name: boardId
+          description: 게시판 ID
+          type: string
+          required: true
+        - in: query
+          name: page
+          description: 페이지
+          type: string
+          required: true
+        - in: query
+          name: num
+          description: 게시글 수
+          type: string
+          required: false
+      responses:
+        '200':
+          description: 게시글 리스트 반환, post 스키마에 writerImage, writerNickname 어트리뷰트 추가
+          schema:
+            type: array
+            items:
+              type: object
+              description: Post의 모델과 똑같다.
+              properties:
+                post:
+                  type: string
+                  description: Post 객체
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
+  /board/idToBoard:
+    get:
+      tags:
+        - Board
+      summary: boardId에 해당하는 게시판의 정보 반환
+      description: boardId에 해당하는 게시판의 정보 반환
+      parameters:
+        - in: path
+          name: boardId
+          description: 게시판 ID
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 요청 성공
+          schema:
+            type: object
+            description: Board의 모델
+            properties:
+              boardId:
+                type: string
+                description: boardId
+              title:
+                type: string
+                description: 게시판 이름
+              professor:
+                type: string
+                description: 교수 명
+              lecture:
+                type: boolean
+                description: 강의 여부
+        '500':
+          description: 요청 실패
+          schema:
+            type: string
+            description: 실패 이유
 
 

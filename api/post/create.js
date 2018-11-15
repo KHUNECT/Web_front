@@ -14,15 +14,20 @@ AWS.config.update({
 })
 
 exports.CreatePost = (req, res) => {
-    const writerId = req.body.writerId
+    const writerId = req.session.sid || req.body.userId
     const title = req.body.title
     const context = req.body.context
     const boardId = req.body.boardId
+    console.log('-POST /api/post/create-')
+    console.log(` ${writerId}  ${title}  ${context}  ${boardId} `)
+    let userId
 
     // 0. 쿼리 확인
     const QueryCheck = () => {
+        console.log(0)
         return new Promise((resolve, reject) => {
             if (!writerId || !title || !context || !boardId){
+                console.log('0 error')
                 return reject({
                     message: 'query error'
                 })
@@ -33,32 +38,38 @@ exports.CreatePost = (req, res) => {
 
     // 1. writerId 체크
     const WriterCheck = () => {
-        return User.findOne({userId: writerId})
+        console.log(1)
+        return User.findById(writerId)
     }
 
     // 2. boardId 체크
     const BoardCheck = (writer) => {
-        if (writer != null) {
+        console.log(2)
+        if (!writer) {
+            console.log('2 error')
             return reject({
                 message: 'User Not Exists'
             })
         }
+        userId = writer.userId
         return Board.findOne({boardId: boardId})
     }
 
     // 3. 포스트 생성
     const Posting = (board) => {
-        if (board != null) {
+        console.log(3)
+        if (!board) {
+            console.log('3 error')
             return reject({
                 message: 'Board Not Exists'
             })
         }
         if (req.file == null){
             return Post.create({
-                writerId: writerId,
+                writerId: userId,
                 title: title,
                 context: context,
-                boardId: boardId
+                boardId: boardId,
             })
         }
 
@@ -84,7 +95,7 @@ exports.CreatePost = (req, res) => {
             })
             .then(data => {
                 return Post.create({
-                    writerId: writerId,
+                    writerId: userId,
                     title: title,
                     context: context,
                     boardId: boardId,

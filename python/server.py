@@ -4,21 +4,27 @@ import klas
 import json
 
 class S(BaseHTTPRequestHandler):
-    def _set_headers(self):
-        self.send_response(200)
+    def _set_headers(self, status_code):
+        self.send_response(status_code)
         self.send_header('Content-type', 'application/json')
         self.end_headers()
 
     def do_POST(self):
-        self._set_headers()
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length).decode("utf-8")
         qs = parse_qs(post_data)
         KLASObj = klas.KLAS(qs['id'][0], qs['password'][0])
-        self.wfile.write(json.dumps(KLASObj.get_lecture_list()).encode())
+
+        if KLASObj.get_lecture_list() == False:
+            self._set_headers(500)
+            self.wfile.write(json.dumps({'message':'KLAS Error'}).encode())
+        else:
+            self._set_headers(200)
+            self.wfile.write(json.dumps(KLASObj.return_list()).encode())
 
 
 if __name__ == "__main__":
-    server_address = ('', 5000)
+    server_address = ('', 8000)
     httpd = HTTPServer(server_address, S)
+    print("Crawling Server Start")
     httpd.serve_forever()

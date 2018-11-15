@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <title>KHU:NECT</title>
+  <meta charset="utf-8" />
+  <link type="text/css" href="../static/my_info_common.css" rel="stylesheet" />
+  <link type="text/css" href="../static/my_info_container.css" rel="stylesheet" />
+  <link type="text/css" href="../static/my_info_partial.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../static/my_info.css">
+  <script type="text/javascript" src="/js/extensions.jquery-1.10.2.min.js"></script>
+  <script type="text/javascript" src="/js/extensions.jquery.everydate.js"></script>
+  <script type="text/javascript" src="/js/extensions.underscore-min.js"></script>
+  <script type="text/javascript" src="/js/common.js"></script>
+  <script type="text/javascript" src="/js/my.index.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#changeInfoButton').click(function(){
+                var data=new Object()
+                data.nickname=$('#nickname').val()
+                data.currPassword=$('#currPassword').val()
+                data=JSON.stringify(data)
+                $.ajax({
+                    url:'../api/user/modify',
+                    data:data,
+                    type:'POST',
+                    dataType:'JSON',
+                    contentType:'application/json; charset=utf-8',
+                    traditional:true,
+                    processData:false,
+                    success:function(result){
+                        alert(result['message'])
+                        windows.location.href='/main'
+                    },
+                    error:function(result){
+                        alert(result['message'])
+                    }
+                })
+            })
+        })
+    </script>
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:400,700&amp;subset=korean" rel="stylesheet" />
+  <style>
+    div {
+      font-family: "Noto Sans KR", sans-serif;
+    }
+  </style>
+</head>
+
+<body style="background-color:#f6f6f6;">
+<div id="top-layer_fixed">
+  <table cellspacing="0" cellpadding="0" style="width:1200px; height:100%; margin: 0 auto;">
+    <tr>
+      <td style="vertical-align:middle; padding-left: 70px; padding-right: 220px;">
+        <a href="/main"><img src="../static/logo.png" height=45%/></a>
+      </td>
+      <td style="width:400px;">
+        <div class="menubar">
+          <ul>
+            <li><a id="current" style="font-size:16px;font-weight: bold;">내 수업</a></li>
+            <li>
+              <a id="current" style="font-size:16px;font-weight: bold;">함께해요</a>
+              <ul>
+                <li><a href="/study">스터디</a></li>
+                <li><a href="/hobby">취미</a></li>
+              </ul>
+            </li>
+            <li>
+              <a id="current" style="font-size:16px;font-weight: bold;">홍보</a>
+              <ul>
+                <li><a href="/alba">알바</a></li>
+                <li><a href="/club">동아리</a></li>
+                <li><a href="/contest">공모전</a></li>
+              </ul>
+            </li>
+            <li>
+              <a id="current" style="font-size:16px;font-weight: bold;">거래</a>
+              <ul>
+                <li><a href="/market">거래</a></li>
+                <li><a href="/gonggu">공구</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+
+  <div id="container" class="my">
+    <aside>
+      <div class="menu">
+        <ol>
+          <li class="active"><a href="/info">기본 정보</a></li>
+          <li><a href="/info/setInfo">닉네임 변경</a></li>
+          <li><a href="/info/setPassword">비밀번호 변경</a></li>
+          <li><a href="/info/setImage">프로필 이미지 변경</a></li>
+        </ol>
+      </div>
+    </aside>
+    <div class="wrap setting">
+      <form class="setinfo">
+        <h2 style="text-indent:10px;">닉네임 변경</h2>
+        <p>
+          <label>이름</label>
+          <a><%=user.name%></a>
+        </p>
+        <p>
+          <label>닉네임</label>
+          <input type="text" id="nickname" value="<%=user.nickname%>" maxlength="10" class="text">
+        </p>
+        <p>
+          <label>이메일</label>
+            <a><%=user.name%></a>
+        </p>
+        <p>
+          <label>비밀번호 확인</label>
+          <input type="password" id="currPassword" name="password" maxlength="20" class="text">
+        </p>
+        <p class="submit" >
+          <input type="button" id="changeInfoButton" value="닉네임 변경">
+        </p>
+      </form>
+    </div>
+    <hr>
+  </div>
+</body>
+
+</html>

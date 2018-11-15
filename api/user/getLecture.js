@@ -14,7 +14,7 @@ exports.GetLecture = (req, res) => {
             })
         }
         else
-            return User.findOne({userId: userId})
+            return User.findOne({_id: userId})
     }
 
     // 1. User Check
